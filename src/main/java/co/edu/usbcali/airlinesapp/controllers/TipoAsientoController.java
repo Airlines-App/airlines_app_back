@@ -1,8 +1,8 @@
 package co.edu.usbcali.airlinesapp.controllers;
 
-import co.edu.usbcali.airlinesapp.dtos.AeropuertoDTO;
 import co.edu.usbcali.airlinesapp.dtos.MensajeDTO;
-import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
+import co.edu.usbcali.airlinesapp.dtos.TipoAsientoDTO;
+import co.edu.usbcali.airlinesapp.services.interfaces.TipoAsientoService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,26 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/aeropuerto")
+@RequestMapping("/tipoAsiento")
 @Slf4j
-public class AeropuertoController {
-    private final AeropuertoService aeropuertoService;
+public class TipoAsientoController {
+    private final TipoAsientoService tipoAsientoService;
 
-    public AeropuertoController(AeropuertoService aeropuertoService) {
-        this.aeropuertoService = aeropuertoService;
+    public TipoAsientoController(TipoAsientoService tipoAsientoService) {
+        this.tipoAsientoService = tipoAsientoService;
     }
 
-    @GetMapping("/obtener-aeropuertos")
-    public ResponseEntity<List<AeropuertoDTO>> obtenerAeropuertos() {
-        return new ResponseEntity(aeropuertoService.obtenerAeropuertos(), HttpStatus.OK);
+    @GetMapping("/obtener-tipoAsientos")
+    public ResponseEntity<List<TipoAsientoDTO>> obtenerTipoAsientos() {
+        return new ResponseEntity(tipoAsientoService.obtenerTipoAsientos(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/guardar-aeropuerto",
+    @GetMapping(path = "/guardar-tipoAsiento",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity guardarAeropuerto(@RequestBody AeropuertoDTO aeropuertoDTO) {
+    public ResponseEntity guardarTipoAsiento(@RequestBody TipoAsientoDTO tipoAsientoDTO) {
         try {
-            return new ResponseEntity(aeropuertoService.guardarAeropuerto(aeropuertoDTO), HttpStatus.OK);
+            return new ResponseEntity(tipoAsientoService.guardarTipoAsiento(tipoAsientoDTO), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

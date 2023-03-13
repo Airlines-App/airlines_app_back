@@ -9,9 +9,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-public class AvionDTO {
-        private Integer idAvion;
-        private String modelo;
-        private String aerolinea;
+public class TipoAsientoDTO {
+        private Integer idTipoAsiento;
+        private String descripcion;
         private String estado;
 }

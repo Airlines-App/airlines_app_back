@@ -5,16 +5,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @Builder
 @ToString
-public class AsientoDTO {
-        private Integer idAsiento;
+public class TrayectoDTO {
+        private Integer idTrayecto;
 
-//        private Integer idTipoAsiento;
 //        private Integer idAvion;
-        private String ubicacion;
-        private long precio;
+//        private Integer idAeropuertoOrigen;
+//        private Integer idAeropuertoDestino;
+
+        private Date horaSalida;
+        private Date horaLlegada;
         private String estado;
 }

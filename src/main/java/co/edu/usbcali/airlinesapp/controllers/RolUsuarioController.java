@@ -1,8 +1,8 @@
 package co.edu.usbcali.airlinesapp.controllers;
 
-import co.edu.usbcali.airlinesapp.dtos.AeropuertoDTO;
 import co.edu.usbcali.airlinesapp.dtos.MensajeDTO;
-import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
+import co.edu.usbcali.airlinesapp.dtos.RolUsuarioDTO;
+import co.edu.usbcali.airlinesapp.services.interfaces.RolUsuarioService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,26 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/aeropuerto")
+@RequestMapping("/rolUsuario")
 @Slf4j
-public class AeropuertoController {
-    private final AeropuertoService aeropuertoService;
+public class RolUsuarioController {
+    private final RolUsuarioService rolUsuarioService;
 
-    public AeropuertoController(AeropuertoService aeropuertoService) {
-        this.aeropuertoService = aeropuertoService;
+    public RolUsuarioController(RolUsuarioService rolUsuarioService) {
+        this.rolUsuarioService = rolUsuarioService;
     }
 
-    @GetMapping("/obtener-aeropuertos")
-    public ResponseEntity<List<AeropuertoDTO>> obtenerAeropuertos() {
-        return new ResponseEntity(aeropuertoService.obtenerAeropuertos(), HttpStatus.OK);
+    @GetMapping("/obtener-rolUsuarios")
+    public ResponseEntity<List<RolUsuarioDTO>> obtenerRolUsuarios() {
+        return new ResponseEntity(rolUsuarioService.obtenerRolUsuarios(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/guardar-aeropuerto",
+    @GetMapping(path = "/guardar-rolUsuario",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity guardarAeropuerto(@RequestBody AeropuertoDTO aeropuertoDTO) {
+    public ResponseEntity guardarRolUsuario(@RequestBody RolUsuarioDTO rolUsuarioDTO) {
         try {
-            return new ResponseEntity(aeropuertoService.guardarAeropuerto(aeropuertoDTO), HttpStatus.OK);
+            return new ResponseEntity(rolUsuarioService.guardarRolUsuario(rolUsuarioDTO), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

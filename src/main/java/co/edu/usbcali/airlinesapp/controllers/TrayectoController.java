@@ -1,8 +1,8 @@
 package co.edu.usbcali.airlinesapp.controllers;
 
-import co.edu.usbcali.airlinesapp.dtos.AeropuertoDTO;
 import co.edu.usbcali.airlinesapp.dtos.MensajeDTO;
-import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
+import co.edu.usbcali.airlinesapp.dtos.TrayectoDTO;
+import co.edu.usbcali.airlinesapp.services.interfaces.TrayectoService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,26 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/aeropuerto")
+@RequestMapping("/trayecto")
 @Slf4j
-public class AeropuertoController {
-    private final AeropuertoService aeropuertoService;
+public class TrayectoController {
+    private final TrayectoService trayectoService;
 
-    public AeropuertoController(AeropuertoService aeropuertoService) {
-        this.aeropuertoService = aeropuertoService;
+    public TrayectoController(TrayectoService trayectoService) {
+        this.trayectoService = trayectoService;
     }
 
-    @GetMapping("/obtener-aeropuertos")
-    public ResponseEntity<List<AeropuertoDTO>> obtenerAeropuertos() {
-        return new ResponseEntity(aeropuertoService.obtenerAeropuertos(), HttpStatus.OK);
+    @GetMapping("/obtener-trayectos")
+    public ResponseEntity<List<TrayectoDTO>> obtenerTrayectos() {
+        return new ResponseEntity(trayectoService.obtenerTrayectos(), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/guardar-aeropuerto",
+    @GetMapping(path = "/guardar-trayecto",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity guardarAeropuerto(@RequestBody AeropuertoDTO aeropuertoDTO) {
+    public ResponseEntity guardarTrayecto(@RequestBody TrayectoDTO trayectoDTO) {
         try {
-            return new ResponseEntity(aeropuertoService.guardarAeropuerto(aeropuertoDTO), HttpStatus.OK);
+            return new ResponseEntity(trayectoService.guardarTrayecto(trayectoDTO), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
