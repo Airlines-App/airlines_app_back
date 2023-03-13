@@ -10,7 +10,9 @@ import lombok.ToString;
 @Builder
 @ToString
 public class AeropuertoDTO {
-        private String idAeropuerto;
+        private Integer idAeropuerto;
         private String nombre;
+        private String iata;
         private String ubicacion;
+        private String estado;
 }

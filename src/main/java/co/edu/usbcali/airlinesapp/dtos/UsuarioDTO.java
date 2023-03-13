@@ -10,8 +10,12 @@ import lombok.ToString;
 @Builder
 @ToString
 public class UsuarioDTO {
-        private String idUsuario;
+        private Integer idUsuario;
+
+//        private Integer idRolUsuario;
+        private String cedula;
         private String nombre;
         private String apellido;
         private String correo;
+        private String estado;
 }
