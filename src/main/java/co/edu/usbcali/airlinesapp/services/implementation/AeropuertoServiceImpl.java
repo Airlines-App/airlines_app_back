@@ -7,6 +7,7 @@ import co.edu.usbcali.airlinesapp.repository.AeropuertoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,11 @@ import java.util.List;
 @Slf4j
 public class AeropuertoServiceImpl implements AeropuertoService {
     private final AeropuertoRepository aeropuertoRepository;
+    private final ModelMapper modelMapper;
 
-    public AeropuertoServiceImpl(AeropuertoRepository aeropuertoRepository) {
+    public AeropuertoServiceImpl(AeropuertoRepository aeropuertoRepository, ModelMapper modelMapper) {
         this.aeropuertoRepository = aeropuertoRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override

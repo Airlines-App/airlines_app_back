@@ -7,6 +7,7 @@ import co.edu.usbcali.airlinesapp.repository.UsuarioRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.UsuarioService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,11 @@ import java.util.List;
 @Slf4j
 public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
+    private final ModelMapper modelMapper;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, ModelMapper modelMapper) {
         this.usuarioRepository = usuarioRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override

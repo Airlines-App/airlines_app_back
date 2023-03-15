@@ -7,6 +7,7 @@ import co.edu.usbcali.airlinesapp.repository.AsientoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AsientoService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,11 @@ import java.util.List;
 @Slf4j
 public class AsientoServiceImpl implements AsientoService {
     private final AsientoRepository asientoRepository;
+    private final ModelMapper modelMapper;
 
-    public AsientoServiceImpl(AsientoRepository asientoRepository) {
+    public AsientoServiceImpl(AsientoRepository asientoRepository, ModelMapper modelMapper) {
         this.asientoRepository = asientoRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override

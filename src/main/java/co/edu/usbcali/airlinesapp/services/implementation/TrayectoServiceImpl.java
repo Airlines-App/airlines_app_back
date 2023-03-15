@@ -7,6 +7,7 @@ import co.edu.usbcali.airlinesapp.repository.TrayectoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.TrayectoService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,11 @@ import java.util.List;
 @Slf4j
 public class TrayectoServiceImpl implements TrayectoService {
     private final TrayectoRepository trayectoRepository;
+    private final ModelMapper modelMapper;
 
-    public TrayectoServiceImpl(TrayectoRepository trayectoRepository) {
+    public TrayectoServiceImpl(TrayectoRepository trayectoRepository, ModelMapper modelMapper) {
         this.trayectoRepository = trayectoRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
