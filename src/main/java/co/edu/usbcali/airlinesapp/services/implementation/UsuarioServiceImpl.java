@@ -2,6 +2,7 @@ package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Usuario;
 import co.edu.usbcali.airlinesapp.dtos.UsuarioDTO;
+import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.mappers.UsuarioMapper;
 import co.edu.usbcali.airlinesapp.repository.UsuarioRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.UsuarioService;
@@ -26,6 +27,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<UsuarioDTO> obtenerUsuarios() {
         return UsuarioMapper.domainToDTOList(usuarioRepository.findAll());
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioPorId(Integer id) throws Exception {
+        if (usuarioRepository.findById(id).isPresent()) {
+            return UsuarioMapper.domainToDTO(usuarioRepository.findById(id).get());
+        } else {
+            throw new Exception("El usuario con id " + id + " no existe");
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Trayecto;
 import co.edu.usbcali.airlinesapp.dtos.TrayectoDTO;
+import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.mappers.TrayectoMapper;
 import co.edu.usbcali.airlinesapp.repository.TrayectoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.TrayectoService;
@@ -26,6 +27,15 @@ public class TrayectoServiceImpl implements TrayectoService {
     @Override
     public List<TrayectoDTO> obtenerTrayectos() {
         return TrayectoMapper.domainToDTOList(trayectoRepository.findAll());
+    }
+
+    @Override
+    public TrayectoDTO obtenerTrayectoPorId(Integer id) throws Exception {
+        if (trayectoRepository.findById(id).isPresent()) {
+            return TrayectoMapper.domainToDTO(trayectoRepository.findById(id).get());
+        } else {
+            throw new Exception("El trayecto con id " + id + " no existe");
+        }
     }
 
     @Override

@@ -27,6 +27,15 @@ public class VueloController {
         return new ResponseEntity(vueloService.obtenerVuelos(), HttpStatus.OK);
     }
 
+    @GetMapping("/obtener-vuelo/{idVuelo}")
+    public ResponseEntity<VueloDTO> obtenerVuelo(@PathVariable("idVuelo") Integer idVuelo){
+        try {
+            return new ResponseEntity(vueloService.obtenerVueloPorId(idVuelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping(path = "/guardar-vuelo",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

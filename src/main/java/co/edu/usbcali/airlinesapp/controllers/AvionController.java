@@ -27,6 +27,15 @@ public class AvionController {
         return new ResponseEntity(avionService.obtenerAviones(), HttpStatus.OK);
     }
 
+    @GetMapping("/obtener-avion/{idAvion}")
+    public ResponseEntity<AvionDTO> obtenerAvion(@PathVariable("idAvion") Integer idAvion) {
+        try {
+            return new ResponseEntity(avionService.obtenerAvionPorId(idAvion), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping(path = "/guardar-avion",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

@@ -2,6 +2,7 @@ package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Reserva;
 import co.edu.usbcali.airlinesapp.dtos.ReservaDTO;
+import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.mappers.ReservaMapper;
 import co.edu.usbcali.airlinesapp.repository.ReservaRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.ReservaService;
@@ -26,6 +27,15 @@ public class ReservaServiceImpl implements ReservaService {
     @Override
     public List<ReservaDTO> obtenerReservas() {
         return ReservaMapper.domainToDTOList(reservaRepository.findAll());
+    }
+
+    @Override
+    public ReservaDTO obtenerReservaPorId(Integer id) throws Exception {
+        if (reservaRepository.findById(id).isPresent()) {
+            return ReservaMapper.domainToDTO(reservaRepository.findById(id).get());
+        } else {
+            throw new Exception("La reserva con id " + id + " no existe");
+        }
     }
 
     @Override
