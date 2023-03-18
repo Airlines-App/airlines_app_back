@@ -8,12 +8,7 @@ import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
@@ -35,11 +30,11 @@ public class AeropuertoServiceImpl implements AeropuertoService {
 
     @Override
     public AeropuertoDTO obtenerAeropuertoPorId(Integer id) throws Exception {
-        if (aeropuertoRepository.findById(id).isPresent()) {
-            return AeropuertoMapper.domainToDTO(aeropuertoRepository.findById(id).get());
-        } else {
+        if (aeropuertoRepository.findById(id).isEmpty()) {
             throw new Exception("El aeropuerto con id " + id + " no existe");
         }
+
+        return AeropuertoMapper.domainToDTO(aeropuertoRepository.findById(id).get());
     }
 
     @Override

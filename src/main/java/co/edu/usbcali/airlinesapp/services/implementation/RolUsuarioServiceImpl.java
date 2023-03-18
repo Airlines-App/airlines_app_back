@@ -2,7 +2,6 @@ package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.RolUsuario;
 import co.edu.usbcali.airlinesapp.dtos.RolUsuarioDTO;
-import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.mappers.RolUsuarioMapper;
 import co.edu.usbcali.airlinesapp.repository.RolUsuarioRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.RolUsuarioService;
@@ -31,11 +30,11 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
 
     @Override
     public RolUsuarioDTO obtenerRolUsuarioPorId(Integer id) throws Exception {
-        if (rolUsuarioRepository.findById(id).isPresent()) {
-            return RolUsuarioMapper.domainToDTO(rolUsuarioRepository.findById(id).get());
-        } else {
+        if (rolUsuarioRepository.findById(id).isEmpty()) {
             throw new Exception("El rol de usuario con id " + id + " no existe");
         }
+
+        return RolUsuarioMapper.domainToDTO(rolUsuarioRepository.findById(id).get());
     }
 
     @Override

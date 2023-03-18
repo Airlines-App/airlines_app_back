@@ -2,7 +2,6 @@ package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Avion;
 import co.edu.usbcali.airlinesapp.dtos.AvionDTO;
-import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.mappers.AvionMapper;
 import co.edu.usbcali.airlinesapp.repository.AvionRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AvionService;
@@ -31,11 +30,11 @@ public class AvionServiceImpl implements AvionService {
 
     @Override
     public AvionDTO obtenerAvionPorId(Integer id) throws Exception {
-        if (avionRepository.findById(id).isPresent()) {
-            return AvionMapper.domainToDTO(avionRepository.findById(id).get());
-        } else {
+        if (avionRepository.findById(id).isEmpty()) {
             throw new Exception("El avión con id " + id + " no existe");
         }
+
+        return AvionMapper.domainToDTO(avionRepository.findById(id).get());
     }
 
     @Override

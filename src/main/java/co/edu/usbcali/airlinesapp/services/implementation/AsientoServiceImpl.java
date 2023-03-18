@@ -2,7 +2,6 @@ package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Asiento;
 import co.edu.usbcali.airlinesapp.dtos.AsientoDTO;
-import co.edu.usbcali.airlinesapp.mappers.AeropuertoMapper;
 import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.repository.AsientoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AsientoService;
@@ -31,11 +30,11 @@ public class AsientoServiceImpl implements AsientoService {
 
     @Override
     public AsientoDTO obtenerAsientoPorId(Integer id) throws Exception {
-        if (asientoRepository.findById(id).isPresent()) {
-            return AsientoMapper.domainToDTO(asientoRepository.findById(id).get());
-        } else {
+        if (asientoRepository.findById(id).isEmpty()) {
             throw new Exception("El asiento con id " + id + " no existe");
         }
+
+        return AsientoMapper.domainToDTO(asientoRepository.findById(id).get());
     }
 
     @Override

@@ -10,6 +10,8 @@ public class VueloMapper {
     public static VueloDTO domainToDTO(Vuelo vuelo) {
         return VueloDTO.builder()
                 .idVuelo(vuelo.getIdVuelo())
+                .idAeropuertoOrigen(vuelo.getAeropuertoOrigen() != null ? vuelo.getAeropuertoOrigen().getIdAeropuerto() : null)
+                .idAeropuertoDestino(vuelo.getAeropuertoDestino() != null ? vuelo.getAeropuertoDestino().getIdAeropuerto() : null)
                 .precio(vuelo.getPrecio())
                 .horaSalida(vuelo.getHoraSalida())
                 .horaLlegada(vuelo.getHoraLlegada())

@@ -2,7 +2,6 @@ package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Vuelo;
 import co.edu.usbcali.airlinesapp.dtos.VueloDTO;
-import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.mappers.VueloMapper;
 import co.edu.usbcali.airlinesapp.repository.VueloRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.VueloService;
@@ -31,11 +30,11 @@ public class VueloServiceImpl implements VueloService {
 
     @Override
     public VueloDTO obtenerVueloPorId(Integer id) throws Exception {
-        if (vueloRepository.findById(id).isPresent()) {
-            return VueloMapper.domainToDTO(vueloRepository.findById(id).get());
-        } else {
+        if (vueloRepository.findById(id).isEmpty()) {
             throw new Exception("El vuelo con id " + id + " no existe");
         }
+
+        return VueloMapper.domainToDTO(vueloRepository.findById(id).get());
     }
 
     @Override

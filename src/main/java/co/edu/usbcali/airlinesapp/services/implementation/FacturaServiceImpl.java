@@ -2,7 +2,6 @@ package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Factura;
 import co.edu.usbcali.airlinesapp.dtos.FacturaDTO;
-import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.mappers.FacturaMapper;
 import co.edu.usbcali.airlinesapp.repository.FacturaRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.FacturaService;
@@ -31,11 +30,11 @@ public class FacturaServiceImpl implements FacturaService {
 
     @Override
     public FacturaDTO obtenerFacturaPorId(Integer id) throws Exception {
-        if (facturaRepository.findById(id).isPresent()) {
-            return FacturaMapper.domainToDTO(facturaRepository.findById(id).get());
-        } else {
+        if (facturaRepository.findById(id).isEmpty()) {
             throw new Exception("La factura con id " + id + " no existe");
         }
+
+        return FacturaMapper.domainToDTO(facturaRepository.findById(id).get());
     }
 
     @Override

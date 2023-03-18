@@ -2,7 +2,6 @@ package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.TipoAsiento;
 import co.edu.usbcali.airlinesapp.dtos.TipoAsientoDTO;
-import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.mappers.TipoAsientoMapper;
 import co.edu.usbcali.airlinesapp.repository.TipoAsientoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.TipoAsientoService;
@@ -31,11 +30,12 @@ public class TipoAsientoServiceImpl implements TipoAsientoService {
 
     @Override
     public TipoAsientoDTO obtenerTipoAsientoPorId(Integer id) throws Exception {
-        if (tipoAsientoService.findById(id).isPresent()) {
-            return TipoAsientoMapper.domainToDTO(tipoAsientoService.findById(id).get());
-        } else {
+        if (tipoAsientoService.findById(id).isEmpty()) {
             throw new Exception("El tipo de asiento con id " + id + " no existe");
         }
+
+        return TipoAsientoMapper.domainToDTO(tipoAsientoService.findById(id).get());
+
     }
 
     @Override

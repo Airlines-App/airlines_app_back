@@ -12,8 +12,8 @@ import lombok.ToString;
 public class AsientoDTO {
         private Integer idAsiento;
 
-//        private Integer idTipoAsiento;
-//        private Integer idAvion;
+        private Integer idTipoAsiento;
+        private Integer idAvion;
         private String ubicacion;
         private long precio;
         private String estado;
