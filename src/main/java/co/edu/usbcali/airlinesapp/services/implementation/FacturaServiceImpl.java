@@ -7,6 +7,7 @@ import co.edu.usbcali.airlinesapp.repository.FacturaRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.FacturaService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,14 +16,25 @@ import java.util.List;
 @Slf4j
 public class FacturaServiceImpl implements FacturaService {
     private final FacturaRepository facturaRepository;
+    private final ModelMapper modelMapper;
 
-    public FacturaServiceImpl(FacturaRepository facturaRepository) {
+    public FacturaServiceImpl(FacturaRepository facturaRepository, ModelMapper modelMapper) {
         this.facturaRepository = facturaRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public List<FacturaDTO> obtenerFacturas() {
         return FacturaMapper.domainToDTOList(facturaRepository.findAll());
+    }
+
+    @Override
+    public FacturaDTO obtenerFacturaPorId(Integer id) throws Exception {
+        if (facturaRepository.findById(id).isEmpty()) {
+            throw new Exception("La factura con id " + id + " no existe");
+        }
+
+        return FacturaMapper.domainToDTO(facturaRepository.findById(id).get());
     }
 
     @Override

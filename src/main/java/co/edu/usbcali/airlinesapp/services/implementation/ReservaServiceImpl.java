@@ -7,6 +7,7 @@ import co.edu.usbcali.airlinesapp.repository.ReservaRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.ReservaService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,14 +16,25 @@ import java.util.List;
 @Slf4j
 public class ReservaServiceImpl implements ReservaService {
     private final ReservaRepository reservaRepository;
+    private final ModelMapper modelMapper;
 
-    public ReservaServiceImpl(ReservaRepository reservaRepository) {
+    public ReservaServiceImpl(ReservaRepository reservaRepository, ModelMapper modelMapper) {
         this.reservaRepository = reservaRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public List<ReservaDTO> obtenerReservas() {
         return ReservaMapper.domainToDTOList(reservaRepository.findAll());
+    }
+
+    @Override
+    public ReservaDTO obtenerReservaPorId(Integer id) throws Exception {
+        if (reservaRepository.findById(id).isEmpty()) {
+            throw new Exception("La reserva con id " + id + " no existe");
+        }
+
+        return ReservaMapper.domainToDTO(reservaRepository.findById(id).get());
     }
 
     @Override

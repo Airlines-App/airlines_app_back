@@ -7,6 +7,7 @@ import co.edu.usbcali.airlinesapp.repository.RolUsuarioRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.RolUsuarioService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,14 +16,25 @@ import java.util.List;
 @Slf4j
 public class RolUsuarioServiceImpl implements RolUsuarioService {
     private final RolUsuarioRepository rolUsuarioRepository;
+    private final ModelMapper modelMapper;
 
-    public RolUsuarioServiceImpl(RolUsuarioRepository rolUsuarioRepository) {
+    public RolUsuarioServiceImpl(RolUsuarioRepository rolUsuarioRepository, ModelMapper modelMapper) {
         this.rolUsuarioRepository = rolUsuarioRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public List<RolUsuarioDTO> obtenerRolUsuarios() {
         return RolUsuarioMapper.domainToDTOList(rolUsuarioRepository.findAll());
+    }
+
+    @Override
+    public RolUsuarioDTO obtenerRolUsuarioPorId(Integer id) throws Exception {
+        if (rolUsuarioRepository.findById(id).isEmpty()) {
+            throw new Exception("El rol de usuario con id " + id + " no existe");
+        }
+
+        return RolUsuarioMapper.domainToDTO(rolUsuarioRepository.findById(id).get());
     }
 
     @Override

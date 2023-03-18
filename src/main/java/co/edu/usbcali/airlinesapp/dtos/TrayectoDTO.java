@@ -14,9 +14,9 @@ import java.util.Date;
 public class TrayectoDTO {
         private Integer idTrayecto;
 
-//        private Integer idAvion;
-//        private Integer idAeropuertoOrigen;
-//        private Integer idAeropuertoDestino;
+        private Integer idAvion;
+        private Integer idAeropuertoOrigen;
+        private Integer idAeropuertoDestino;
 
         private Date horaSalida;
         private Date horaLlegada;

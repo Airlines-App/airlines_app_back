@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface AeropuertoService {
     List<AeropuertoDTO> obtenerAeropuertos();
+    AeropuertoDTO obtenerAeropuertoPorId(Integer id) throws Exception;
     AeropuertoDTO guardarAeropuerto(AeropuertoDTO aeropuertoDTO) throws Exception;
 }

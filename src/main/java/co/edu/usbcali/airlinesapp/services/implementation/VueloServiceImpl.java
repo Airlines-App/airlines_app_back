@@ -7,6 +7,7 @@ import co.edu.usbcali.airlinesapp.repository.VueloRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.VueloService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,14 +16,25 @@ import java.util.List;
 @Slf4j
 public class VueloServiceImpl implements VueloService {
     private final VueloRepository vueloRepository;
+    private final ModelMapper modelMapper;
 
-    public VueloServiceImpl(VueloRepository vueloRepository) {
+    public VueloServiceImpl(VueloRepository vueloRepository, ModelMapper modelMapper) {
         this.vueloRepository = vueloRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
     public List<VueloDTO> obtenerVuelos() {
         return VueloMapper.domainToDTOList(vueloRepository.findAll());
+    }
+
+    @Override
+    public VueloDTO obtenerVueloPorId(Integer id) throws Exception {
+        if (vueloRepository.findById(id).isEmpty()) {
+            throw new Exception("El vuelo con id " + id + " no existe");
+        }
+
+        return VueloMapper.domainToDTO(vueloRepository.findById(id).get());
     }
 
     @Override

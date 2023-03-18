@@ -23,14 +23,17 @@ public class Reserva {
     @Column(name = "rese_id", nullable = false, unique = true)
     private Integer idReserva;
 
-//    @ManyToOne(optional = false, cascade = CascadeType.ALL)
-//    private Vuelo vuelo;
+    @ManyToOne
+    @JoinColumn(name = "vuel_id", referencedColumnName = "vuel_id")
+    private Vuelo vuelo;
 
-//    @ManyToOne(optional = false, cascade = CascadeType.ALL)
-//    private Asiento asiento;
+    @ManyToOne
+    @JoinColumn(name = "asie_id", referencedColumnName = "asie_id")
+    private Asiento asiento;
 
-//    @ManyToOne(optional = false, cascade = CascadeType.ALL)
-//    private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "usua_id", referencedColumnName = "usua_id")
+    private Usuario usuario;
 
     @Column(name = "precio_total", nullable = false)
     private long precioTotal;
