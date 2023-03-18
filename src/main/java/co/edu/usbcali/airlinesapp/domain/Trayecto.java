@@ -22,17 +22,17 @@ public class Trayecto {
     @Column(name = "tray_id", nullable = false, unique = true)
     private Integer idTrayecto;
 
-    @ManyToOne
-    @JoinColumn(name = "avio_id", referencedColumnName = "avio_id")
-    private Avion avion;
-
-    @ManyToOne
-    @JoinColumn(name = "aero_id_origen", referencedColumnName = "aero_id_origen")
-    private Aeropuerto aeropuertoOrigen;
-
-    @ManyToOne
-    @JoinColumn(name = "aero_id_destino", referencedColumnName = "aero_id_destino")
-    private Aeropuerto aeropuertoDestino;
+//    @ManyToOne
+//    @JoinColumn(name = "avio_id", referencedColumnName = "avio_id")
+//    private Avion avion;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "aero_id_origen", referencedColumnName = "aero_id_origen")
+//    private Aeropuerto aeropuertoOrigen;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "aero_id_destino", referencedColumnName = "aero_id_destino")
+//    private Aeropuerto aeropuertoDestino;
 
     @Column(name = "hora_salida", nullable = false)
     private Date horaSalida;

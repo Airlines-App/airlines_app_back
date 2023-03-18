@@ -46,4 +46,24 @@ public class ReservaController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping(path = "/actualizar-reserva",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity actualizarReserva(@RequestBody ReservaDTO reservaDTO) {
+        try {
+            return new ResponseEntity(reservaService.actualizarReserva(reservaDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/eliminar-reserva/{idReserva}")
+    public ResponseEntity eliminarReserva(@PathVariable("idReserva") Integer idReserva) {
+        try {
+            return new ResponseEntity(reservaService.eliminarReserva(idReserva), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

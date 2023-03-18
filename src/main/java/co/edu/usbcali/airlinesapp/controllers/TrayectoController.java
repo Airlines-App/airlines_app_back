@@ -46,4 +46,24 @@ public class TrayectoController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping(path = "/actualizar-trayecto",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity actualizarTrayecto(@RequestBody TrayectoDTO trayectoDTO) {
+        try {
+            return new ResponseEntity(trayectoService.actualizarTrayecto(trayectoDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/eliminar-trayecto/{idTrayecto}")
+    public ResponseEntity eliminarTrayecto(@PathVariable("idTrayecto") Integer idTrayecto) {
+        try {
+            return new ResponseEntity(trayectoService.eliminarTrayecto(idTrayecto), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

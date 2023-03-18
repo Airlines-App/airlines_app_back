@@ -46,4 +46,24 @@ public class AsientoController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping(path = "/actualizar-asiento",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity actualizarAsiento(@RequestBody AsientoDTO asientoDTO) {
+        try {
+            return new ResponseEntity(asientoService.actualizarAsiento(asientoDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/eliminar-asiento/{idAsiento}")
+    public ResponseEntity eliminarAsiento(@PathVariable("idAsiento") Integer idAsiento) {
+        try {
+            return new ResponseEntity(asientoService.eliminarAsiento(idAsiento), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

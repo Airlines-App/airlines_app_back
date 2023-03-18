@@ -10,8 +10,8 @@ public class AsientoMapper {
     public static AsientoDTO domainToDTO(Asiento asiento) {
         return AsientoDTO.builder()
                 .idAsiento(asiento.getIdAsiento())
-                .idTipoAsiento(asiento.getTipoAsiento() != null ? asiento.getTipoAsiento().getIdTipoAsiento() : null)
-                .idAvion(asiento.getAvion() != null ? asiento.getAvion().getIdAvion() : null)
+//                .idTipoAsiento(asiento.getTipoAsiento() != null ? asiento.getTipoAsiento().getIdTipoAsiento() : null)
+//                .idAvion(asiento.getAvion() != null ? asiento.getAvion().getIdAvion() : null)
                 .ubicacion(asiento.getUbicacion())
                 .precio(asiento.getPrecio())
                 .estado(asiento.getEstado())

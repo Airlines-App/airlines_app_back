@@ -14,8 +14,8 @@ import lombok.ToString;
 public class VueloDTO {
     private Integer idVuelo;
 
-    private Integer idAeropuertoOrigen;
-    private Integer idAeropuertoDestino;
+//    private Integer idAeropuertoOrigen;
+//    private Integer idAeropuertoDestino;
     private long precio;
     private Date horaSalida;
     private Date horaLlegada;

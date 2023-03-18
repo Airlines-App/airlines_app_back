@@ -46,4 +46,24 @@ public class UsuarioController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping(path = "/actualizar-usuario",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity actualizarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        try {
+            return new ResponseEntity(usuarioService.actualizarUsuario(usuarioDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/eliminar-usuario/{idUsuario}")
+    public ResponseEntity eliminarUsuario(@PathVariable("idUsuario") Integer idUsuario) {
+        try {
+            return new ResponseEntity(usuarioService.eliminarUsuario(idUsuario), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -46,4 +46,24 @@ public class AvionController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping(path = "/actualizar-avion",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity actualizarAvion(@RequestBody AvionDTO avionDTO) {
+        try {
+            return new ResponseEntity(avionService.actualizarAvion(avionDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/eliminar-avion/{idAvion}")
+    public ResponseEntity eliminarAvion(@PathVariable("idAvion") Integer idAvion) {
+        try {
+            return new ResponseEntity(avionService.eliminarAvion(idAvion), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

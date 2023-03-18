@@ -22,6 +22,17 @@ public class AeropuertoController {
         this.aeropuertoService = aeropuertoService;
     }
 
+    @PostMapping(path = "/guardar-aeropuerto",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity guardarAeropuerto(@RequestBody AeropuertoDTO aeropuertoDTO) {
+        try {
+            return new ResponseEntity(aeropuertoService.guardarAeropuerto(aeropuertoDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/obtener-aeropuertos")
     public ResponseEntity<List<AeropuertoDTO>> obtenerAeropuertos() {
         return new ResponseEntity(aeropuertoService.obtenerAeropuertos(), HttpStatus.OK);
@@ -36,16 +47,23 @@ public class AeropuertoController {
         }
     }
 
-    @PostMapping(path = "/guardar-aeropuerto",
+    @PutMapping(path = "/actualizar-aeropuerto",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity guardarAeropuerto(@RequestBody AeropuertoDTO aeropuertoDTO) {
+    public ResponseEntity actualizarAeropuerto(@RequestBody AeropuertoDTO aeropuertoDTO) {
         try {
-            return new ResponseEntity(aeropuertoService.guardarAeropuerto(aeropuertoDTO), HttpStatus.OK);
+            return new ResponseEntity(aeropuertoService.actualizarAeropuerto(aeropuertoDTO), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
 
-
+    @PutMapping(value = "/eliminar-aeropuerto/{idAeropuerto}")
+    public ResponseEntity eliminarAeropuerto(@PathVariable("idAeropuerto") Integer idAeropuerto) {
+        try {
+            return new ResponseEntity(aeropuertoService.eliminarAeropuerto(idAeropuerto), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

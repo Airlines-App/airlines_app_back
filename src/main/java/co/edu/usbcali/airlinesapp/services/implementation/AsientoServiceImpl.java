@@ -1,6 +1,7 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Asiento;
+import co.edu.usbcali.airlinesapp.dtos.AeropuertoDTO;
 import co.edu.usbcali.airlinesapp.dtos.AsientoDTO;
 import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.repository.AsientoRepository;
@@ -24,20 +25,6 @@ public class AsientoServiceImpl implements AsientoService {
     }
 
     @Override
-    public List<AsientoDTO> obtenerAsientos() {
-        return AsientoMapper.domainToDTOList(asientoRepository.findAll());
-    }
-
-    @Override
-    public AsientoDTO obtenerAsientoPorId(Integer id) throws Exception {
-        if (asientoRepository.findById(id).isEmpty()) {
-            throw new Exception("El asiento con id " + id + " no existe");
-        }
-
-        return AsientoMapper.domainToDTO(asientoRepository.findById(id).get());
-    }
-
-    @Override
     public AsientoDTO guardarAsiento(AsientoDTO asientoDTO) throws Exception {
         Asiento asiento = AsientoMapper.dtoToDomain(asientoDTO);
 
@@ -52,5 +39,47 @@ public class AsientoServiceImpl implements AsientoService {
         }
 
         return AsientoMapper.domainToDTO(asientoRepository.save(asiento));
+    }
+
+    @Override
+    public List<AsientoDTO> obtenerAsientos() {
+        return AsientoMapper.domainToDTOList(asientoRepository.findAll());
+    }
+
+    @Override
+    public AsientoDTO obtenerAsientoPorId(Integer id) throws Exception {
+        if (asientoRepository.findById(id).isEmpty()) {
+            throw new Exception("El asiento con id " + id + " no existe");
+        }
+
+        return AsientoMapper.domainToDTO(asientoRepository.findById(id).get());
+    }
+
+    @Override
+    public AsientoDTO actualizarAsiento(AsientoDTO asientoDTO) throws Exception {
+        AsientoDTO asientoSavedDTO = obtenerAsientoPorId(asientoDTO.getIdAsiento());
+
+        if (asientoSavedDTO == null) {
+            throw new Exception("El asiento no existe");
+        }
+
+        asientoSavedDTO.setUbicacion(asientoDTO.getUbicacion());
+        asientoSavedDTO.setPrecio(asientoDTO.getPrecio());
+        asientoSavedDTO.setEstado(asientoDTO.getEstado());
+
+        return guardarAsiento(asientoSavedDTO);
+    }
+
+    @Override
+    public AsientoDTO eliminarAsiento(Integer id) throws Exception {
+        AsientoDTO asientoSavedDTO = obtenerAsientoPorId(id);
+
+        if (asientoSavedDTO == null) {
+            throw new Exception("El asiento no existe");
+        }
+
+        asientoSavedDTO.setEstado("I");
+
+        return guardarAsiento(asientoSavedDTO);
     }
 }

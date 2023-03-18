@@ -1,6 +1,7 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Usuario;
+import co.edu.usbcali.airlinesapp.dtos.TrayectoDTO;
 import co.edu.usbcali.airlinesapp.dtos.UsuarioDTO;
 import co.edu.usbcali.airlinesapp.mappers.UsuarioMapper;
 import co.edu.usbcali.airlinesapp.repository.UsuarioRepository;
@@ -24,20 +25,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public List<UsuarioDTO> obtenerUsuarios() {
-        return UsuarioMapper.domainToDTOList(usuarioRepository.findAll());
-    }
-
-    @Override
-    public UsuarioDTO obtenerUsuarioPorId(Integer id) throws Exception {
-        if (usuarioRepository.findById(id).isEmpty()) {
-            throw new Exception("El usuario con id " + id + " no existe");
-        }
-
-        return UsuarioMapper.domainToDTO(usuarioRepository.findById(id).get());
-    }
-
-    @Override
     public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) throws Exception {
         Usuario usuario = UsuarioMapper.dtoToDomain(usuarioDTO);
 
@@ -56,5 +43,49 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         return UsuarioMapper.domainToDTO(usuarioRepository.save(usuario));
+    }
+
+    @Override
+    public List<UsuarioDTO> obtenerUsuarios() {
+        return UsuarioMapper.domainToDTOList(usuarioRepository.findAll());
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioPorId(Integer id) throws Exception {
+        if (usuarioRepository.findById(id).isEmpty()) {
+            throw new Exception("El usuario con id " + id + " no existe");
+        }
+
+        return UsuarioMapper.domainToDTO(usuarioRepository.findById(id).get());
+    }
+
+    @Override
+    public UsuarioDTO actualizarUsuario(UsuarioDTO usuarioDTO) throws Exception {
+        UsuarioDTO usuarioSavedDTO = obtenerUsuarioPorId(usuarioDTO.getIdUsuario());
+
+        if (usuarioSavedDTO == null) {
+            throw new Exception("El usuario no existe");
+        }
+
+        usuarioSavedDTO.setCedula(usuarioDTO.getCedula());
+        usuarioSavedDTO.setNombre(usuarioDTO.getNombre());
+        usuarioSavedDTO.setApellido(usuarioDTO.getApellido());
+        usuarioSavedDTO.setCorreo(usuarioDTO.getCorreo());
+        usuarioSavedDTO.setEstado(usuarioDTO.getEstado());
+
+        return guardarUsuario(usuarioSavedDTO);
+    }
+
+    @Override
+    public UsuarioDTO eliminarUsuario(Integer id) throws Exception {
+        UsuarioDTO usuarioSavedDTO = obtenerUsuarioPorId(id);
+
+        if (usuarioSavedDTO == null) {
+            throw new Exception("El usuario no existe");
+        }
+
+        usuarioSavedDTO.setEstado("I");
+
+        return guardarUsuario(usuarioSavedDTO);
     }
 }

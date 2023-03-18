@@ -1,6 +1,7 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Vuelo;
+import co.edu.usbcali.airlinesapp.dtos.UsuarioDTO;
 import co.edu.usbcali.airlinesapp.dtos.VueloDTO;
 import co.edu.usbcali.airlinesapp.mappers.VueloMapper;
 import co.edu.usbcali.airlinesapp.repository.VueloRepository;
@@ -21,20 +22,6 @@ public class VueloServiceImpl implements VueloService {
     public VueloServiceImpl(VueloRepository vueloRepository, ModelMapper modelMapper) {
         this.vueloRepository = vueloRepository;
         this.modelMapper = modelMapper;
-    }
-
-    @Override
-    public List<VueloDTO> obtenerVuelos() {
-        return VueloMapper.domainToDTOList(vueloRepository.findAll());
-    }
-
-    @Override
-    public VueloDTO obtenerVueloPorId(Integer id) throws Exception {
-        if (vueloRepository.findById(id).isEmpty()) {
-            throw new Exception("El vuelo con id " + id + " no existe");
-        }
-
-        return VueloMapper.domainToDTO(vueloRepository.findById(id).get());
     }
 
     @Override
@@ -60,5 +47,51 @@ public class VueloServiceImpl implements VueloService {
         }
 
         return VueloMapper.domainToDTO(vueloRepository.save(vuelo));
+    }
+
+    @Override
+    public List<VueloDTO> obtenerVuelos() {
+        return VueloMapper.domainToDTOList(vueloRepository.findAll());
+    }
+
+    @Override
+    public VueloDTO obtenerVueloPorId(Integer id) throws Exception {
+        if (vueloRepository.findById(id).isEmpty()) {
+            throw new Exception("El vuelo con id " + id + " no existe");
+        }
+
+        return VueloMapper.domainToDTO(vueloRepository.findById(id).get());
+    }
+
+    @Override
+    public VueloDTO actualizarVuelo(VueloDTO vueloDTO) throws Exception {
+        VueloDTO vueloSavedDTO = obtenerVueloPorId(vueloDTO.getIdVuelo());
+
+        if (vueloSavedDTO == null) {
+            throw new Exception("El vuelo no existe");
+        }
+
+        vueloSavedDTO.setPrecio(vueloDTO.getPrecio());
+        vueloSavedDTO.setHoraSalida(vueloDTO.getHoraSalida());
+        vueloSavedDTO.setHoraLlegada(vueloDTO.getHoraLlegada());
+        vueloSavedDTO.setPrecioAsientoVip(vueloDTO.getPrecioAsientoVip());
+        vueloSavedDTO.setPrecioAsientoNormal(vueloDTO.getPrecioAsientoNormal());
+        vueloSavedDTO.setPrecioAsientoBasico(vueloDTO.getPrecioAsientoBasico());
+        vueloSavedDTO.setEstado(vueloDTO.getEstado());
+
+        return guardarVuelo(vueloSavedDTO);
+    }
+
+    @Override
+    public VueloDTO eliminarVuelo(Integer id) throws Exception {
+        VueloDTO vueloSavedDTO = obtenerVueloPorId(id);
+
+        if (vueloSavedDTO == null) {
+            throw new Exception("El vuelo no existe");
+        }
+
+        vueloSavedDTO.setEstado("I");
+
+        return guardarVuelo(vueloSavedDTO);
     }
 }

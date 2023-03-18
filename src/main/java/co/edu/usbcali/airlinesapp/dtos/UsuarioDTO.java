@@ -12,7 +12,7 @@ import lombok.ToString;
 public class UsuarioDTO {
         private Integer idUsuario;
 
-        private Integer idRolUsuario;
+//        private Integer idRolUsuario;
         private String cedula;
         private String nombre;
         private String apellido;

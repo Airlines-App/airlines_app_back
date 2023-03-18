@@ -46,4 +46,24 @@ public class FacturaController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping(path = "/actualizar-factura",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity actualizarFactura(@RequestBody FacturaDTO facturaDTO) {
+        try {
+            return new ResponseEntity(facturaService.actualizarFactura(facturaDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/eliminar-factura/{idFactura}")
+    public ResponseEntity eliminarFactura(@PathVariable("idFactura") Integer idFactura) {
+        try {
+            return new ResponseEntity(facturaService.eliminarFactura(idFactura), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -46,4 +46,24 @@ public class RolUsuarioController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping(path = "/actualizar-rolUsuario",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity actualizarRolUsuario(@RequestBody RolUsuarioDTO rolUsuarioDTO) {
+        try {
+            return new ResponseEntity(rolUsuarioService.actualizarRolUsuario(rolUsuarioDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/eliminar-rolUsuario/{idRolUsuario}")
+    public ResponseEntity eliminarRolUsuario(@PathVariable("idRolUsuario") Integer idRolUsuario) {
+        try {
+            return new ResponseEntity(rolUsuarioService.eliminarRolUsuario(idRolUsuario), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

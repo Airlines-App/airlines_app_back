@@ -1,6 +1,7 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Reserva;
+import co.edu.usbcali.airlinesapp.dtos.FacturaDTO;
 import co.edu.usbcali.airlinesapp.dtos.ReservaDTO;
 import co.edu.usbcali.airlinesapp.mappers.ReservaMapper;
 import co.edu.usbcali.airlinesapp.repository.ReservaRepository;
@@ -24,20 +25,6 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public List<ReservaDTO> obtenerReservas() {
-        return ReservaMapper.domainToDTOList(reservaRepository.findAll());
-    }
-
-    @Override
-    public ReservaDTO obtenerReservaPorId(Integer id) throws Exception {
-        if (reservaRepository.findById(id).isEmpty()) {
-            throw new Exception("La reserva con id " + id + " no existe");
-        }
-
-        return ReservaMapper.domainToDTO(reservaRepository.findById(id).get());
-    }
-
-    @Override
     public ReservaDTO guardarReserva(ReservaDTO reservaDTO) throws Exception {
         Reserva reserva = ReservaMapper.dtoToDomain(reservaDTO);
 
@@ -54,5 +41,48 @@ public class ReservaServiceImpl implements ReservaService {
         }
 
         return ReservaMapper.domainToDTO(reservaRepository.save(reserva));
+    }
+
+    @Override
+    public List<ReservaDTO> obtenerReservas() {
+        return ReservaMapper.domainToDTOList(reservaRepository.findAll());
+    }
+
+    @Override
+    public ReservaDTO obtenerReservaPorId(Integer id) throws Exception {
+        if (reservaRepository.findById(id).isEmpty()) {
+            throw new Exception("La reserva con id " + id + " no existe");
+        }
+
+        return ReservaMapper.domainToDTO(reservaRepository.findById(id).get());
+    }
+
+    @Override
+    public ReservaDTO actualizarReserva(ReservaDTO reservaDTO) throws Exception {
+        ReservaDTO reservaSavedDTO = obtenerReservaPorId(reservaDTO.getIdReserva());
+
+        if (reservaSavedDTO == null) {
+            throw new Exception("La reserva no existe");
+        }
+
+        reservaSavedDTO.setPrecioTotal(reservaDTO.getPrecioTotal());
+        reservaSavedDTO.setEstadoPago(reservaDTO.getEstadoPago());
+        reservaSavedDTO.setFecha(reservaDTO.getFecha());
+        reservaSavedDTO.setEstado(reservaDTO.getEstado());
+
+        return guardarReserva(reservaSavedDTO);
+    }
+
+    @Override
+    public ReservaDTO eliminarReserva(Integer id) throws Exception {
+        ReservaDTO reservaSavedDTO = obtenerReservaPorId(id);
+
+        if (reservaSavedDTO == null) {
+            throw new Exception("La reserva no existe");
+        }
+
+        reservaSavedDTO.setEstado("I");
+
+        return guardarReserva(reservaSavedDTO);
     }
 }
