@@ -5,7 +5,9 @@ import co.edu.usbcali.airlinesapp.dtos.AvionDTO;
 import java.util.List;
 
 public interface AvionService {
+    AvionDTO guardarAvion(AvionDTO avionDTO) throws Exception;
     List<AvionDTO> obtenerAviones();
     AvionDTO obtenerAvionPorId(Integer id) throws Exception;
-    AvionDTO guardarAvion(AvionDTO avionDTO) throws Exception;
+    AvionDTO actualizarAvion(AvionDTO avionDTO) throws Exception;
+    AvionDTO eliminarAvion(Integer id) throws Exception;
 }

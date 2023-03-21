@@ -23,13 +23,13 @@ public class Vuelo {
         @Column(name = "vuel_id", nullable = false, unique = true)
         private Integer idVuelo;
 
-        @ManyToOne
-        @JoinColumn(name = "aero_id_origen", referencedColumnName = "aero_id_origen")
-        private Aeropuerto aeropuertoOrigen;
-
-        @ManyToOne
-        @JoinColumn(name = "aero_id_destino", referencedColumnName = "aero_id_destino")
-        private Aeropuerto aeropuertoDestino;
+//        @ManyToOne
+//        @JoinColumn(name = "aero_id_origen", referencedColumnName = "aero_id_origen")
+//        private Aeropuerto aeropuertoOrigen;
+//
+//        @ManyToOne
+//        @JoinColumn(name = "aero_id_destino", referencedColumnName = "aero_id_destino")
+//        private Aeropuerto aeropuertoDestino;
 
         @Column(name = "precio", nullable = false)
         private long precio;

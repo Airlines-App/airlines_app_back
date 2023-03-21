@@ -20,13 +20,13 @@ public class Asiento {
     @Column(name = "asie_id", nullable = false, unique = true)
     private Integer idAsiento;
 
-    @ManyToOne
-    @JoinColumn(name = "tias_id", referencedColumnName = "tias_id")
-    private TipoAsiento tipoAsiento;
-
-    @ManyToOne
-    @JoinColumn(name = "avio_id", referencedColumnName = "avio_id")
-    private Avion avion;
+//    @ManyToOne
+//    @JoinColumn(name = "tias_id", referencedColumnName = "tias_id")
+//    private TipoAsiento tipoAsiento;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "avio_id", referencedColumnName = "avio_id")
+//    private Avion avion;
 
     @Column(name = "ubicacion", nullable = false, length = 12)
     private String ubicacion;

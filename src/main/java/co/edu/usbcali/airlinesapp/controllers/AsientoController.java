@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/asiento")
 @Slf4j
+@CrossOrigin(origins = "*", methods= { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT })
 public class AsientoController {
     private final AsientoService asientoService;
 
@@ -42,6 +43,26 @@ public class AsientoController {
     public ResponseEntity guardarAsiento(@RequestBody AsientoDTO asientoDTO) {
         try {
             return new ResponseEntity(asientoService.guardarAsiento(asientoDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(path = "/actualizar-asiento",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity actualizarAsiento(@RequestBody AsientoDTO asientoDTO) {
+        try {
+            return new ResponseEntity(asientoService.actualizarAsiento(asientoDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/eliminar-asiento/{idAsiento}")
+    public ResponseEntity eliminarAsiento(@PathVariable("idAsiento") Integer idAsiento) {
+        try {
+            return new ResponseEntity(asientoService.eliminarAsiento(idAsiento), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

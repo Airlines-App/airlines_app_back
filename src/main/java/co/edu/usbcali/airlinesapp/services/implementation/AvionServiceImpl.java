@@ -1,6 +1,7 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Avion;
+import co.edu.usbcali.airlinesapp.dtos.AsientoDTO;
 import co.edu.usbcali.airlinesapp.dtos.AvionDTO;
 import co.edu.usbcali.airlinesapp.mappers.AvionMapper;
 import co.edu.usbcali.airlinesapp.repository.AvionRepository;
@@ -24,20 +25,6 @@ public class AvionServiceImpl implements AvionService {
     }
 
     @Override
-    public List<AvionDTO> obtenerAviones() {
-        return AvionMapper.domainToDTOList(avionRepository.findAll());
-    }
-
-    @Override
-    public AvionDTO obtenerAvionPorId(Integer id) throws Exception {
-        if (avionRepository.findById(id).isEmpty()) {
-            throw new Exception("El avión con id " + id + " no existe");
-        }
-
-        return AvionMapper.domainToDTO(avionRepository.findById(id).get());
-    }
-
-    @Override
     public AvionDTO guardarAvion(AvionDTO avionDTO) throws Exception {
         Avion avion = AvionMapper.dtoToDomain(avionDTO);
 
@@ -52,5 +39,47 @@ public class AvionServiceImpl implements AvionService {
         }
 
         return AvionMapper.domainToDTO(avionRepository.save(avion));
+    }
+
+    @Override
+    public List<AvionDTO> obtenerAviones() {
+        return AvionMapper.domainToDTOList(avionRepository.findAll());
+    }
+
+    @Override
+    public AvionDTO obtenerAvionPorId(Integer id) throws Exception {
+        if (avionRepository.findById(id).isEmpty()) {
+            throw new Exception("El avión con id " + id + " no existe");
+        }
+
+        return AvionMapper.domainToDTO(avionRepository.findById(id).get());
+    }
+
+    @Override
+    public AvionDTO actualizarAvion(AvionDTO avionDTO) throws Exception {
+        AvionDTO avionSavedDTO = obtenerAvionPorId(avionDTO.getIdAvion());
+
+        if (avionSavedDTO == null) {
+            throw new Exception("El avión no existe");
+        }
+
+        avionSavedDTO.setModelo(avionDTO.getModelo());
+        avionSavedDTO.setAerolinea(avionDTO.getAerolinea());
+        avionSavedDTO.setEstado(avionDTO.getEstado());
+
+        return guardarAvion(avionSavedDTO);
+    }
+
+    @Override
+    public AvionDTO eliminarAvion(Integer id) throws Exception {
+        AvionDTO avionSavedDTO = obtenerAvionPorId(id);
+
+        if (avionSavedDTO == null) {
+            throw new Exception("El avión no existe");
+        }
+
+        avionSavedDTO.setEstado("I");
+
+        return guardarAvion(avionSavedDTO);
     }
 }

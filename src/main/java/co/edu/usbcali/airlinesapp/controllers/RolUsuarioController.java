@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/rolUsuario")
 @Slf4j
+@CrossOrigin(origins = "*", methods= { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT })
 public class RolUsuarioController {
     private final RolUsuarioService rolUsuarioService;
 
@@ -42,6 +43,26 @@ public class RolUsuarioController {
     public ResponseEntity guardarRolUsuario(@RequestBody RolUsuarioDTO rolUsuarioDTO) {
         try {
             return new ResponseEntity(rolUsuarioService.guardarRolUsuario(rolUsuarioDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(path = "/actualizar-rolUsuario",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity actualizarRolUsuario(@RequestBody RolUsuarioDTO rolUsuarioDTO) {
+        try {
+            return new ResponseEntity(rolUsuarioService.actualizarRolUsuario(rolUsuarioDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/eliminar-rolUsuario/{idRolUsuario}")
+    public ResponseEntity eliminarRolUsuario(@PathVariable("idRolUsuario") Integer idRolUsuario) {
+        try {
+            return new ResponseEntity(rolUsuarioService.eliminarRolUsuario(idRolUsuario), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

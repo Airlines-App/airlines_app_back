@@ -22,9 +22,9 @@ public class Usuario implements Serializable {
     @Column(name = "usua_id", nullable = false, unique = true)
     private Integer idUsuario;
 
-    @ManyToOne
-    @JoinColumn(name = "rous_id", referencedColumnName = "rous_id")
-    private RolUsuario rolUsuario;
+//    @ManyToOne
+//    @JoinColumn(name = "rous_id", referencedColumnName = "rous_id")
+//    private RolUsuario rolUsuario;
 
     @Column(name = "cedula", nullable = false, length = 12)
     private String cedula;

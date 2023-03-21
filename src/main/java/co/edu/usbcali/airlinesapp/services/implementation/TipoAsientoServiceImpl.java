@@ -1,6 +1,7 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.TipoAsiento;
+import co.edu.usbcali.airlinesapp.dtos.RolUsuarioDTO;
 import co.edu.usbcali.airlinesapp.dtos.TipoAsientoDTO;
 import co.edu.usbcali.airlinesapp.mappers.TipoAsientoMapper;
 import co.edu.usbcali.airlinesapp.repository.TipoAsientoRepository;
@@ -24,6 +25,21 @@ public class TipoAsientoServiceImpl implements TipoAsientoService {
     }
 
     @Override
+    public TipoAsientoDTO guardarTipoAsiento(TipoAsientoDTO tipoAsientoDTO) throws Exception {
+        TipoAsiento tipoAsiento = TipoAsientoMapper.dtoToDomain(tipoAsientoDTO);
+
+        if (tipoAsiento == null) {
+            throw new Exception("El tipo de asiento no puede ser nulo");
+        } if (tipoAsiento.getDescripcion() == null || tipoAsiento.getDescripcion().isBlank() || tipoAsiento.getDescripcion().trim().isEmpty()) {
+            throw new Exception("La descripción del tipo de asiento no puede ser nula o vacía");
+        } if (tipoAsiento.getEstado() == null || tipoAsiento.getEstado().isBlank() || tipoAsiento.getEstado().trim().isEmpty()) {
+            throw new Exception("El estado del tipo de asiento no puede ser nulo o vacío");
+        }
+
+        return TipoAsientoMapper.domainToDTO(tipoAsientoService.save(tipoAsiento));
+    }
+
+    @Override
     public List<TipoAsientoDTO> obtenerTipoAsientos() {
         return TipoAsientoMapper.domainToDTOList(tipoAsientoService.findAll());
     }
@@ -39,17 +55,29 @@ public class TipoAsientoServiceImpl implements TipoAsientoService {
     }
 
     @Override
-    public TipoAsientoDTO guardarTipoAsiento(TipoAsientoDTO tipoAsientoDTO) throws Exception {
-        TipoAsiento tipoAsiento = TipoAsientoMapper.dtoToDomain(tipoAsientoDTO);
+    public TipoAsientoDTO actualizarTipoAsiento(TipoAsientoDTO tipoAsientoDTO) throws Exception {
+        TipoAsientoDTO tipoAsientoSavedDTO = obtenerTipoAsientoPorId(tipoAsientoDTO.getIdTipoAsiento());
 
-        if (tipoAsiento == null) {
-            throw new Exception("El tipo de asiento no puede ser nulo");
-        } if (tipoAsiento.getDescripcion() == null || tipoAsiento.getDescripcion().isBlank() || tipoAsiento.getDescripcion().trim().isEmpty()) {
-            throw new Exception("La descripción del tipo de asiento no puede ser nula o vacía");
-        } if (tipoAsiento.getEstado() == null || tipoAsiento.getEstado().isBlank() || tipoAsiento.getEstado().trim().isEmpty()) {
-            throw new Exception("El estado del tipo de asiento no puede ser nulo o vacío");
+        if (tipoAsientoSavedDTO == null) {
+            throw new Exception("El tipo de asiento no existe");
         }
 
-        return TipoAsientoMapper.domainToDTO(tipoAsientoService.save(tipoAsiento));
+        tipoAsientoSavedDTO.setDescripcion(tipoAsientoDTO.getDescripcion());
+        tipoAsientoSavedDTO.setEstado(tipoAsientoDTO.getEstado());
+
+        return guardarTipoAsiento(tipoAsientoSavedDTO);
+    }
+
+    @Override
+    public TipoAsientoDTO eliminarTipoAsiento(Integer id) throws Exception {
+        TipoAsientoDTO tipoAsientoSavedDTO = obtenerTipoAsientoPorId(id);
+
+        if (tipoAsientoSavedDTO == null) {
+            throw new Exception("El tipo de asiento no existe");
+        }
+
+        tipoAsientoSavedDTO.setEstado("I");
+
+        return guardarTipoAsiento(tipoAsientoSavedDTO);
     }
 }

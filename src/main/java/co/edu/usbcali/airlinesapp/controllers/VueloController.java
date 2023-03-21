@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/vuelo")
 @Slf4j
+@CrossOrigin(origins = "*", methods= { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT })
 public class VueloController {
     private final VueloService vueloService;
 
@@ -42,6 +43,26 @@ public class VueloController {
     public ResponseEntity guardarVuelo(@RequestBody VueloDTO vueloDTO) {
         try {
             return new ResponseEntity(vueloService.guardarVuelo(vueloDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping(path = "/actualizar-vuelo",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity actualizarVuelo(@RequestBody VueloDTO vueloDTO) {
+        try {
+            return new ResponseEntity(vueloService.actualizarVuelo(vueloDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/eliminar-vuelo/{idVuelo}")
+    public ResponseEntity eliminarVuelo(@PathVariable("idVuelo") Integer idVuelo){
+        try {
+            return new ResponseEntity(vueloService.eliminarVuelo(idVuelo), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

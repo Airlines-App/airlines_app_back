@@ -1,6 +1,7 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Factura;
+import co.edu.usbcali.airlinesapp.dtos.AvionDTO;
 import co.edu.usbcali.airlinesapp.dtos.FacturaDTO;
 import co.edu.usbcali.airlinesapp.mappers.FacturaMapper;
 import co.edu.usbcali.airlinesapp.repository.FacturaRepository;
@@ -24,6 +25,21 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
+    public FacturaDTO guardarFactura(FacturaDTO facturaDTO) throws Exception {
+        Factura factura = FacturaMapper.dtoToDomain(facturaDTO);
+
+        if (factura == null) {
+            throw new Exception("La factura no puede ser nula");
+        } if (factura.getFecha() == null) {
+            throw new Exception("La fecha de la factura no puede ser nula");
+        } if (factura.getEstado() == null || factura.getEstado().isBlank() || factura.getEstado().trim().isEmpty()) {
+            throw new Exception("El estado de la factura no puede ser nulo o vacío");
+        }
+
+        return FacturaMapper.domainToDTO(facturaRepository.save(factura));
+    }
+
+    @Override
     public List<FacturaDTO> obtenerFacturas() {
         return FacturaMapper.domainToDTOList(facturaRepository.findAll());
     }
@@ -38,17 +54,29 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
-    public FacturaDTO guardarFactura(FacturaDTO facturaDTO) throws Exception {
-        Factura factura = FacturaMapper.dtoToDomain(facturaDTO);
+    public FacturaDTO actualizarFactura(FacturaDTO facturaDTO) throws Exception {
+        FacturaDTO facturaSavedDTO = obtenerFacturaPorId(facturaDTO.getIdFactura());
 
-        if (factura == null) {
-            throw new Exception("La factura no puede ser nula");
-        } if (factura.getFecha() == null) {
-            throw new Exception("La fecha de la factura no puede ser nula");
-        } if (factura.getEstado() == null || factura.getEstado().isBlank() || factura.getEstado().trim().isEmpty()) {
-            throw new Exception("El estado de la factura no puede ser nulo o vacío");
+        if (facturaSavedDTO == null) {
+            throw new Exception("La factura no existe");
         }
 
-        return FacturaMapper.domainToDTO(facturaRepository.save(factura));
+        facturaSavedDTO.setFecha(facturaDTO.getFecha());
+        facturaSavedDTO.setEstado(facturaDTO.getEstado());
+
+        return guardarFactura(facturaSavedDTO);
+    }
+
+    @Override
+    public FacturaDTO eliminarFactura(Integer id) throws Exception {
+        FacturaDTO facturaSavedDTO = obtenerFacturaPorId(id);
+
+        if (facturaSavedDTO == null) {
+            throw new Exception("La factura no existe");
+        }
+
+        facturaSavedDTO.setEstado("I");
+
+        return guardarFactura(facturaSavedDTO);
     }
 }

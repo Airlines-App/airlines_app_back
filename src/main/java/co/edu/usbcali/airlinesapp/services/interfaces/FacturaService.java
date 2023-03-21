@@ -5,7 +5,9 @@ import co.edu.usbcali.airlinesapp.dtos.FacturaDTO;
 import java.util.List;
 
 public interface FacturaService {
+    FacturaDTO guardarFactura(FacturaDTO facturaDTO) throws Exception;
     List<FacturaDTO> obtenerFacturas();
     FacturaDTO obtenerFacturaPorId(Integer id) throws Exception;
-    FacturaDTO guardarFactura(FacturaDTO facturaDTO) throws Exception;
+    FacturaDTO actualizarFactura(FacturaDTO facturaDTO) throws Exception;
+    FacturaDTO eliminarFactura(Integer id) throws Exception;
 }
