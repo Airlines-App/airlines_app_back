@@ -15,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/factura")
 @Slf4j
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
+
 public class FacturaController {
     private final FacturaService facturaService;
 

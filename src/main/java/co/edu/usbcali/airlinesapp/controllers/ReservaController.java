@@ -15,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/reserva")
 @Slf4j
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
+
 public class ReservaController {
     private final ReservaService reservaService;
 

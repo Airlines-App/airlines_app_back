@@ -15,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/usuario")
 @Slf4j
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
+
 public class UsuarioController {
     private final UsuarioService usuarioService;
 

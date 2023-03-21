@@ -15,6 +15,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/aeropuerto")
 @Slf4j
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
+
 public class AeropuertoController {
     private final AeropuertoService aeropuertoService;
 
@@ -27,6 +29,7 @@ public class AeropuertoController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity guardarAeropuerto(@RequestBody AeropuertoDTO aeropuertoDTO) {
         try {
+            System.out.println( aeropuertoDTO );
             return new ResponseEntity(aeropuertoService.guardarAeropuerto(aeropuertoDTO), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
