@@ -1,14 +1,16 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Asiento;
-import co.edu.usbcali.airlinesapp.dtos.AeropuertoDTO;
 import co.edu.usbcali.airlinesapp.dtos.AsientoDTO;
 import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
+import co.edu.usbcali.airlinesapp.mappers.AvionMapper;
+import co.edu.usbcali.airlinesapp.mappers.TipoAsientoMapper;
 import co.edu.usbcali.airlinesapp.repository.AsientoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AsientoService;
 
+import co.edu.usbcali.airlinesapp.services.interfaces.AvionService;
+import co.edu.usbcali.airlinesapp.services.interfaces.TipoAsientoService;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +19,13 @@ import java.util.List;
 @Slf4j
 public class AsientoServiceImpl implements AsientoService {
     private final AsientoRepository asientoRepository;
-    private final ModelMapper modelMapper;
+    private final TipoAsientoService tipoAsientoService;
+    private final AvionService avionService;
 
-    public AsientoServiceImpl(AsientoRepository asientoRepository, ModelMapper modelMapper) {
+    public AsientoServiceImpl(AsientoRepository asientoRepository, TipoAsientoService tipoAsientoService, AvionService avionService) {
         this.asientoRepository = asientoRepository;
-        this.modelMapper = modelMapper;
+        this.tipoAsientoService = tipoAsientoService;
+        this.avionService = avionService;
     }
 
     @Override
@@ -30,6 +34,10 @@ public class AsientoServiceImpl implements AsientoService {
 
         if (asiento == null) {
             throw new Exception("El asiento no puede ser nulo");
+        } if (asientoDTO.getIdTipoAsiento() == null || asientoDTO.getIdTipoAsiento() <= 0) {
+            throw new Exception("El id del tipo de asiento no puede ser nulo o menor o igual a cero");
+        } if (asientoDTO.getIdAvion() == null || asientoDTO.getIdAvion() <= 0) {
+            throw new Exception("El id del avión no puede ser nulo o menor o igual a cero");
         } if (asiento.getUbicacion() == null || asiento.getUbicacion().isBlank() || asiento.getUbicacion().trim().isEmpty()) {
             throw new Exception("La ubicación del asiento no puede ser nula o vacía");
         } if (asiento.getPrecio() < 0) {
@@ -37,6 +45,9 @@ public class AsientoServiceImpl implements AsientoService {
         } if (asiento.getEstado() == null || asiento.getEstado().isBlank() || asiento.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del asiento no puede ser nulo o vacío");
         }
+
+        asiento.setTipoAsiento(TipoAsientoMapper.dtoToDomain(tipoAsientoService.obtenerTipoAsientoPorId(asientoDTO.getIdTipoAsiento())));
+        asiento.setAvion(AvionMapper.dtoToDomain(avionService.obtenerAvionPorId(asientoDTO.getIdAvion())));
 
         return AsientoMapper.domainToDTO(asientoRepository.save(asiento));
     }
@@ -48,7 +59,7 @@ public class AsientoServiceImpl implements AsientoService {
 
     @Override
     public AsientoDTO obtenerAsientoPorId(Integer id) throws Exception {
-        if (asientoRepository.findById(id).isEmpty()) {
+        if (!asientoRepository.existsById(id)) {
             throw new Exception("El asiento con id " + id + " no existe");
         }
 

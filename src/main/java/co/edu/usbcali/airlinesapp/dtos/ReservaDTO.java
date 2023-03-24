@@ -13,10 +13,9 @@ import java.util.Date;
 @ToString
 public class ReservaDTO {
         private Integer idReserva;
-
-//        private Integer idVuelo;
-//        private Integer idAsiento;
-//        private Integer idUsuario;
+        private Integer idVuelo;
+        private Integer idAsiento;
+        private Integer idUsuario;
         private long precioTotal;
         private String estadoPago;
         private Date fecha;

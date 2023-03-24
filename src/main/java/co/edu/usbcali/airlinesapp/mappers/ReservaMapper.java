@@ -10,9 +10,9 @@ public class ReservaMapper {
     public static ReservaDTO domainToDTO(Reserva reserva) {
         return ReservaDTO.builder()
                 .idReserva(reserva.getIdReserva())
-//                .idVuelo(reserva.getVuelo() != null ? reserva.getVuelo().getIdVuelo() : null)
-//                .idAsiento(reserva.getAsiento() != null ? reserva.getAsiento().getIdAsiento() : null)
-//                .idUsuario(reserva.getUsuario() != null ? reserva.getUsuario().getIdUsuario() : null)
+                .idVuelo(reserva.getVuelo() != null ? reserva.getVuelo().getIdVuelo() : null)
+                .idAsiento(reserva.getAsiento() != null ? reserva.getAsiento().getIdAsiento() : null)
+                .idUsuario(reserva.getUsuario() != null ? reserva.getUsuario().getIdUsuario() : null)
                 .precioTotal(reserva.getPrecioTotal())
                 .estadoPago(reserva.getEstadoPago())
                 .fecha(reserva.getFecha())

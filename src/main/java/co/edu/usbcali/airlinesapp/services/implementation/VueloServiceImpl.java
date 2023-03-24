@@ -1,14 +1,14 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Vuelo;
-import co.edu.usbcali.airlinesapp.dtos.UsuarioDTO;
 import co.edu.usbcali.airlinesapp.dtos.VueloDTO;
+import co.edu.usbcali.airlinesapp.mappers.AeropuertoMapper;
 import co.edu.usbcali.airlinesapp.mappers.VueloMapper;
 import co.edu.usbcali.airlinesapp.repository.VueloRepository;
+import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
 import co.edu.usbcali.airlinesapp.services.interfaces.VueloService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.List;
 @Slf4j
 public class VueloServiceImpl implements VueloService {
     private final VueloRepository vueloRepository;
-    private final ModelMapper modelMapper;
+    private final AeropuertoService aeropuertoService;
 
-    public VueloServiceImpl(VueloRepository vueloRepository, ModelMapper modelMapper) {
+    public VueloServiceImpl(VueloRepository vueloRepository, AeropuertoService aeropuertoService) {
         this.vueloRepository = vueloRepository;
-        this.modelMapper = modelMapper;
+        this.aeropuertoService = aeropuertoService;
     }
 
     @Override
@@ -30,6 +30,10 @@ public class VueloServiceImpl implements VueloService {
 
         if (vuelo == null) {
             throw new Exception("El vuelo no puede ser nulo");
+        } if (vueloDTO.getIdAeropuertoOrigen() == null || vueloDTO.getIdAeropuertoOrigen() <= 0) {
+            throw new Exception("El id del aeropuerto de origen no puede ser nulo o menor o igual a cero");
+        } if (vueloDTO.getIdAeropuertoDestino() == null || vueloDTO.getIdAeropuertoDestino() <= 0) {
+            throw new Exception("El id del aeropuerto de destino no puede ser nulo o menor o igual a cero");
         } if (vuelo.getPrecio() < 0) {
             throw new Exception("El precio del vuelo no puede ser menor a cero");
         } if (vuelo.getHoraSalida() == null) {
@@ -46,6 +50,9 @@ public class VueloServiceImpl implements VueloService {
             throw new Exception("El estado del vuelo no puede ser nulo o vacío");
         }
 
+        vuelo.setAeropuertoOrigen(AeropuertoMapper.dtoToDomain(aeropuertoService.obtenerAeropuertoPorId(vueloDTO.getIdAeropuertoOrigen())));
+        vuelo.setAeropuertoDestino(AeropuertoMapper.dtoToDomain(aeropuertoService.obtenerAeropuertoPorId(vueloDTO.getIdAeropuertoDestino())));
+
         return VueloMapper.domainToDTO(vueloRepository.save(vuelo));
     }
 
@@ -56,7 +63,7 @@ public class VueloServiceImpl implements VueloService {
 
     @Override
     public VueloDTO obtenerVueloPorId(Integer id) throws Exception {
-        if (vueloRepository.findById(id).isEmpty()) {
+        if (!vueloRepository.existsById(id)) {
             throw new Exception("El vuelo con id " + id + " no existe");
         }
 

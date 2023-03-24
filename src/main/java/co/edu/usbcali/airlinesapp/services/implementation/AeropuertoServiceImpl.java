@@ -7,7 +7,6 @@ import co.edu.usbcali.airlinesapp.repository.AeropuertoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +15,9 @@ import java.util.List;
 @Slf4j
 public class AeropuertoServiceImpl implements AeropuertoService {
     private final AeropuertoRepository aeropuertoRepository;
-    private final ModelMapper modelMapper;
 
-    public AeropuertoServiceImpl(AeropuertoRepository aeropuertoRepository, ModelMapper modelMapper) {
+    public AeropuertoServiceImpl(AeropuertoRepository aeropuertoRepository) {
         this.aeropuertoRepository = aeropuertoRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -49,7 +46,7 @@ public class AeropuertoServiceImpl implements AeropuertoService {
 
     @Override
     public AeropuertoDTO obtenerAeropuertoPorId(Integer id) throws Exception {
-        if (aeropuertoRepository.findById(id).isEmpty()) {
+        if (!aeropuertoRepository.existsById(id)) {
             throw new Exception("El aeropuerto con id " + id + " no existe");
         }
 

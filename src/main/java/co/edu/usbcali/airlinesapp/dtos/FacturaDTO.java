@@ -13,8 +13,7 @@ import java.util.Date;
 @ToString
 public class FacturaDTO {
     private Integer idFactura;
-
-//    private Integer idUsuario;
+    private Integer idReserva;
     private Date fecha;
     private String estado;
 }
