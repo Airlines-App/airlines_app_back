@@ -1,14 +1,12 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.TipoAsiento;
-import co.edu.usbcali.airlinesapp.dtos.RolUsuarioDTO;
 import co.edu.usbcali.airlinesapp.dtos.TipoAsientoDTO;
 import co.edu.usbcali.airlinesapp.mappers.TipoAsientoMapper;
 import co.edu.usbcali.airlinesapp.repository.TipoAsientoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.TipoAsientoService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +15,9 @@ import java.util.List;
 @Slf4j
 public class TipoAsientoServiceImpl implements TipoAsientoService {
     private final TipoAsientoRepository tipoAsientoService;
-    private final ModelMapper modelMapper;
 
-    public TipoAsientoServiceImpl(TipoAsientoRepository tipoAsientoService, ModelMapper modelMapper) {
+    public TipoAsientoServiceImpl(TipoAsientoRepository tipoAsientoService) {
         this.tipoAsientoService = tipoAsientoService;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -46,7 +42,7 @@ public class TipoAsientoServiceImpl implements TipoAsientoService {
 
     @Override
     public TipoAsientoDTO obtenerTipoAsientoPorId(Integer id) throws Exception {
-        if (tipoAsientoService.findById(id).isEmpty()) {
+        if (!tipoAsientoService.existsById(id)) {
             throw new Exception("El tipo de asiento con id " + id + " no existe");
         }
 

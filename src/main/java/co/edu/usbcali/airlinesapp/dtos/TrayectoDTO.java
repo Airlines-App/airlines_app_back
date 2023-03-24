@@ -13,12 +13,11 @@ import java.util.Date;
 @ToString
 public class TrayectoDTO {
         private Integer idTrayecto;
-
-//        private Integer idAvion;
-//        private Integer idAeropuertoOrigen;
-//        private Integer idAeropuertoDestino;
-
+        private Integer idAvion;
+        private Integer idAeropuertoOrigen;
+        private Integer idAeropuertoDestino;
         private Date horaSalida;
         private Date horaLlegada;
+        private Integer idVuelo;
         private String estado;
 }

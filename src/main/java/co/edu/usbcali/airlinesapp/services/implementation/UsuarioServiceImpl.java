@@ -1,14 +1,14 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Usuario;
-import co.edu.usbcali.airlinesapp.dtos.TrayectoDTO;
 import co.edu.usbcali.airlinesapp.dtos.UsuarioDTO;
+import co.edu.usbcali.airlinesapp.mappers.RolUsuarioMapper;
 import co.edu.usbcali.airlinesapp.mappers.UsuarioMapper;
 import co.edu.usbcali.airlinesapp.repository.UsuarioRepository;
+import co.edu.usbcali.airlinesapp.services.interfaces.RolUsuarioService;
 import co.edu.usbcali.airlinesapp.services.interfaces.UsuarioService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +17,11 @@ import java.util.List;
 @Slf4j
 public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
-    private final ModelMapper modelMapper;
+    private final RolUsuarioService rolUsuarioService;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, ModelMapper modelMapper) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, RolUsuarioService rolUsuarioService) {
         this.usuarioRepository = usuarioRepository;
-        this.modelMapper = modelMapper;
+        this.rolUsuarioService = rolUsuarioService;
     }
 
     @Override
@@ -30,6 +30,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         if (usuario == null) {
             throw new Exception("El usuario no puede ser nulo");
+        } if (usuarioDTO.getIdRolUsuario() == null || usuarioDTO.getIdRolUsuario() <= 0) {
+            throw new Exception("El id del rol del usuario no puede ser nulo o menor o igual a cero");
         } if (usuario.getCedula() == null || usuario.getCedula().isBlank() || usuario.getNombre().trim().isEmpty()) {
             throw new Exception("La cédula del usuario no puede ser nula o vacía");
         } if (usuario.getNombre() == null || usuario.getNombre().isBlank() || usuario.getNombre().trim().isEmpty()) {
@@ -42,6 +44,8 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new Exception("El estado del usuario no puede ser nulo o vacío");
         }
 
+        usuario.setRolUsuario(RolUsuarioMapper.dtoToDomain(rolUsuarioService.obtenerRolUsuarioPorId(usuarioDTO.getIdRolUsuario())));
+
         return UsuarioMapper.domainToDTO(usuarioRepository.save(usuario));
     }
 
@@ -52,7 +56,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioDTO obtenerUsuarioPorId(Integer id) throws Exception {
-        if (usuarioRepository.findById(id).isEmpty()) {
+        if (!usuarioRepository.existsById(id)) {
             throw new Exception("El usuario con id " + id + " no existe");
         }
 
