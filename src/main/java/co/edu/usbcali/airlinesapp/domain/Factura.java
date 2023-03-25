@@ -23,9 +23,9 @@ public class Factura {
     @Column(name = "fact_id", nullable = false, unique = true)
     private Integer idFactura;
 
-//    @ManyToOne
-//    @JoinColumn(name = "usua_id", referencedColumnName = "usua_id")
-//    private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "rese_id", referencedColumnName = "rese_id")
+    private Reserva reserva;
 
     @Column(name = "fecha", nullable = false)
     @CreationTimestamp

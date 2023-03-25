@@ -1,14 +1,12 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Avion;
-import co.edu.usbcali.airlinesapp.dtos.AsientoDTO;
 import co.edu.usbcali.airlinesapp.dtos.AvionDTO;
 import co.edu.usbcali.airlinesapp.mappers.AvionMapper;
 import co.edu.usbcali.airlinesapp.repository.AvionRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AvionService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +15,9 @@ import java.util.List;
 @Slf4j
 public class AvionServiceImpl implements AvionService {
     private final AvionRepository avionRepository;
-    private final ModelMapper modelMapper;
 
-    public AvionServiceImpl(AvionRepository avionRepository, ModelMapper modelMapper) {
+    public AvionServiceImpl(AvionRepository avionRepository) {
         this.avionRepository = avionRepository;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -48,7 +44,7 @@ public class AvionServiceImpl implements AvionService {
 
     @Override
     public AvionDTO obtenerAvionPorId(Integer id) throws Exception {
-        if (avionRepository.findById(id).isEmpty()) {
+        if (!avionRepository.existsById(id)) {
             throw new Exception("El avión con id " + id + " no existe");
         }
 

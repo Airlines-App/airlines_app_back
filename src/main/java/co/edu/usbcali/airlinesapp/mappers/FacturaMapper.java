@@ -10,7 +10,7 @@ public class FacturaMapper {
     public static FacturaDTO domainToDTO(Factura factura) {
         return FacturaDTO.builder()
                 .idFactura(factura.getIdFactura())
-//                .idUsuario(factura.getUsuario() != null ? factura.getUsuario().getIdUsuario() : null)
+                .idReserva(factura.getReserva() != null ? factura.getReserva().getIdReserva() : null)
                 .fecha(factura.getFecha())
                 .estado(factura.getEstado())
                 .build();
