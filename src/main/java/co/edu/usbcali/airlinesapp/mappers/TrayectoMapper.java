@@ -15,6 +15,7 @@ public class TrayectoMapper {
                 .idAeropuertoDestino(trayecto.getAeropuertoDestino() != null ? trayecto.getAeropuertoDestino().getIdAeropuerto() : null)
                 .horaSalida(trayecto.getHoraSalida())
                 .horaLlegada(trayecto.getHoraLlegada())
+                .idVuelo(trayecto.getVuelo() != null ? trayecto.getVuelo().getIdVuelo() : null)
                 .estado(trayecto.getEstado())
                 .build();
     }
