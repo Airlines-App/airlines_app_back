@@ -66,7 +66,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioDTO obtenerUsuarioPorCedula(String cedula) throws Exception {
         if (usuarioRepository.findByCedula(cedula) == null) {
-            throw new Exception("El usuario con cedula " + cedula + " no existe");
+            return null;
         }
 
         return UsuarioMapper.domainToDTO(usuarioRepository.findByCedula(cedula));
