@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -36,11 +36,11 @@ public class Vuelo {
 
         @Column(name = "hora_salida", nullable = false)
         @CreationTimestamp
-        private Date horaSalida;
+        private LocalDateTime horaSalida;
 
         @Column(name = "hora_llegada", nullable = false)
         @CreationTimestamp
-        private Date horaLlegada;
+        private LocalDateTime horaLlegada;
 
         @Column(name = "precio_asiento_vip", nullable = false)
         private long precioAsientoVip;
