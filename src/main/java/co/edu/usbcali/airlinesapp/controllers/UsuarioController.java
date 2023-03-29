@@ -28,10 +28,19 @@ public class UsuarioController {
         return new ResponseEntity(usuarioService.obtenerUsuarios(), HttpStatus.OK);
     }
 
-    @GetMapping("/obtener-usuario/{idUsuario}")
-    public ResponseEntity<UsuarioDTO> obtenerUsuario(@PathVariable("idUsuario") Integer idUsuario) {
+    @GetMapping("/obtener-usuarioId/{idUsuario}")
+    public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@PathVariable("idUsuario") Integer idUsuario) {
         try {
             return new ResponseEntity(usuarioService.obtenerUsuarioPorId(idUsuario), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/obtener-usuarioCedula/{cedula}")
+    public ResponseEntity<UsuarioDTO> obtenerUsuarioPorCedula(@PathVariable("cedula") String cedula) {
+        try {
+            return new ResponseEntity(usuarioService.obtenerUsuarioPorCedula(cedula), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

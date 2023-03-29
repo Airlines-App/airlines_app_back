@@ -40,8 +40,6 @@ public class AsientoServiceImpl implements AsientoService {
             throw new Exception("El id del avión no puede ser nulo o menor o igual a cero");
         } if (asiento.getUbicacion() == null || asiento.getUbicacion().isBlank() || asiento.getUbicacion().trim().isEmpty()) {
             throw new Exception("La ubicación del asiento no puede ser nula o vacía");
-        } if (asiento.getPrecio() < 0) {
-            throw new Exception("El precio del asiento debe ser mayor a cero");
         } if (asiento.getEstado() == null || asiento.getEstado().isBlank() || asiento.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del asiento no puede ser nulo o vacío");
         }
@@ -75,7 +73,6 @@ public class AsientoServiceImpl implements AsientoService {
         }
 
         asientoSavedDTO.setUbicacion(asientoDTO.getUbicacion());
-        asientoSavedDTO.setPrecio(asientoDTO.getPrecio());
         asientoSavedDTO.setEstado(asientoDTO.getEstado());
 
         return guardarAsiento(asientoSavedDTO);
