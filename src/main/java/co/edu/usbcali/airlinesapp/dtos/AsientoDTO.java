@@ -14,6 +14,5 @@ public class AsientoDTO {
         private Integer idTipoAsiento;
         private Integer idAvion;
         private String ubicacion;
-        private long precio;
         private String estado;
 }

@@ -34,7 +34,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new Exception("El id del rol del usuario no puede ser nulo o menor o igual a cero");
         } if (usuario.getCedula() == null || usuario.getCedula().isBlank() || usuario.getNombre().trim().isEmpty()) {
             throw new Exception("La cédula del usuario no puede ser nula o vacía");
-        } if (usuario.getNombre() == null || usuario.getNombre().isBlank() || usuario.getNombre().trim().isEmpty()) {
+        } if (usuario.getNombre().isBlank() || usuario.getNombre().trim().isEmpty()) {
             throw new Exception("El nombre del usuario no puede ser nulo o vacío");
         } if (usuario.getApellido() == null || usuario.getApellido().isBlank() || usuario.getApellido().trim().isEmpty()) {
             throw new Exception("El apellido del usuario no puede ser nulo o vacío");
@@ -61,6 +61,15 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         return UsuarioMapper.domainToDTO(usuarioRepository.findById(id).get());
+    }
+
+    @Override
+    public UsuarioDTO obtenerUsuarioPorCedula(String cedula) throws Exception {
+        if (usuarioRepository.findByCedula(cedula) == null) {
+            throw new Exception("El usuario con cedula " + cedula + " no existe");
+        }
+
+        return UsuarioMapper.domainToDTO(usuarioRepository.findByCedula(cedula));
     }
 
     @Override

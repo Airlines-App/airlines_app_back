@@ -8,6 +8,7 @@ public interface UsuarioService {
     UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) throws Exception;
     List<UsuarioDTO> obtenerUsuarios();
     UsuarioDTO obtenerUsuarioPorId(Integer id) throws Exception;
+    UsuarioDTO obtenerUsuarioPorCedula(String cedula) throws Exception;
     UsuarioDTO actualizarUsuario(UsuarioDTO usuarioDTO) throws Exception;
     UsuarioDTO eliminarUsuario(Integer id) throws Exception;
 }
