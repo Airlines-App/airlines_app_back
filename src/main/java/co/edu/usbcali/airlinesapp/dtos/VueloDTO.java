@@ -1,6 +1,6 @@
 package co.edu.usbcali.airlinesapp.dtos;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,8 +16,8 @@ public class VueloDTO {
     private Integer idAeropuertoOrigen;
     private Integer idAeropuertoDestino;
     private long precio;
-    private LocalDateTime horaSalida;
-    private LocalDateTime horaLlegada;
+    private Date horaSalida;
+    private Date horaLlegada;
     private long precioAsientoVip;
     private long precioAsientoNormal;
     private long precioAsientoBasico;

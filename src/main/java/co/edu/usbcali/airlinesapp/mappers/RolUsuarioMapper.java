@@ -18,7 +18,7 @@ public class RolUsuarioMapper {
     }
 
     public static List<RolUsuarioDTO> domainToDTOList(List<RolUsuario> rolUsuarios) {
-        return rolUsuarios.stream().map(rolUsuario -> domainToDTO(rolUsuario)).collect(Collectors.toList());
+        return rolUsuarios.stream().map(RolUsuarioMapper::domainToDTO).collect(Collectors.toList());
     }
 
     public static RolUsuario dtoToDomain(RolUsuarioDTO rolUsuarioDTO) {
@@ -30,6 +30,6 @@ public class RolUsuarioMapper {
     }
 
     public static List<RolUsuario> dtoToDomainList(List<RolUsuarioDTO> rolUsuariosDTO) {
-        return rolUsuariosDTO.stream().map(rolUsuarioDTO -> dtoToDomain(rolUsuarioDTO)).collect(Collectors.toList());
+        return rolUsuariosDTO.stream().map(RolUsuarioMapper::dtoToDomain).collect(Collectors.toList());
     }
 }

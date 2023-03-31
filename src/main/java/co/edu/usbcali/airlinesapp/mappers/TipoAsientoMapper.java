@@ -16,7 +16,7 @@ public class TipoAsientoMapper {
     }
 
     public static List<TipoAsientoDTO> domainToDTOList(List<TipoAsiento> tipoAsientos) {
-        return tipoAsientos.stream().map(tipoAsiento -> domainToDTO(tipoAsiento)).collect(Collectors.toList());
+        return tipoAsientos.stream().map(TipoAsientoMapper::domainToDTO).collect(Collectors.toList());
     }
 
     public static TipoAsiento dtoToDomain(TipoAsientoDTO tipoAsientoDTO) {
@@ -28,6 +28,6 @@ public class TipoAsientoMapper {
     }
 
     public static List<TipoAsiento> dtoToDomainList(List<TipoAsientoDTO> tipoAsientosDTO) {
-        return tipoAsientosDTO.stream().map(tipoAsientoDTO -> dtoToDomain(tipoAsientoDTO)).collect(Collectors.toList());
+        return tipoAsientosDTO.stream().map(TipoAsientoMapper::dtoToDomain).collect(Collectors.toList());
     }
 }

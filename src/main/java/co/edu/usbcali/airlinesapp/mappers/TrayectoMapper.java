@@ -21,7 +21,7 @@ public class TrayectoMapper {
     }
 
     public static List<TrayectoDTO> domainToDTOList(List<Trayecto> trayectos) {
-        return trayectos.stream().map(trayecto -> domainToDTO(trayecto)).collect(Collectors.toList());
+        return trayectos.stream().map(TrayectoMapper::domainToDTO).collect(Collectors.toList());
     }
 
     public static Trayecto dtoToDomain(TrayectoDTO trayectoDTO) {
@@ -34,6 +34,6 @@ public class TrayectoMapper {
     }
 
     public static List<Trayecto> dtoToDomainList(List<TrayectoDTO> trayectosDTO) {
-        return trayectosDTO.stream().map(trayectoDTO -> dtoToDomain(trayectoDTO)).collect(Collectors.toList());
+        return trayectosDTO.stream().map(TrayectoMapper::dtoToDomain).collect(Collectors.toList());
     }
 }

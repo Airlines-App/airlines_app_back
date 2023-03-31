@@ -21,7 +21,7 @@ public class ReservaMapper {
     }
 
     public static List<ReservaDTO> domainToDTOList(List<Reserva> reservas) {
-        return reservas.stream().map(reserva -> domainToDTO(reserva)).collect(Collectors.toList());
+        return reservas.stream().map(ReservaMapper::domainToDTO).collect(Collectors.toList());
     }
 
     public static Reserva dtoToDomain(ReservaDTO reservaDTO) {
@@ -35,6 +35,6 @@ public class ReservaMapper {
     }
 
     public static List<Reserva> dtoToDomainList(List<ReservaDTO> reservasDTO) {
-        return reservasDTO.stream().map(reservaDTO -> dtoToDomain(reservaDTO)).collect(Collectors.toList());
+        return reservasDTO.stream().map(ReservaMapper::dtoToDomain).collect(Collectors.toList());
     }
 }
