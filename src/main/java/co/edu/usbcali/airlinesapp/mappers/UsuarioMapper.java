@@ -20,7 +20,7 @@ public class UsuarioMapper {
     }
 
     public static List<UsuarioDTO> domainToDTOList(List<Usuario> usuarios) {
-        return usuarios.stream().map(usuario -> domainToDTO(usuario)).collect(Collectors.toList());
+        return usuarios.stream().map(UsuarioMapper::domainToDTO).collect(Collectors.toList());
     }
 
     public static Usuario dtoToDomain(UsuarioDTO usuarioDTO) {
@@ -35,6 +35,6 @@ public class UsuarioMapper {
     }
 
     public static List<Usuario> dtoToDomainList(List<UsuarioDTO> usuariosDTO) {
-        return usuariosDTO.stream().map(usuarioDTO -> dtoToDomain(usuarioDTO)).collect(Collectors.toList());
+        return usuariosDTO.stream().map(UsuarioMapper::dtoToDomain).collect(Collectors.toList());
     }
 }

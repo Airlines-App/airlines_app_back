@@ -65,7 +65,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioDTO obtenerUsuarioPorCedula(String cedula) throws Exception {
-        if (usuarioRepository.findByCedula(cedula) == null) {
+        if (!usuarioRepository.existsUsuarioByCedula(cedula)) {
             return null;
         }
 
