@@ -51,6 +51,17 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
+    public List<FacturaDTO> obtenerFacturasPorIdReserva(Integer idReserva) throws Exception {
+        try {
+            reservaService.obtenerReservaPorId(idReserva);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        return FacturaMapper.domainToDTOList(facturaRepository.findAllByReserva(idReserva));
+    }
+
+    @Override
     public FacturaDTO obtenerFacturaPorId(Integer id) throws Exception {
         if (!facturaRepository.existsById(id)) {
             throw new Exception("La factura con id " + id + " no existe");
