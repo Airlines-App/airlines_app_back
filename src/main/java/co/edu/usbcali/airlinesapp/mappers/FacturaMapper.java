@@ -17,7 +17,7 @@ public class FacturaMapper {
     }
 
     public static List<FacturaDTO> domainToDTOList(List<Factura> facturas) {
-        return facturas.stream().map(factura -> domainToDTO(factura)).collect(Collectors.toList());
+        return facturas.stream().map(FacturaMapper::domainToDTO).collect(Collectors.toList());
     }
 
     public static Factura dtoToDomain(FacturaDTO facturaDTO) {
@@ -29,6 +29,6 @@ public class FacturaMapper {
     }
 
     public static List<Factura> dtoToDomainList(List<FacturaDTO> facturasDTO) {
-        return facturasDTO.stream().map(facturaDTO -> dtoToDomain(facturaDTO)).collect(Collectors.toList());
+        return facturasDTO.stream().map(FacturaMapper::dtoToDomain).collect(Collectors.toList());
     }
 }

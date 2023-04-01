@@ -37,6 +37,15 @@ public class FacturaController {
         }
     }
 
+    @GetMapping("/obtener-facturasReserva/{idReserva}")
+    public ResponseEntity<List<FacturaDTO>> obtenerFacturasReserva(@PathVariable("idReserva") Integer idReserva) {
+        try {
+            return new ResponseEntity(facturaService.obtenerFacturasPorIdReserva(idReserva), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping(path = "/guardar-factura",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

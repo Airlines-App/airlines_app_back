@@ -18,7 +18,7 @@ public class AeropuertoMapper {
     }
 
     public static List<AeropuertoDTO> domainToDTOList(List<Aeropuerto> aeropuertos) {
-        return aeropuertos.stream().map(aeropuerto -> domainToDTO(aeropuerto)).collect(Collectors.toList());
+        return aeropuertos.stream().map(AeropuertoMapper::domainToDTO).collect(Collectors.toList());
     }
 
     public static Aeropuerto dtoToDomain(AeropuertoDTO aeropuertoDTO) {
@@ -32,6 +32,6 @@ public class AeropuertoMapper {
     }
 
     public static List<Aeropuerto> dtoToDomainList(List<AeropuertoDTO> aeropuertosDTO) {
-        return aeropuertosDTO.stream().map(aeropuertoDTO -> dtoToDomain(aeropuertoDTO)).collect(Collectors.toList());
+        return aeropuertosDTO.stream().map(AeropuertoMapper::dtoToDomain).collect(Collectors.toList());
     }
 }
