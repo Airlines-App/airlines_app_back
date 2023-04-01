@@ -67,6 +67,17 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
+    public List<ReservaDTO> obtenerReservasPorIdVuelo(Integer idVuelo) throws Exception {
+        try {
+            vueloService.obtenerVueloPorId(idVuelo);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        return ReservaMapper.domainToDTOList(reservaRepository.findAllByVuelo(idVuelo));
+    }
+
+    @Override
     public ReservaDTO obtenerReservaPorId(Integer id) throws Exception {
         if (!reservaRepository.existsById(id)) {
             throw new Exception("La reserva con id " + id + " no existe");

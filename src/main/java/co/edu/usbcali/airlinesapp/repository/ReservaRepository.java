@@ -4,4 +4,8 @@ import co.edu.usbcali.airlinesapp.domain.Reserva;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReservaRepository extends JpaRepository<Reserva, Integer> { }
+import java.util.List;
+
+public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
+    List<Reserva> findAllByVuelo(Integer idVuelo);
+}
