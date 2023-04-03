@@ -11,6 +11,7 @@ import co.edu.usbcali.airlinesapp.services.interfaces.VueloService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.util.List;
 
 @Service
@@ -27,7 +28,6 @@ public class VueloServiceImpl implements VueloService {
     @Override
     public VueloDTO guardarVuelo(VueloDTO vueloDTO) throws Exception {
         Vuelo vuelo = VueloMapper.dtoToDomain(vueloDTO);
-
         if (vuelo == null) {
             throw new Exception("El vuelo no puede ser nulo");
         } if (vueloDTO.getIdAeropuertoOrigen() == null || vueloDTO.getIdAeropuertoOrigen() <= 0) {
@@ -37,7 +37,7 @@ public class VueloServiceImpl implements VueloService {
         } if (vuelo.getPrecio() < 0) {
             throw new Exception("El precio del vuelo no puede ser menor a cero");
         } if (vuelo.getHoraSalida() == null) {
-            throw new Exception("La hora de salida del vuelo no puede ser nula");
+            throw new Exception("La hora de salida del vuelo no puedeid ser nula");
         } if (vuelo.getHoraLlegada() == null) {
             throw new Exception("La hora de llegada del vuelo no puede ser nula");
         } if (vuelo.getPrecioAsientoVip() < 0) {
@@ -52,7 +52,6 @@ public class VueloServiceImpl implements VueloService {
 
         vuelo.setAeropuertoOrigen(AeropuertoMapper.dtoToDomain(aeropuertoService.obtenerAeropuertoPorId(vueloDTO.getIdAeropuertoOrigen())));
         vuelo.setAeropuertoDestino(AeropuertoMapper.dtoToDomain(aeropuertoService.obtenerAeropuertoPorId(vueloDTO.getIdAeropuertoDestino())));
-
         return VueloMapper.domainToDTO(vueloRepository.save(vuelo));
     }
 
