@@ -72,7 +72,7 @@ public class FacturaServiceImpl implements FacturaService {
             throw new Exception(e.getMessage());
         }
 
-        return FacturaMapper.domainToDTOList(facturaRepository.findAllByReserva(idReserva));
+        return FacturaMapper.domainToDTOList(facturaRepository.findAllByReserva_IdReserva(idReserva));
     }
 
     @Override
