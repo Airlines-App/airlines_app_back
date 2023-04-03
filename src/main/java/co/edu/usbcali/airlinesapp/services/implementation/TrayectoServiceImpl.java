@@ -68,6 +68,11 @@ public class TrayectoServiceImpl implements TrayectoService {
     }
 
     @Override
+    public List<TrayectoDTO> obtenerTrayectosActivos() {
+        return TrayectoMapper.domainToDTOList(trayectoRepository.findAllByEstado("A"));
+    }
+
+    @Override
     public TrayectoDTO obtenerTrayectoPorId(Integer id) throws Exception {
         if (!trayectoRepository.existsById(id)) {
             throw new Exception("El trayecto con id " + id + " no existe");

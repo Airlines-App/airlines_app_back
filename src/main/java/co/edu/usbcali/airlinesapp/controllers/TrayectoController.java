@@ -23,26 +23,31 @@ public class TrayectoController {
         this.trayectoService = trayectoService;
     }
 
-    @GetMapping("/obtener-trayectos")
-    public ResponseEntity<List<TrayectoDTO>> obtenerTrayectos() {
-        return new ResponseEntity(trayectoService.obtenerTrayectos(), HttpStatus.OK);
-    }
-
-    @GetMapping("/obtener-trayecto/{idTrayecto}")
-    public ResponseEntity<TrayectoDTO> obtenerTrayecto(@PathVariable("idTrayecto") Integer idTrayecto) {
-        try {
-            return new ResponseEntity(trayectoService.obtenerTrayectoPorId(idTrayecto), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @PostMapping(path = "/guardar-trayecto",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity guardarTrayecto(@RequestBody TrayectoDTO trayectoDTO) {
         try {
             return new ResponseEntity(trayectoService.guardarTrayecto(trayectoDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/obtener-trayectos")
+    public ResponseEntity<List<TrayectoDTO>> obtenerTrayectos() {
+        return new ResponseEntity(trayectoService.obtenerTrayectos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/obtener-trayectosActivos")
+    public ResponseEntity<List<TrayectoDTO>> obtenerTrayectosActivos() {
+        return new ResponseEntity(trayectoService.obtenerTrayectosActivos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/obtener-trayecto/{idTrayecto}")
+    public ResponseEntity<TrayectoDTO> obtenerTrayecto(@PathVariable("idTrayecto") Integer idTrayecto) {
+        try {
+            return new ResponseEntity(trayectoService.obtenerTrayectoPorId(idTrayecto), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

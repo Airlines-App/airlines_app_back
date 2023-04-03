@@ -41,6 +41,11 @@ public class TipoAsientoServiceImpl implements TipoAsientoService {
     }
 
     @Override
+    public List<TipoAsientoDTO> obtenerTipoAsientosActivos() {
+        return TipoAsientoMapper.domainToDTOList(tipoAsientoService.findAllByEstado("A"));
+    }
+
+    @Override
     public TipoAsientoDTO obtenerTipoAsientoPorId(Integer id) throws Exception {
         if (!tipoAsientoService.existsById(id)) {
             throw new Exception("El tipo de asiento con id " + id + " no existe");

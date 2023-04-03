@@ -23,26 +23,31 @@ public class TipoAsientoController {
         this.tipoAsientoService = tipoAsientoService;
     }
 
-    @GetMapping("/obtener-tipoAsientos")
-    public ResponseEntity<List<TipoAsientoDTO>> obtenerTipoAsientos() {
-        return new ResponseEntity(tipoAsientoService.obtenerTipoAsientos(), HttpStatus.OK);
-    }
-
-    @GetMapping("/obtener-tipoAsiento/{idTipoAsiento}")
-    public ResponseEntity<TipoAsientoDTO> obtenerTipoAsiento(@PathVariable("idTipoAsiento") Integer idTipoAsiento) {
-        try {
-            return new ResponseEntity(tipoAsientoService.obtenerTipoAsientoPorId(idTipoAsiento), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @PostMapping(path = "/guardar-tipoAsiento",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity guardarTipoAsiento(@RequestBody TipoAsientoDTO tipoAsientoDTO) {
         try {
             return new ResponseEntity(tipoAsientoService.guardarTipoAsiento(tipoAsientoDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/obtener-tipoAsientos")
+    public ResponseEntity<List<TipoAsientoDTO>> obtenerTipoAsientos() {
+        return new ResponseEntity(tipoAsientoService.obtenerTipoAsientos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/obtener-tipoAsientosActivos")
+    public ResponseEntity<List<TipoAsientoDTO>> obtenerTipoAsientosActivos() {
+        return new ResponseEntity(tipoAsientoService.obtenerTipoAsientosActivos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/obtener-tipoAsiento/{idTipoAsiento}")
+    public ResponseEntity<TipoAsientoDTO> obtenerTipoAsiento(@PathVariable("idTipoAsiento") Integer idTipoAsiento) {
+        try {
+            return new ResponseEntity(tipoAsientoService.obtenerTipoAsientoPorId(idTipoAsiento), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

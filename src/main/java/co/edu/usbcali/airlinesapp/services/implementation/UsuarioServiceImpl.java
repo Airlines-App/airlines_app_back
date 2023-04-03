@@ -55,6 +55,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public List<UsuarioDTO> obtenerUsuariosActivos() {
+        return UsuarioMapper.domainToDTOList(usuarioRepository.findAllByEstado("A"));
+    }
+
+    @Override
     public UsuarioDTO obtenerUsuarioPorId(Integer id) throws Exception {
         if (!usuarioRepository.existsById(id)) {
             throw new Exception("El usuario con id " + id + " no existe");
