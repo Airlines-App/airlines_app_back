@@ -92,17 +92,6 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public List<ReservaDTO> obtenerReservasPorIdAsiento(Integer idAsiento) throws Exception {
-        try {
-            asientoService.obtenerAsientoPorId(idAsiento);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-
-        return ReservaMapper.domainToDTOList(reservaRepository.findAllByAsiento(idAsiento));
-    }
-
-    @Override
     public ReservaDTO actualizarReserva(ReservaDTO reservaDTO) throws Exception {
         ReservaDTO reservaSavedDTO = obtenerReservaPorId(reservaDTO.getIdReserva());
 
