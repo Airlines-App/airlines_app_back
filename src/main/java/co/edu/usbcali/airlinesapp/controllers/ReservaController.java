@@ -54,9 +54,9 @@ public class ReservaController {
     }
 
     @GetMapping("/obtener-reservasVuelo/{idVuelo}")
-    public ResponseEntity<ReservaDTO> obtenerReservasVuelo(@PathVariable("idVuelo") Integer idvuelo) {
+    public ResponseEntity<ReservaDTO> obtenerReservasVuelo(@PathVariable("idVuelo") Integer idVuelo) {
         try {
-            return new ResponseEntity(reservaService.obtenerReservasPorIdVuelo(idvuelo), HttpStatus.OK);
+            return new ResponseEntity(reservaService.obtenerReservasPorIdVuelo(idVuelo), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
