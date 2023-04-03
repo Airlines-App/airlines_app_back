@@ -51,14 +51,8 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
-    public List<FacturaDTO> obtenerFacturasPorIdReserva(Integer idReserva) throws Exception {
-        try {
-            reservaService.obtenerReservaPorId(idReserva);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
-
-        return FacturaMapper.domainToDTOList(facturaRepository.findAllByReserva(idReserva));
+    public List<FacturaDTO> obtenerFacturasActivas() {
+        return FacturaMapper.domainToDTOList(facturaRepository.findAllByEstado("A"));
     }
 
     @Override
@@ -68,6 +62,17 @@ public class FacturaServiceImpl implements FacturaService {
         }
 
         return FacturaMapper.domainToDTO(facturaRepository.findById(id).get());
+    }
+
+    @Override
+    public List<FacturaDTO> obtenerFacturasPorIdReserva(Integer idReserva) throws Exception {
+        try {
+            reservaService.obtenerReservaPorId(idReserva);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        return FacturaMapper.domainToDTOList(facturaRepository.findAllByReserva(idReserva));
     }
 
     @Override

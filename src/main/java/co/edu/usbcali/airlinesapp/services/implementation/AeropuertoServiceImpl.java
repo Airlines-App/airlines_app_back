@@ -45,6 +45,11 @@ public class AeropuertoServiceImpl implements AeropuertoService {
     }
 
     @Override
+    public List<AeropuertoDTO> obtenerAeropuertosActivos() {
+        return AeropuertoMapper.domainToDTOList(aeropuertoRepository.findAllByEstado("A"));
+    }
+
+    @Override
     public AeropuertoDTO obtenerAeropuertoPorId(Integer id) throws Exception {
         if (!aeropuertoRepository.existsById(id)) {
             throw new Exception("El aeropuerto con id " + id + " no existe");

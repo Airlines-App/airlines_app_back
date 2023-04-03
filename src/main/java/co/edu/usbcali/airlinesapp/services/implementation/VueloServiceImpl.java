@@ -62,6 +62,11 @@ public class VueloServiceImpl implements VueloService {
     }
 
     @Override
+    public List<VueloDTO> obtenerVuelosActivos() {
+        return VueloMapper.domainToDTOList(vueloRepository.findAllByEstado("A"));
+    }
+
+    @Override
     public VueloDTO obtenerVueloPorId(Integer id) throws Exception {
         if (!vueloRepository.existsById(id)) {
             throw new Exception("El vuelo con id " + id + " no existe");
