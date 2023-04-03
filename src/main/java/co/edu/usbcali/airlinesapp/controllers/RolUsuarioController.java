@@ -23,26 +23,31 @@ public class RolUsuarioController {
         this.rolUsuarioService = rolUsuarioService;
     }
 
-    @GetMapping("/obtener-rolUsuarios")
-    public ResponseEntity<List<RolUsuarioDTO>> obtenerRolUsuarios() {
-        return new ResponseEntity(rolUsuarioService.obtenerRolUsuarios(), HttpStatus.OK);
-    }
-
-    @GetMapping("/obtener-rolUsuario/{idRolUsuario}")
-    public ResponseEntity<RolUsuarioDTO> obtenerRolUsuario(@PathVariable("idRolUsuario") Integer idRolUsuario) {
-        try {
-            return new ResponseEntity(rolUsuarioService.obtenerRolUsuarioPorId(idRolUsuario), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @PostMapping(path = "/guardar-rolUsuario",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity guardarRolUsuario(@RequestBody RolUsuarioDTO rolUsuarioDTO) {
         try {
             return new ResponseEntity(rolUsuarioService.guardarRolUsuario(rolUsuarioDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/obtener-rolUsuarios")
+    public ResponseEntity<List<RolUsuarioDTO>> obtenerRolUsuarios() {
+        return new ResponseEntity(rolUsuarioService.obtenerRolUsuarios(), HttpStatus.OK);
+    }
+
+    @GetMapping("/obtener-rolUsuariosActivos")
+    public ResponseEntity<List<RolUsuarioDTO>> obtenerRolUsuariosActivos() {
+        return new ResponseEntity(rolUsuarioService.obtenerRolUsuariosActivos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/obtener-rolUsuario/{idRolUsuario}")
+    public ResponseEntity<RolUsuarioDTO> obtenerRolUsuario(@PathVariable("idRolUsuario") Integer idRolUsuario) {
+        try {
+            return new ResponseEntity(rolUsuarioService.obtenerRolUsuarioPorId(idRolUsuario), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

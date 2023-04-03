@@ -56,6 +56,11 @@ public class AsientoServiceImpl implements AsientoService {
     }
 
     @Override
+    public List<AsientoDTO> obtenerAsientosActivos() {
+        return AsientoMapper.domainToDTOList(asientoRepository.findAllByEstado("A"));
+    }
+
+    @Override
     public AsientoDTO obtenerAsientoPorId(Integer id) throws Exception {
         if (!asientoRepository.existsById(id)) {
             throw new Exception("El asiento con id " + id + " no existe");

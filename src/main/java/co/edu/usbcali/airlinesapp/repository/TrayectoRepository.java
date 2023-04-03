@@ -4,4 +4,8 @@ import co.edu.usbcali.airlinesapp.domain.Trayecto;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TrayectoRepository extends JpaRepository<Trayecto, Integer> { }
+import java.util.List;
+
+public interface TrayectoRepository extends JpaRepository<Trayecto, Integer> {
+    List<Trayecto> findAllByEstado(String estado);
+}

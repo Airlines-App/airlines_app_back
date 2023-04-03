@@ -41,6 +41,11 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
     }
 
     @Override
+    public List<RolUsuarioDTO> obtenerRolUsuariosActivos() {
+        return RolUsuarioMapper.domainToDTOList(rolUsuarioRepository.findAllByEstado("A"));
+    }
+
+    @Override
     public RolUsuarioDTO obtenerRolUsuarioPorId(Integer id) throws Exception {
         if (!rolUsuarioRepository.existsById(id)) {
             throw new Exception("El rol de usuario con id " + id + " no existe");

@@ -43,6 +43,11 @@ public class AvionServiceImpl implements AvionService {
     }
 
     @Override
+    public List<AvionDTO> obtenerAvionesActivos() {
+        return AvionMapper.domainToDTOList(avionRepository.findAllByEstado("A"));
+    }
+
+    @Override
     public AvionDTO obtenerAvionPorId(Integer id) throws Exception {
         if (!avionRepository.existsById(id)) {
             throw new Exception("El avión con id " + id + " no existe");

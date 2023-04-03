@@ -67,6 +67,20 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
+    public List<ReservaDTO> obtenerReservasActivas() {
+        return ReservaMapper.domainToDTOList(reservaRepository.findAllByEstado("A"));
+    }
+
+    @Override
+    public ReservaDTO obtenerReservaPorId(Integer id) throws Exception {
+        if (!reservaRepository.existsById(id)) {
+            throw new Exception("La reserva con id " + id + " no existe");
+        }
+
+        return ReservaMapper.domainToDTO(reservaRepository.findById(id).get());
+    }
+
+    @Override
     public List<ReservaDTO> obtenerReservasPorIdVuelo(Integer idVuelo) throws Exception {
         try {
             vueloService.obtenerVueloPorId(idVuelo);
@@ -78,12 +92,14 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
-    public ReservaDTO obtenerReservaPorId(Integer id) throws Exception {
-        if (!reservaRepository.existsById(id)) {
-            throw new Exception("La reserva con id " + id + " no existe");
+    public List<ReservaDTO> obtenerReservasPorIdAsiento(Integer idAsiento) throws Exception {
+        try {
+            asientoService.obtenerAsientoPorId(idAsiento);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
         }
 
-        return ReservaMapper.domainToDTO(reservaRepository.findById(id).get());
+        return ReservaMapper.domainToDTOList(reservaRepository.findAllByAsiento(idAsiento));
     }
 
     @Override
