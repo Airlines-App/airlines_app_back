@@ -88,7 +88,7 @@ public class ReservaServiceImpl implements ReservaService {
             throw new Exception(e.getMessage());
         }
 
-        return ReservaMapper.domainToDTOList(reservaRepository.findAllByVuelo(idVuelo));
+        return ReservaMapper.domainToDTOList(reservaRepository.findAllByVuelo_IdVuelo(idVuelo));
     }
 
     @Override
