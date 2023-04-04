@@ -92,6 +92,17 @@ public class ReservaServiceImpl implements ReservaService {
     }
 
     @Override
+    public List<ReservaDTO> obtenerReservasPorCedula(String cedula) throws Exception {
+        try {
+            usuarioService.obtenerUsuarioPorCedula(cedula);
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        return ReservaMapper.domainToDTOList(reservaRepository.findAllByUsuario_Cedula(cedula));
+    }
+
+    @Override
     public ReservaDTO actualizarReserva(ReservaDTO reservaDTO) throws Exception {
         ReservaDTO reservaSavedDTO = obtenerReservaPorId(reservaDTO.getIdReserva());
 

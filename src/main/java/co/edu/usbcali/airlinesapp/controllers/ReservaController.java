@@ -62,6 +62,15 @@ public class ReservaController {
         }
     }
 
+    @GetMapping("/obtener-reservasUsuario/{cedula}")
+    public ResponseEntity<ReservaDTO> obtenerReservasUsuario(@PathVariable("cedula") String cedula) {
+        try {
+            return new ResponseEntity(reservaService.obtenerReservasPorCedula(cedula), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping(path = "/actualizar-reserva",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
