@@ -11,6 +11,7 @@ import co.edu.usbcali.airlinesapp.services.interfaces.VueloService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.util.List;
 
 @Service
@@ -56,7 +57,6 @@ public class VueloServiceImpl implements VueloService {
 
         vuelo.setAeropuertoOrigen(AeropuertoMapper.dtoToDomain(aeropuertoService.obtenerAeropuertoPorId(vueloDTO.getIdAeropuertoOrigen())));
         vuelo.setAeropuertoDestino(AeropuertoMapper.dtoToDomain(aeropuertoService.obtenerAeropuertoPorId(vueloDTO.getIdAeropuertoDestino())));
-
         return VueloMapper.domainToDTO(vueloRepository.save(vuelo));
     }
 

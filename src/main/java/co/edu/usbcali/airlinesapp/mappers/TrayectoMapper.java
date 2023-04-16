@@ -17,6 +17,7 @@ public class TrayectoMapper {
                 .horaLlegada(trayecto.getHoraLlegada())
                 .idVuelo(trayecto.getVuelo() != null ? trayecto.getVuelo().getIdVuelo() : null)
                 .estado(trayecto.getEstado())
+                .idVuelo( trayecto.getVuelo().getIdVuelo() )
                 .build();
     }
 
