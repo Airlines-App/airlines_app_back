@@ -61,7 +61,7 @@ public class FacturaServiceImpl implements FacturaService {
             throw new Exception("La factura con id " + id + " no existe");
         }
 
-        return FacturaMapper.domainToDTO(facturaRepository.findById(id).get());
+        return FacturaMapper.domainToDTO(facturaRepository.getReferenceById(id));
     }
 
     @Override

@@ -78,7 +78,7 @@ public class TrayectoServiceImpl implements TrayectoService {
             throw new Exception("El trayecto con id " + id + " no existe");
         }
 
-        return TrayectoMapper.domainToDTO(trayectoRepository.findById(id).get());
+        return TrayectoMapper.domainToDTO(trayectoRepository.getReferenceById(id));
     }
 
     @Override

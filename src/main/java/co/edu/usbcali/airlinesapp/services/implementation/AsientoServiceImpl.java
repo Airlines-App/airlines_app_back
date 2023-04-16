@@ -66,7 +66,7 @@ public class AsientoServiceImpl implements AsientoService {
             throw new Exception("El asiento con id " + id + " no existe");
         }
 
-        return AsientoMapper.domainToDTO(asientoRepository.findById(id).get());
+        return AsientoMapper.domainToDTO(asientoRepository.getReferenceById(id));
     }
 
     @Override

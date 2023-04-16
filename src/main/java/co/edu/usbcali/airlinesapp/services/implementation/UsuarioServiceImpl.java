@@ -65,7 +65,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new Exception("El usuario con id " + id + " no existe");
         }
 
-        return UsuarioMapper.domainToDTO(usuarioRepository.findById(id).get());
+        return UsuarioMapper.domainToDTO(usuarioRepository.getReferenceById(id));
     }
 
     @Override
