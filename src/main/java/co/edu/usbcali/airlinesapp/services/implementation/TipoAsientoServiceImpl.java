@@ -20,17 +20,21 @@ public class TipoAsientoServiceImpl implements TipoAsientoService {
         this.tipoAsientoService = tipoAsientoService;
     }
 
-    @Override
-    public TipoAsientoDTO guardarTipoAsiento(TipoAsientoDTO tipoAsientoDTO) throws Exception {
-        TipoAsiento tipoAsiento = TipoAsientoMapper.dtoToDomain(tipoAsientoDTO);
-
-        if (tipoAsiento == null) {
+    public void validarTipoAsiento(TipoAsientoDTO tipoAsientoDTO) throws Exception {
+        if (tipoAsientoDTO == null) {
             throw new Exception("El tipo de asiento no puede ser nulo");
-        } if (tipoAsiento.getDescripcion() == null || tipoAsiento.getDescripcion().isBlank() || tipoAsiento.getDescripcion().trim().isEmpty()) {
+        } if (tipoAsientoDTO.getDescripcion() == null || tipoAsientoDTO.getDescripcion().isBlank() || tipoAsientoDTO.getDescripcion().trim().isEmpty()) {
             throw new Exception("La descripción del tipo de asiento no puede ser nula o vacía");
-        } if (tipoAsiento.getEstado() == null || tipoAsiento.getEstado().isBlank() || tipoAsiento.getEstado().trim().isEmpty()) {
+        } if (tipoAsientoDTO.getEstado() == null || tipoAsientoDTO.getEstado().isBlank() || tipoAsientoDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del tipo de asiento no puede ser nulo o vacío");
         }
+    }
+
+    @Override
+    public TipoAsientoDTO guardarTipoAsiento(TipoAsientoDTO tipoAsientoDTO) throws Exception {
+        validarTipoAsiento(tipoAsientoDTO);
+
+        TipoAsiento tipoAsiento = TipoAsientoMapper.dtoToDomain(tipoAsientoDTO);
 
         return TipoAsientoMapper.domainToDTO(tipoAsientoService.save(tipoAsiento));
     }
@@ -57,11 +61,9 @@ public class TipoAsientoServiceImpl implements TipoAsientoService {
 
     @Override
     public TipoAsientoDTO actualizarTipoAsiento(TipoAsientoDTO tipoAsientoDTO) throws Exception {
-        TipoAsientoDTO tipoAsientoSavedDTO = obtenerTipoAsientoPorId(tipoAsientoDTO.getIdTipoAsiento());
+        validarTipoAsiento(tipoAsientoDTO);
 
-        if (tipoAsientoSavedDTO == null) {
-            throw new Exception("El tipo de asiento no existe");
-        }
+        TipoAsientoDTO tipoAsientoSavedDTO = obtenerTipoAsientoPorId(tipoAsientoDTO.getIdTipoAsiento());
 
         tipoAsientoSavedDTO.setDescripcion(tipoAsientoDTO.getDescripcion());
         tipoAsientoSavedDTO.setEstado(tipoAsientoDTO.getEstado());

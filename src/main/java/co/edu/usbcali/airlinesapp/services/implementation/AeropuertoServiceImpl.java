@@ -20,21 +20,25 @@ public class AeropuertoServiceImpl implements AeropuertoService {
         this.aeropuertoRepository = aeropuertoRepository;
     }
 
-    @Override
-    public AeropuertoDTO guardarAeropuerto(AeropuertoDTO aeropuertoDTO) throws Exception {
-        Aeropuerto aeropuerto = AeropuertoMapper.dtoToDomain(aeropuertoDTO);
-
-        if (aeropuerto == null) {
+    public void validarAeropuertoDTO(AeropuertoDTO aeropuertoDTO) throws Exception {
+        if (aeropuertoDTO == null) {
             throw new Exception("El aeropuerto no puede ser nulo");
-        } if (aeropuerto.getNombre() == null || aeropuerto.getNombre().isBlank() || aeropuerto.getNombre().trim().isEmpty()) {
+        } if (aeropuertoDTO.getNombre() == null || aeropuertoDTO.getNombre().isBlank() || aeropuertoDTO.getNombre().trim().isEmpty()) {
             throw new Exception("El nombre del aeropuerto no puede ser nulo  o vacío");
-        } if (aeropuerto.getIata() == null || aeropuerto.getIata().isBlank() || aeropuerto.getIata().trim().isEmpty()) {
+        } if (aeropuertoDTO.getIata() == null || aeropuertoDTO.getIata().isBlank() || aeropuertoDTO.getIata().trim().isEmpty()) {
             throw new Exception("El IATA del aeropuerto no puede ser nulo o vacío");
-        } if (aeropuerto.getUbicacion() == null || aeropuerto.getUbicacion().isBlank() || aeropuerto.getUbicacion().trim().isEmpty()) {
+        } if (aeropuertoDTO.getUbicacion() == null || aeropuertoDTO.getUbicacion().isBlank() || aeropuertoDTO.getUbicacion().trim().isEmpty()) {
             throw new Exception("La ubicación del aeropuerto no puede ser nula o vacía");
-        } if (aeropuerto.getEstado() == null || aeropuerto.getEstado().isBlank() || aeropuerto.getEstado().trim().isEmpty()) {
+        } if (aeropuertoDTO.getEstado() == null || aeropuertoDTO.getEstado().isBlank() || aeropuertoDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del aeropuerto no puede ser nulo o vacío");
         }
+    }
+
+    @Override
+    public AeropuertoDTO guardarAeropuerto(AeropuertoDTO aeropuertoDTO) throws Exception {
+        validarAeropuertoDTO(aeropuertoDTO);
+
+        Aeropuerto aeropuerto = AeropuertoMapper.dtoToDomain(aeropuertoDTO);
 
         return AeropuertoMapper.domainToDTO(aeropuertoRepository.save(aeropuerto));
     }
@@ -60,11 +64,9 @@ public class AeropuertoServiceImpl implements AeropuertoService {
 
     @Override
     public AeropuertoDTO actualizarAeropuerto(AeropuertoDTO aeropuertoDTO) throws Exception {
-        AeropuertoDTO aeropuertoSavedDTO = obtenerAeropuertoPorId(aeropuertoDTO.getIdAeropuerto());
+        validarAeropuertoDTO(aeropuertoDTO);
 
-        if (aeropuertoSavedDTO == null) {
-            throw new Exception("El aeropuerto no existe");
-        }
+        AeropuertoDTO aeropuertoSavedDTO = obtenerAeropuertoPorId(aeropuertoDTO.getIdAeropuerto());
 
         aeropuertoSavedDTO.setNombre(aeropuertoDTO.getNombre());
         aeropuertoSavedDTO.setEstado(aeropuertoDTO.getEstado());

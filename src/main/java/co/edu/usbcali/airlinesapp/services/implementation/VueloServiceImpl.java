@@ -25,30 +25,35 @@ public class VueloServiceImpl implements VueloService {
         this.aeropuertoService = aeropuertoService;
     }
 
-    @Override
-    public VueloDTO guardarVuelo(VueloDTO vueloDTO) throws Exception {
-        Vuelo vuelo = VueloMapper.dtoToDomain(vueloDTO);
-        if (vuelo == null) {
+    public void validarVueloDTO(VueloDTO vueloDTO) throws Exception {
+        if (vueloDTO == null) {
             throw new Exception("El vuelo no puede ser nulo");
         } if (vueloDTO.getIdAeropuertoOrigen() == null || vueloDTO.getIdAeropuertoOrigen() <= 0) {
             throw new Exception("El id del aeropuerto de origen no puede ser nulo o menor o igual a cero");
         } if (vueloDTO.getIdAeropuertoDestino() == null || vueloDTO.getIdAeropuertoDestino() <= 0) {
             throw new Exception("El id del aeropuerto de destino no puede ser nulo o menor o igual a cero");
-        } if (vuelo.getPrecio() < 0) {
+        } if (vueloDTO.getPrecio() < 0) {
             throw new Exception("El precio del vuelo no puede ser menor a cero");
-        } if (vuelo.getHoraSalida() == null) {
-            throw new Exception("La hora de salida del vuelo no puedeid ser nula");
-        } if (vuelo.getHoraLlegada() == null) {
+        } if (vueloDTO.getHoraSalida() == null) {
+            throw new Exception("La hora de salida del vuelo no puede ser nula");
+        } if (vueloDTO.getHoraLlegada() == null) {
             throw new Exception("La hora de llegada del vuelo no puede ser nula");
-        } if (vuelo.getPrecioAsientoVip() < 0) {
+        } if (vueloDTO.getPrecioAsientoVip() < 0) {
             throw new Exception("El precio del asiento vip no puede ser menor a cero");
-        } if (vuelo.getPrecioAsientoNormal() < 0) {
+        } if (vueloDTO.getPrecioAsientoNormal() < 0) {
             throw new Exception("El precio del asiento normal no puede ser menor a cero");
-        } if (vuelo.getPrecioAsientoBasico() < 0) {
+        } if (vueloDTO.getPrecioAsientoBasico() < 0) {
             throw new Exception("El precio del asiento básico no puede ser menor a cero");
-        } if (vuelo.getEstado() == null || vuelo.getEstado().isBlank() || vuelo.getEstado().trim().isEmpty()) {
+        } if (vueloDTO.getEstado() == null || vueloDTO.getEstado().isBlank() || vueloDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del vuelo no puede ser nulo o vacío");
         }
+    }
+
+    @Override
+    public VueloDTO guardarVuelo(VueloDTO vueloDTO) throws Exception {
+        validarVueloDTO(vueloDTO);
+
+        Vuelo vuelo = VueloMapper.dtoToDomain(vueloDTO);
 
         vuelo.setAeropuertoOrigen(AeropuertoMapper.dtoToDomain(aeropuertoService.obtenerAeropuertoPorId(vueloDTO.getIdAeropuertoOrigen())));
         vuelo.setAeropuertoDestino(AeropuertoMapper.dtoToDomain(aeropuertoService.obtenerAeropuertoPorId(vueloDTO.getIdAeropuertoDestino())));
@@ -76,11 +81,9 @@ public class VueloServiceImpl implements VueloService {
 
     @Override
     public VueloDTO actualizarVuelo(VueloDTO vueloDTO) throws Exception {
-        VueloDTO vueloSavedDTO = obtenerVueloPorId(vueloDTO.getIdVuelo());
+        validarVueloDTO(vueloDTO);
 
-        if (vueloSavedDTO == null) {
-            throw new Exception("El vuelo no existe");
-        }
+        VueloDTO vueloSavedDTO = obtenerVueloPorId(vueloDTO.getIdVuelo());
 
         vueloSavedDTO.setPrecio(vueloDTO.getPrecio());
         vueloSavedDTO.setHoraSalida(vueloDTO.getHoraSalida());
