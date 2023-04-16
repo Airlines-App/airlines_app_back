@@ -42,6 +42,14 @@ public class AsientoServiceImplTest {
                 .estado("A")
                 .build();
 
+        Asiento.builder()
+                .idAsiento(1)
+                .tipoAsiento(tipoAsiento)
+                .avion(avion)
+                .ubicacion("A1")
+                .estado("A")
+                .build();
+
         List<Asiento> asientos = List.of(Asiento.builder()
                         .idAsiento(1)
                         .tipoAsiento(tipoAsiento)
