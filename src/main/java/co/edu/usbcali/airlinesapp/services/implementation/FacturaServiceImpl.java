@@ -4,12 +4,10 @@ import co.edu.usbcali.airlinesapp.domain.Factura;
 import co.edu.usbcali.airlinesapp.dtos.FacturaDTO;
 import co.edu.usbcali.airlinesapp.mappers.FacturaMapper;
 import co.edu.usbcali.airlinesapp.mappers.ReservaMapper;
-import co.edu.usbcali.airlinesapp.mappers.UsuarioMapper;
 import co.edu.usbcali.airlinesapp.repository.FacturaRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.FacturaService;
-
 import co.edu.usbcali.airlinesapp.services.interfaces.ReservaService;
-import co.edu.usbcali.airlinesapp.services.interfaces.UsuarioService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +24,23 @@ public class FacturaServiceImpl implements FacturaService {
         this.reservaService = reservaService;
     }
 
-    @Override
-    public FacturaDTO guardarFactura(FacturaDTO facturaDTO) throws Exception {
-        Factura factura = FacturaMapper.dtoToDomain(facturaDTO);
-
-        if (factura == null) {
+    public void validarFacturaDTO(FacturaDTO facturaDTO) throws Exception {
+        if (facturaDTO == null) {
             throw new Exception("La factura no puede ser nula");
         } if (facturaDTO.getIdReserva() == null || facturaDTO.getIdReserva() <= 0) {
             throw new Exception("El id de la reserva no puede ser nulo o menor o igual a cero");
-        } if (factura.getFecha() == null) {
+        } if (facturaDTO.getFecha() == null) {
             throw new Exception("La fecha de la factura no puede ser nula");
-        } if (factura.getEstado() == null || factura.getEstado().isBlank() || factura.getEstado().trim().isEmpty()) {
+        } if (facturaDTO.getEstado() == null || facturaDTO.getEstado().isBlank() || facturaDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado de la factura no puede ser nulo o vacío");
         }
+    }
+
+    @Override
+    public FacturaDTO guardarFactura(FacturaDTO facturaDTO) throws Exception {
+        validarFacturaDTO(facturaDTO);
+
+        Factura factura = FacturaMapper.dtoToDomain(facturaDTO);
 
         factura.setReserva(ReservaMapper.dtoToDomain(reservaService.obtenerReservaPorId(facturaDTO.getIdReserva())));
 
@@ -66,22 +68,16 @@ public class FacturaServiceImpl implements FacturaService {
 
     @Override
     public List<FacturaDTO> obtenerFacturasPorIdReserva(Integer idReserva) throws Exception {
-        try {
-            reservaService.obtenerReservaPorId(idReserva);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        reservaService.obtenerReservaPorId(idReserva);
 
         return FacturaMapper.domainToDTOList(facturaRepository.findAllByReserva_IdReserva(idReserva));
     }
 
     @Override
     public FacturaDTO actualizarFactura(FacturaDTO facturaDTO) throws Exception {
-        FacturaDTO facturaSavedDTO = obtenerFacturaPorId(facturaDTO.getIdFactura());
+        validarFacturaDTO(facturaDTO);
 
-        if (facturaSavedDTO == null) {
-            throw new Exception("La factura no existe");
-        }
+        FacturaDTO facturaSavedDTO = obtenerFacturaPorId(facturaDTO.getIdFactura());
 
         facturaSavedDTO.setFecha(facturaDTO.getFecha());
         facturaSavedDTO.setEstado(facturaDTO.getEstado());

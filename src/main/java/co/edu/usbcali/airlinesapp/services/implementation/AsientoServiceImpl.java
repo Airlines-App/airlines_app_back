@@ -28,21 +28,25 @@ public class AsientoServiceImpl implements AsientoService {
         this.avionService = avionService;
     }
 
-    @Override
-    public AsientoDTO guardarAsiento(AsientoDTO asientoDTO) throws Exception {
-        Asiento asiento = AsientoMapper.dtoToDomain(asientoDTO);
-
-        if (asiento == null) {
+    public void validarAsientoDTO(AsientoDTO asientoDTO) throws Exception {
+        if (asientoDTO == null) {
             throw new Exception("El asiento no puede ser nulo");
         } if (asientoDTO.getIdTipoAsiento() == null || asientoDTO.getIdTipoAsiento() <= 0) {
             throw new Exception("El id del tipo de asiento no puede ser nulo o menor o igual a cero");
         } if (asientoDTO.getIdAvion() == null || asientoDTO.getIdAvion() <= 0) {
             throw new Exception("El id del avión no puede ser nulo o menor o igual a cero");
-        } if (asiento.getUbicacion() == null || asiento.getUbicacion().isBlank() || asiento.getUbicacion().trim().isEmpty()) {
+        } if (asientoDTO.getUbicacion() == null || asientoDTO.getUbicacion().isBlank() || asientoDTO.getUbicacion().trim().isEmpty()) {
             throw new Exception("La ubicación del asiento no puede ser nula o vacía");
-        } if (asiento.getEstado() == null || asiento.getEstado().isBlank() || asiento.getEstado().trim().isEmpty()) {
+        } if (asientoDTO.getEstado() == null || asientoDTO.getEstado().isBlank() || asientoDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del asiento no puede ser nulo o vacío");
         }
+    }
+
+    @Override
+    public AsientoDTO guardarAsiento(AsientoDTO asientoDTO) throws Exception {
+        validarAsientoDTO(asientoDTO);
+
+        Asiento asiento = AsientoMapper.dtoToDomain(asientoDTO);
 
         asiento.setTipoAsiento(TipoAsientoMapper.dtoToDomain(tipoAsientoService.obtenerTipoAsientoPorId(asientoDTO.getIdTipoAsiento())));
         asiento.setAvion(AvionMapper.dtoToDomain(avionService.obtenerAvionPorId(asientoDTO.getIdAvion())));
@@ -71,11 +75,9 @@ public class AsientoServiceImpl implements AsientoService {
 
     @Override
     public AsientoDTO actualizarAsiento(AsientoDTO asientoDTO) throws Exception {
-        AsientoDTO asientoSavedDTO = obtenerAsientoPorId(asientoDTO.getIdAsiento());
+        validarAsientoDTO(asientoDTO);
 
-        if (asientoSavedDTO == null) {
-            throw new Exception("El asiento no existe");
-        }
+        AsientoDTO asientoSavedDTO = obtenerAsientoPorId(asientoDTO.getIdAsiento());
 
         asientoSavedDTO.setUbicacion(asientoDTO.getUbicacion());
         asientoSavedDTO.setEstado(asientoDTO.getEstado());

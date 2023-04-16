@@ -24,25 +24,29 @@ public class UsuarioServiceImpl implements UsuarioService {
         this.rolUsuarioService = rolUsuarioService;
     }
 
-    @Override
-    public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) throws Exception {
-        Usuario usuario = UsuarioMapper.dtoToDomain(usuarioDTO);
-
-        if (usuario == null) {
+    public void validarUsuarioDTO(UsuarioDTO usuarioDTO) throws Exception {
+        if (usuarioDTO == null) {
             throw new Exception("El usuario no puede ser nulo");
         } if (usuarioDTO.getIdRolUsuario() == null || usuarioDTO.getIdRolUsuario() <= 0) {
             throw new Exception("El id del rol del usuario no puede ser nulo o menor o igual a cero");
-        } if (usuario.getCedula() == null || usuario.getCedula().isBlank() || usuario.getNombre().trim().isEmpty()) {
+        } if (usuarioDTO.getCedula() == null || usuarioDTO.getCedula().isBlank() || usuarioDTO.getNombre().trim().isEmpty()) {
             throw new Exception("La cédula del usuario no puede ser nula o vacía");
-        } if (usuario.getNombre().isBlank() || usuario.getNombre().trim().isEmpty()) {
+        } if (usuarioDTO.getNombre() == null || usuarioDTO.getNombre().isBlank() || usuarioDTO.getNombre().trim().isEmpty()) {
             throw new Exception("El nombre del usuario no puede ser nulo o vacío");
-        } if (usuario.getApellido() == null || usuario.getApellido().isBlank() || usuario.getApellido().trim().isEmpty()) {
+        } if (usuarioDTO.getApellido() == null || usuarioDTO.getApellido().isBlank() || usuarioDTO.getApellido().trim().isEmpty()) {
             throw new Exception("El apellido del usuario no puede ser nulo o vacío");
-        } if (usuario.getCorreo() == null || usuario.getCorreo().isBlank() || usuario.getCorreo().trim().isEmpty()) {
+        } if (usuarioDTO.getCorreo() == null || usuarioDTO.getCorreo().isBlank() || usuarioDTO.getCorreo().trim().isEmpty()) {
             throw new Exception("El correo del usuario no puede ser nulo o vacío");
-        } if (usuario.getEstado() == null || usuario.getEstado().isBlank() || usuario.getEstado().trim().isEmpty()) {
+        } if (usuarioDTO.getEstado() == null || usuarioDTO.getEstado().isBlank() || usuarioDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del usuario no puede ser nulo o vacío");
         }
+    }
+
+    @Override
+    public UsuarioDTO guardarUsuario(UsuarioDTO usuarioDTO) throws Exception {
+        validarUsuarioDTO(usuarioDTO);
+
+        Usuario usuario = UsuarioMapper.dtoToDomain(usuarioDTO);
 
         usuario.setRolUsuario(RolUsuarioMapper.dtoToDomain(rolUsuarioService.obtenerRolUsuarioPorId(usuarioDTO.getIdRolUsuario())));
 
@@ -70,7 +74,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioDTO obtenerUsuarioPorCedula(String cedula) throws Exception {
-        if (!usuarioRepository.existsUsuarioByCedula(cedula)) {
+        if (!usuarioRepository.existsByCedula(cedula)) {
             return null;
         }
 
@@ -79,11 +83,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioDTO actualizarUsuario(UsuarioDTO usuarioDTO) throws Exception {
-        UsuarioDTO usuarioSavedDTO = obtenerUsuarioPorId(usuarioDTO.getIdUsuario());
+        validarUsuarioDTO(usuarioDTO);
 
-        if (usuarioSavedDTO == null) {
-            throw new Exception("El usuario no existe");
-        }
+        UsuarioDTO usuarioSavedDTO = obtenerUsuarioPorId(usuarioDTO.getIdUsuario());
 
         usuarioSavedDTO.setCedula(usuarioDTO.getCedula());
         usuarioSavedDTO.setNombre(usuarioDTO.getNombre());

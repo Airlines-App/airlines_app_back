@@ -32,11 +32,8 @@ public class TrayectoServiceImpl implements TrayectoService {
         this.vueloService = vueloService;
     }
 
-    @Override
-    public TrayectoDTO guardarTrayecto(TrayectoDTO trayectoDTO) throws Exception {
-        Trayecto trayecto = TrayectoMapper.dtoToDomain(trayectoDTO);
-
-        if (trayecto == null) {
+    public void validarTrayectoDTO(TrayectoDTO trayectoDTO) throws Exception {
+        if (trayectoDTO == null) {
             throw new Exception("El trayecto no puede ser nulo");
         } if (trayectoDTO.getIdAvion() == null || trayectoDTO.getIdAvion() <= 0) {
             throw new Exception("El id del avión no puede ser nulo o menor o igual a cero");
@@ -44,15 +41,22 @@ public class TrayectoServiceImpl implements TrayectoService {
             throw new Exception("El id del aeropuerto de origen no puede ser nulo o menor o igual a cero");
         } if (trayectoDTO.getIdAeropuertoDestino() == null || trayectoDTO.getIdAeropuertoDestino() <= 0) {
             throw new Exception("El id del aeropuerto de destino no puede ser nulo o menor o igual a cero");
-        } if (trayecto.getHoraSalida() == null) {
+        } if (trayectoDTO.getHoraSalida() == null) {
             throw new Exception("La hora de salida del trayecto no puede ser nula");
-        } if (trayecto.getHoraLlegada() == null) {
+        } if (trayectoDTO.getHoraLlegada() == null) {
             throw new Exception("La hora de llegada del trayecto no puede ser nula");
         } if (trayectoDTO.getIdVuelo() == null || trayectoDTO.getIdVuelo() <= 0) {
             throw new Exception("El id del vuelo no puede ser nulo o menor o igual a cero");
-        } if (trayecto.getEstado() == null || trayecto.getEstado().isBlank() || trayecto.getEstado().trim().isEmpty()) {
+        } if (trayectoDTO.getEstado() == null || trayectoDTO.getEstado().isBlank() || trayectoDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del trayecto no puede ser nulo o vacío");
         }
+    }
+
+    @Override
+    public TrayectoDTO guardarTrayecto(TrayectoDTO trayectoDTO) throws Exception {
+        validarTrayectoDTO(trayectoDTO);
+
+        Trayecto trayecto = TrayectoMapper.dtoToDomain(trayectoDTO);
 
         trayecto.setAvion(AvionMapper.dtoToDomain(avionService.obtenerAvionPorId(trayectoDTO.getIdAvion())));
         trayecto.setAeropuertoOrigen(AeropuertoMapper.dtoToDomain(aeropuertoService.obtenerAeropuertoPorId(trayectoDTO.getIdAeropuertoOrigen())));
@@ -83,11 +87,9 @@ public class TrayectoServiceImpl implements TrayectoService {
 
     @Override
     public TrayectoDTO actualizarTrayecto(TrayectoDTO trayectoDTO) throws Exception {
-        TrayectoDTO trayectoSavedDTO = obtenerTrayectoPorId(trayectoDTO.getIdTrayecto());
+        validarTrayectoDTO(trayectoDTO);
 
-        if (trayectoSavedDTO == null) {
-            throw new Exception("El trayecto no existe");
-        }
+        TrayectoDTO trayectoSavedDTO = obtenerTrayectoPorId(trayectoDTO.getIdTrayecto());
 
         trayectoSavedDTO.setHoraSalida(trayectoDTO.getHoraSalida());
         trayectoSavedDTO.setHoraLlegada(trayectoDTO.getHoraLlegada());
