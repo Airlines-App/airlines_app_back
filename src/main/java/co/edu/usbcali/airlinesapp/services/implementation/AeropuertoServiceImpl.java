@@ -55,7 +55,7 @@ public class AeropuertoServiceImpl implements AeropuertoService {
             throw new Exception("El aeropuerto con id " + id + " no existe");
         }
 
-        return AeropuertoMapper.domainToDTO(aeropuertoRepository.findById(id).get());
+        return AeropuertoMapper.domainToDTO(aeropuertoRepository.getReferenceById(id));
     }
 
     @Override

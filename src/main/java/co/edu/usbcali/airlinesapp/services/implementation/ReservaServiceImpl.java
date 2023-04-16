@@ -77,7 +77,7 @@ public class ReservaServiceImpl implements ReservaService {
             throw new Exception("La reserva con id " + id + " no existe");
         }
 
-        return ReservaMapper.domainToDTO(reservaRepository.findById(id).get());
+        return ReservaMapper.domainToDTO(reservaRepository.getReferenceById(id));
     }
 
     @Override

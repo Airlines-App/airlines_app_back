@@ -51,7 +51,7 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
             throw new Exception("El rol de usuario con id " + id + " no existe");
         }
 
-        return RolUsuarioMapper.domainToDTO(rolUsuarioRepository.findById(id).get());
+        return RolUsuarioMapper.domainToDTO(rolUsuarioRepository.getReferenceById(id));
     }
 
     @Override

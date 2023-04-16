@@ -71,7 +71,7 @@ public class VueloServiceImpl implements VueloService {
             throw new Exception("El vuelo con id " + id + " no existe");
         }
 
-        return VueloMapper.domainToDTO(vueloRepository.findById(id).get());
+        return VueloMapper.domainToDTO(vueloRepository.getReferenceById(id));
     }
 
     @Override

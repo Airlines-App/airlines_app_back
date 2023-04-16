@@ -51,7 +51,7 @@ public class TipoAsientoServiceImpl implements TipoAsientoService {
             throw new Exception("El tipo de asiento con id " + id + " no existe");
         }
 
-        return TipoAsientoMapper.domainToDTO(tipoAsientoService.findById(id).get());
+        return TipoAsientoMapper.domainToDTO(tipoAsientoService.getReferenceById(id));
 
     }
 

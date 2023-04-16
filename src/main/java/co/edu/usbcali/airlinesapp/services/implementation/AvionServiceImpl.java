@@ -53,7 +53,7 @@ public class AvionServiceImpl implements AvionService {
             throw new Exception("El avión con id " + id + " no existe");
         }
 
-        return AvionMapper.domainToDTO(avionRepository.findById(id).get());
+        return AvionMapper.domainToDTO(avionRepository.getReferenceById(id));
     }
 
     @Override
