@@ -2,6 +2,7 @@ package co.edu.usbcali.airlinesapp.services;
 
 import co.edu.usbcali.airlinesapp.domain.Avion;
 import co.edu.usbcali.airlinesapp.dtos.AvionDTO;
+import co.edu.usbcali.airlinesapp.mappers.AvionMapper;
 import co.edu.usbcali.airlinesapp.repository.AvionRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AvionService;
 
@@ -24,6 +25,37 @@ public class AvionServiceImplTest {
 
     @MockBean
     private AvionRepository avionRepository;
+
+    @Test
+    public void guardarAvionOk() throws Exception {
+        Avion avion = Avion.builder()
+                .idAvion(1)
+                .modelo("Boeing 737")
+                .aerolinea("Avianca")
+                .estado("A")
+                .build();
+
+        Mockito.when(avionRepository.existsById(1)).thenReturn(false);
+        Mockito.when(avionRepository.save(avion)).thenReturn(avion);
+
+        AvionDTO avionDTO = avionService.guardarAvion(AvionMapper.domainToDTO(avion));
+
+        assertEquals(1, avionDTO.getIdAvion());
+    }
+
+    @Test
+    public void guardarAvionNotOk() {
+        Avion avion = Avion.builder()
+                .idAvion(1)
+                .modelo("Boeing 737")
+                .aerolinea("Avianca")
+                .estado("A")
+                .build();
+
+        Mockito.when(avionRepository.existsById(1)).thenReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> avionService.guardarAvion(AvionMapper.domainToDTO(avion)));
+    }
 
     @Test
     public void obtenerAvionesOk() {

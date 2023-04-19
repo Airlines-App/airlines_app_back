@@ -2,6 +2,7 @@ package co.edu.usbcali.airlinesapp.services;
 
 import co.edu.usbcali.airlinesapp.domain.RolUsuario;
 import co.edu.usbcali.airlinesapp.dtos.RolUsuarioDTO;
+import co.edu.usbcali.airlinesapp.mappers.RolUsuarioMapper;
 import co.edu.usbcali.airlinesapp.repository.RolUsuarioRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.RolUsuarioService;
 
@@ -24,6 +25,35 @@ public class RolUsuarioServiceImplTest {
 
     @MockBean
     private RolUsuarioRepository rolUsuarioRepository;
+
+    @Test
+    public void guardarRolUsuarioOk() throws Exception {
+        RolUsuario rolUsuario = RolUsuario.builder()
+                .idRolUsuario(1)
+                .descripcion("Cliente")
+                .estado("A")
+                .build();
+
+        Mockito.when(rolUsuarioRepository.existsById(1)).thenReturn(false);
+        Mockito.when(rolUsuarioRepository.save(rolUsuario)).thenReturn(rolUsuario);
+
+        RolUsuarioDTO rolUsuarioDTO = rolUsuarioService.guardarRolUsuario(RolUsuarioMapper.domainToDTO(rolUsuario));
+
+        assertEquals(1, rolUsuarioDTO.getIdRolUsuario());
+    }
+
+    @Test
+    public void guardarRolUsuarioNotOk() {
+        RolUsuario rolUsuario = RolUsuario.builder()
+                .idRolUsuario(1)
+                .descripcion("Cliente")
+                .estado("A")
+                .build();
+
+        Mockito.when(rolUsuarioRepository.existsById(1)).thenReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> rolUsuarioService.guardarRolUsuario(RolUsuarioMapper.domainToDTO(rolUsuario)));
+    }
 
     @Test
     public void obtenerRolUsuariosOk() {

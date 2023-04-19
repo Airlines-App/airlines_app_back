@@ -78,7 +78,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             return null;
         }
 
-        return UsuarioMapper.domainToDTO(usuarioRepository.findByCedula(cedula));
+        return UsuarioMapper.domainToDTO(usuarioRepository.getReferenceByCedula(cedula));
     }
 
     @Override

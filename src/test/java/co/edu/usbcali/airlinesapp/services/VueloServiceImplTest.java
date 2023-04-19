@@ -3,6 +3,7 @@ package co.edu.usbcali.airlinesapp.services;
 import co.edu.usbcali.airlinesapp.domain.Aeropuerto;
 import co.edu.usbcali.airlinesapp.domain.Vuelo;
 import co.edu.usbcali.airlinesapp.dtos.VueloDTO;
+import co.edu.usbcali.airlinesapp.mappers.VueloMapper;
 import co.edu.usbcali.airlinesapp.repository.VueloRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.VueloService;
 
@@ -26,6 +27,65 @@ public class VueloServiceImplTest {
 
     @MockBean
     private VueloRepository vueloRepository;
+
+    @Test
+    public void guardarVueloOk() throws Exception {
+        Aeropuerto aeropuerto = Aeropuerto.builder()
+                .idAeropuerto(1)
+                .nombre("Aeropuerto Internacional El Dorado")
+                .iata("BOG")
+                .ubicacion("Bogotá")
+                .estado("A")
+                .build();
+
+        Vuelo vuelo = Vuelo.builder()
+                .idVuelo(1)
+                .aeropuertoOrigen(aeropuerto)
+                .aeropuertoDestino(aeropuerto)
+                .precio(100000)
+                .horaSalida(new Date())
+                .horaLlegada(new Date())
+                .precioAsientoVip(50000)
+                .precioAsientoNormal(30000)
+                .precioAsientoBasico(10000)
+                .estado("A")
+                .build();
+
+        Mockito.when(vueloRepository.existsById(1)).thenReturn(false);
+        Mockito.when(vueloRepository.save(vuelo)).thenReturn(vuelo);
+
+        VueloDTO vueloDTO = vueloService.guardarVuelo(VueloMapper.domainToDTO(vuelo));
+
+        assertEquals(1, vueloDTO.getIdVuelo());
+    }
+
+    @Test
+    public void guardarVueloNotOk() {
+        Aeropuerto aeropuerto = Aeropuerto.builder()
+                .idAeropuerto(1)
+                .nombre("Aeropuerto Internacional El Dorado")
+                .iata("BOG")
+                .ubicacion("Bogotá")
+                .estado("A")
+                .build();
+
+        Vuelo vuelo = Vuelo.builder()
+                .idVuelo(1)
+                .aeropuertoOrigen(aeropuerto)
+                .aeropuertoDestino(aeropuerto)
+                .precio(100000)
+                .horaSalida(new Date())
+                .horaLlegada(new Date())
+                .precioAsientoVip(50000)
+                .precioAsientoNormal(30000)
+                .precioAsientoBasico(10000)
+                .estado("A")
+                .build();
+
+        Mockito.when(vueloRepository.existsById(1)).thenReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> vueloService.guardarVuelo(VueloMapper.domainToDTO(vuelo)));
+    }
 
     @Test
     public void obtenerVuelosOk() {

@@ -5,6 +5,7 @@ import co.edu.usbcali.airlinesapp.domain.Avion;
 import co.edu.usbcali.airlinesapp.domain.Trayecto;
 import co.edu.usbcali.airlinesapp.domain.Vuelo;
 import co.edu.usbcali.airlinesapp.dtos.TrayectoDTO;
+import co.edu.usbcali.airlinesapp.mappers.TrayectoMapper;
 import co.edu.usbcali.airlinesapp.repository.TrayectoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.TrayectoService;
 
@@ -28,6 +29,101 @@ public class TrayectoServiceImplTest {
 
     @MockBean
     private TrayectoRepository trayectoRepository;
+
+    @Test
+    public void guardarTrayectoOk() throws Exception {
+        Aeropuerto aeropuerto = Aeropuerto.builder()
+                .idAeropuerto(1)
+                .nombre("Aeropuerto Internacional El Dorado")
+                .iata("BOG")
+                .ubicacion("Bogotá")
+                .estado("A")
+                .build();
+
+        Avion avion = Avion.builder()
+                .idAvion(1)
+                .modelo("Boeing 737")
+                .aerolinea("Avianca")
+                .estado("A")
+                .build();
+
+        Vuelo vuelo = Vuelo.builder()
+                .idVuelo(1)
+                .aeropuertoOrigen(aeropuerto)
+                .aeropuertoDestino(aeropuerto)
+                .precio(100000)
+                .horaSalida(new Date())
+                .horaLlegada(new Date())
+                .precioAsientoVip(50000)
+                .precioAsientoNormal(30000)
+                .precioAsientoBasico(10000)
+                .estado("A")
+                .build();
+
+        Trayecto trayecto = Trayecto.builder()
+                .idTrayecto(1)
+                .avion(avion)
+                .aeropuertoOrigen(aeropuerto)
+                .aeropuertoDestino(aeropuerto)
+                .horaSalida(new Date())
+                .horaLlegada(new Date())
+                .vuelo(vuelo)
+                .estado("A")
+                .build();
+
+        Mockito.when(trayectoRepository.existsById(1)).thenReturn(false);
+        Mockito.when(trayectoRepository.save(trayecto)).thenReturn(trayecto);
+
+        TrayectoDTO trayectoDTO = trayectoService.guardarTrayecto(TrayectoMapper.domainToDTO(trayecto));
+
+        assertEquals(1, trayectoDTO.getIdTrayecto());
+    }
+
+    @Test
+    public void guardarTrayectoNotOk() {
+        Aeropuerto aeropuerto = Aeropuerto.builder()
+                .idAeropuerto(1)
+                .nombre("Aeropuerto Internacional El Dorado")
+                .iata("BOG")
+                .ubicacion("Bogotá")
+                .estado("A")
+                .build();
+
+        Avion avion = Avion.builder()
+                .idAvion(1)
+                .modelo("Boeing 737")
+                .aerolinea("Avianca")
+                .estado("A")
+                .build();
+
+        Vuelo vuelo = Vuelo.builder()
+                .idVuelo(1)
+                .aeropuertoOrigen(aeropuerto)
+                .aeropuertoDestino(aeropuerto)
+                .precio(100000)
+                .horaSalida(new Date())
+                .horaLlegada(new Date())
+                .precioAsientoVip(50000)
+                .precioAsientoNormal(30000)
+                .precioAsientoBasico(10000)
+                .estado("A")
+                .build();
+
+        Trayecto trayecto = Trayecto.builder()
+                .idTrayecto(1)
+                .avion(avion)
+                .aeropuertoOrigen(aeropuerto)
+                .aeropuertoDestino(aeropuerto)
+                .horaSalida(new Date())
+                .horaLlegada(new Date())
+                .vuelo(vuelo)
+                .estado("A")
+                .build();
+
+        Mockito.when(trayectoRepository.existsById(1)).thenReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> trayectoService.guardarTrayecto(TrayectoMapper.domainToDTO(trayecto)));
+    }
 
     @Test
     public void obtenerTrayectosOk() {

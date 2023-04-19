@@ -3,6 +3,7 @@ package co.edu.usbcali.airlinesapp.services;
 import co.edu.usbcali.airlinesapp.domain.RolUsuario;
 import co.edu.usbcali.airlinesapp.domain.Usuario;
 import co.edu.usbcali.airlinesapp.dtos.UsuarioDTO;
+import co.edu.usbcali.airlinesapp.mappers.UsuarioMapper;
 import co.edu.usbcali.airlinesapp.repository.UsuarioRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.UsuarioService;
 
@@ -15,8 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class UsuarioServiceImplTest {
@@ -25,6 +25,55 @@ public class UsuarioServiceImplTest {
 
     @MockBean
     private UsuarioRepository usuarioRepository;
+
+    @Test
+    public void guardarUsuarioOk() throws Exception {
+        RolUsuario rolUsuario = RolUsuario.builder()
+                .idRolUsuario(1)
+                .descripcion("Cliente")
+                .estado("A")
+                .build();
+
+        Usuario usuario = Usuario.builder()
+                .idUsuario(1)
+                .rolUsuario(rolUsuario)
+                .cedula("123456789")
+                .nombre("Santiago")
+                .apellido("García")
+                .correo("santiagogarcia@gmail.com")
+                .estado("A")
+                .build();
+
+        Mockito.when(usuarioRepository.existsById(1)).thenReturn(false);
+        Mockito.when(usuarioRepository.save(usuario)).thenReturn(usuario);
+
+        UsuarioDTO usuarioDTO = usuarioService.guardarUsuario(UsuarioMapper.domainToDTO(usuario));
+
+        assertEquals(1, usuarioDTO.getIdUsuario());
+    }
+
+    @Test
+    public void guardarUsuarioNotOk() {
+        RolUsuario rolUsuario = RolUsuario.builder()
+                .idRolUsuario(1)
+                .descripcion("Cliente")
+                .estado("A")
+                .build();
+
+        Usuario usuario = Usuario.builder()
+                .idUsuario(1)
+                .rolUsuario(rolUsuario)
+                .cedula("123456789")
+                .nombre("Santiago")
+                .apellido("García")
+                .correo("santiagogarcia@gmail.com")
+                .estado("A")
+                .build();
+
+        Mockito.when(usuarioRepository.existsById(1)).thenReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> usuarioService.guardarUsuario(UsuarioMapper.domainToDTO(usuario)));
+    }
 
     @Test
     public void obtenerUsuariosOk() {
@@ -113,5 +162,38 @@ public class UsuarioServiceImplTest {
         Mockito.when(usuarioRepository.existsById(1)).thenReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> usuarioService.obtenerUsuarioPorId(1));
+    }
+
+    @Test
+    public void obtenerUsuarioPorCedulaOk() throws Exception {
+        RolUsuario rolUsuario = RolUsuario.builder()
+                .idRolUsuario(1)
+                .descripcion("Cliente")
+                .estado("A")
+                .build();
+
+        Usuario usuario = Usuario.builder()
+                .idUsuario(1)
+                .rolUsuario(rolUsuario)
+                .cedula("123456789")
+                .nombre("Santiago")
+                .apellido("García")
+                .correo("santiagogarcia@gmail.com")
+                .estado("A")
+                .build();
+
+        Mockito.when(usuarioRepository.existsByCedula("123456789")).thenReturn(true);
+        Mockito.when(usuarioRepository.getReferenceByCedula("123456789")).thenReturn(usuario);
+
+        UsuarioDTO usuarioDTO = usuarioService.obtenerUsuarioPorCedula("123456789");
+
+        assertEquals("123456789", usuarioDTO.getCedula());
+    }
+
+    @Test
+    public void obtenerUsuarioPorCedulaNotOk() throws Exception {
+        Mockito.when(usuarioRepository.existsByCedula("123456789")).thenReturn(false);
+
+        assertNull(usuarioService.obtenerUsuarioPorCedula("123456789"));
     }
 }

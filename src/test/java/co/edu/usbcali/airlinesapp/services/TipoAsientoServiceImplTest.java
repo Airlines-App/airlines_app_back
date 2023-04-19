@@ -2,6 +2,7 @@ package co.edu.usbcali.airlinesapp.services;
 
 import co.edu.usbcali.airlinesapp.domain.TipoAsiento;
 import co.edu.usbcali.airlinesapp.dtos.TipoAsientoDTO;
+import co.edu.usbcali.airlinesapp.mappers.TipoAsientoMapper;
 import co.edu.usbcali.airlinesapp.repository.TipoAsientoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.TipoAsientoService;
 
@@ -24,6 +25,35 @@ public class TipoAsientoServiceImplTest {
 
     @MockBean
     private TipoAsientoRepository tipoAsientoRepository;
+
+    @Test
+    public void guardarTipoAsientoOk() throws Exception {
+        TipoAsiento tipoAsiento = TipoAsiento.builder()
+                .idTipoAsiento(1)
+                .descripcion("Ejecutivo")
+                .estado("A")
+                .build();
+
+        Mockito.when(tipoAsientoRepository.existsById(1)).thenReturn(false);
+        Mockito.when(tipoAsientoRepository.save(tipoAsiento)).thenReturn(tipoAsiento);
+
+        TipoAsientoDTO tipoAsientoDTO = tipoAsientoService.guardarTipoAsiento(TipoAsientoMapper.domainToDTO(tipoAsiento));
+
+        assertEquals(1, tipoAsientoDTO.getIdTipoAsiento());
+    }
+
+    @Test
+    public void guardarTipoAsientoNotOk() {
+        TipoAsiento tipoAsiento = TipoAsiento.builder()
+                .idTipoAsiento(1)
+                .descripcion("Ejecutivo")
+                .estado("A")
+                .build();
+
+        Mockito.when(tipoAsientoRepository.existsById(1)).thenReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> tipoAsientoService.guardarTipoAsiento(TipoAsientoMapper.domainToDTO(tipoAsiento)));
+    }
 
     @Test
     public void obtenerTipoAsientosOk() {

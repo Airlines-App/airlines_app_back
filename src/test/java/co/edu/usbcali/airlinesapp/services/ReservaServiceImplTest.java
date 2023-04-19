@@ -2,6 +2,7 @@ package co.edu.usbcali.airlinesapp.services;
 
 import co.edu.usbcali.airlinesapp.domain.*;
 import co.edu.usbcali.airlinesapp.dtos.ReservaDTO;
+import co.edu.usbcali.airlinesapp.mappers.ReservaMapper;
 import co.edu.usbcali.airlinesapp.repository.ReservaRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.ReservaService;
 
@@ -25,6 +26,161 @@ public class ReservaServiceImplTest {
 
     @MockBean
     private ReservaRepository reservaRepository;
+
+    @Test
+    public void guardarReservaOk() throws Exception {
+        Aeropuerto aeropuerto = Aeropuerto.builder()
+                .idAeropuerto(1)
+                .nombre("Aeropuerto Internacional El Dorado")
+                .iata("BOG")
+                .ubicacion("Bogotá")
+                .estado("A")
+                .build();
+
+        Vuelo vuelo = Vuelo.builder()
+                .idVuelo(1)
+                .aeropuertoOrigen(aeropuerto)
+                .aeropuertoDestino(aeropuerto)
+                .precio(100000)
+                .horaSalida(new Date())
+                .horaLlegada(new Date())
+                .precioAsientoVip(50000)
+                .precioAsientoNormal(30000)
+                .precioAsientoBasico(10000)
+                .estado("A")
+                .build();
+
+        TipoAsiento tipoAsiento = TipoAsiento.builder()
+                .idTipoAsiento(1)
+                .descripcion("Ejecutivo")
+                .estado("A")
+                .build();
+
+        Avion avion = Avion.builder()
+                .idAvion(1)
+                .modelo("Boeing 737")
+                .aerolinea("Avianca")
+                .estado("A")
+                .build();
+
+        Asiento asiento = Asiento.builder()
+                .idAsiento(1)
+                .tipoAsiento(tipoAsiento)
+                .avion(avion)
+                .ubicacion("A1")
+                .estado("A")
+                .build();
+
+        RolUsuario rolUsuario = RolUsuario.builder()
+                .idRolUsuario(1)
+                .descripcion("Cliente")
+                .estado("A")
+                .build();
+
+        Usuario usuario = Usuario.builder()
+                .idUsuario(1)
+                .rolUsuario(rolUsuario)
+                .cedula("123456789")
+                .nombre("Santiago")
+                .apellido("García")
+                .correo("santiagogarcia@gmail.com")
+                .estado("A")
+                .build();
+
+        Reserva reserva = Reserva.builder()
+                .idReserva(1)
+                .vuelo(vuelo)
+                .asiento(asiento)
+                .usuario(usuario)
+                .precioTotal(100000)
+                .estadoPago("A")
+                .fecha(new Date())
+                .estado("A")
+                .build();
+
+        Mockito.when(reservaRepository.existsById(1)).thenReturn(false);
+        Mockito.when(reservaRepository.save(reserva)).thenReturn(reserva);
+
+        ReservaDTO reservaDTO = reservaService.guardarReserva(ReservaMapper.domainToDTO(reserva));
+
+        assertEquals(1, reservaDTO.getIdReserva());
+    }
+
+    @Test
+    public void guardarReservaNotOk() {
+        Aeropuerto aeropuerto = Aeropuerto.builder()
+                .idAeropuerto(1)
+                .nombre("Aeropuerto Internacional El Dorado")
+                .iata("BOG")
+                .ubicacion("Bogotá")
+                .estado("A")
+                .build();
+
+        Vuelo vuelo = Vuelo.builder()
+                .idVuelo(1)
+                .aeropuertoOrigen(aeropuerto)
+                .aeropuertoDestino(aeropuerto)
+                .precio(100000)
+                .horaSalida(new Date())
+                .horaLlegada(new Date())
+                .precioAsientoVip(50000)
+                .precioAsientoNormal(30000)
+                .precioAsientoBasico(10000)
+                .estado("A")
+                .build();
+
+        TipoAsiento tipoAsiento = TipoAsiento.builder()
+                .idTipoAsiento(1)
+                .descripcion("Ejecutivo")
+                .estado("A")
+                .build();
+
+        Avion avion = Avion.builder()
+                .idAvion(1)
+                .modelo("Boeing 737")
+                .aerolinea("Avianca")
+                .estado("A")
+                .build();
+
+        Asiento asiento = Asiento.builder()
+                .idAsiento(1)
+                .tipoAsiento(tipoAsiento)
+                .avion(avion)
+                .ubicacion("A1")
+                .estado("A")
+                .build();
+
+        RolUsuario rolUsuario = RolUsuario.builder()
+                .idRolUsuario(1)
+                .descripcion("Cliente")
+                .estado("A")
+                .build();
+
+        Usuario usuario = Usuario.builder()
+                .idUsuario(1)
+                .rolUsuario(rolUsuario)
+                .cedula("123456789")
+                .nombre("Santiago")
+                .apellido("García")
+                .correo("santiagogarcia@gmail.com")
+                .estado("A")
+                .build();
+
+        Reserva reserva = Reserva.builder()
+                .idReserva(1)
+                .vuelo(vuelo)
+                .asiento(asiento)
+                .usuario(usuario)
+                .precioTotal(100000)
+                .estadoPago("A")
+                .fecha(new Date())
+                .estado("A")
+                .build();
+
+        Mockito.when(reservaRepository.existsById(1)).thenReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> reservaService.guardarReserva(ReservaMapper.domainToDTO(reserva)));
+    }
 
     @Test
     public void obtenerReservasOk() {

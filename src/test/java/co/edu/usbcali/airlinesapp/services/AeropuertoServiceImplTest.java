@@ -2,6 +2,7 @@ package co.edu.usbcali.airlinesapp.services;
 
 import co.edu.usbcali.airlinesapp.domain.Aeropuerto;
 import co.edu.usbcali.airlinesapp.dtos.AeropuertoDTO;
+import co.edu.usbcali.airlinesapp.mappers.AeropuertoMapper;
 import co.edu.usbcali.airlinesapp.repository.AeropuertoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
 
@@ -24,6 +25,39 @@ public class AeropuertoServiceImplTest {
 
     @MockBean
     private AeropuertoRepository aeropuertoRepository;
+
+    @Test
+    public void guardarAeropuertoOk() throws Exception {
+        Aeropuerto aeropuerto = Aeropuerto.builder()
+                .idAeropuerto(1)
+                .nombre("Aeropuerto Internacional El Dorado")
+                .iata("BOG")
+                .ubicacion("Bogotá")
+                .estado("A")
+                .build();
+
+        Mockito.when(aeropuertoRepository.existsById(1)).thenReturn(false);
+        Mockito.when(aeropuertoRepository.save(aeropuerto)).thenReturn(aeropuerto);
+
+        AeropuertoDTO aeropuertoDTO = aeropuertoService.guardarAeropuerto(AeropuertoMapper.domainToDTO(aeropuerto));
+
+        assertEquals(1, aeropuertoDTO.getIdAeropuerto());
+    }
+
+    @Test
+    public void guardarAeropuertoNotOk() {
+        Aeropuerto aeropuerto = Aeropuerto.builder()
+                .idAeropuerto(1)
+                .nombre("Aeropuerto Internacional El Dorado")
+                .iata("BOG")
+                .ubicacion("Bogotá")
+                .estado("A")
+                .build();
+
+        Mockito.when(aeropuertoRepository.existsById(1)).thenReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> aeropuertoService.guardarAeropuerto(AeropuertoMapper.domainToDTO(aeropuerto)));
+    }
 
     @Test
     public void obtenerAeropuertosOk() {

@@ -4,6 +4,7 @@ import co.edu.usbcali.airlinesapp.domain.Asiento;
 import co.edu.usbcali.airlinesapp.domain.Avion;
 import co.edu.usbcali.airlinesapp.domain.TipoAsiento;
 import co.edu.usbcali.airlinesapp.dtos.AsientoDTO;
+import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.repository.AsientoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AsientoService;
 
@@ -26,6 +27,65 @@ public class AsientoServiceImplTest {
 
     @MockBean
     private AsientoRepository asientoRepository;
+
+    @Test
+    public void guardarAsientoOk() throws Exception {
+        TipoAsiento tipoAsiento = TipoAsiento.builder()
+                .idTipoAsiento(1)
+                .descripcion("Ejecutivo")
+                .estado("A")
+                .build();
+
+        Avion avion = Avion.builder()
+                .idAvion(1)
+                .modelo("Boeing 737")
+                .aerolinea("Avianca")
+                .estado("A")
+                .build();
+
+        Asiento asiento = Asiento.builder()
+                .idAsiento(1)
+                .tipoAsiento(tipoAsiento)
+                .avion(avion)
+                .ubicacion("A1")
+                .estado("A")
+                .build();
+
+        Mockito.when(asientoRepository.existsById(1)).thenReturn(false);
+        Mockito.when(asientoRepository.save(asiento)).thenReturn(asiento);
+
+        AsientoDTO asientoDTO = asientoService.guardarAsiento(AsientoMapper.domainToDTO(asiento));
+
+        assertEquals(1, asientoDTO.getIdAsiento());
+    }
+
+    @Test
+    public void guardarAsientoNotOk() {
+        TipoAsiento tipoAsiento = TipoAsiento.builder()
+                .idTipoAsiento(1)
+                .descripcion("Ejecutivo")
+                .estado("A")
+                .build();
+
+        Avion avion = Avion.builder()
+                .idAvion(1)
+                .modelo("Boeing 737")
+                .aerolinea("Avianca")
+                .estado("A")
+                .build();
+
+        Asiento asiento = Asiento.builder()
+                .idAsiento(1)
+                .tipoAsiento(tipoAsiento)
+                .avion(avion)
+                .ubicacion("A1")
+                .estado("A")
+                .build();
+
+        Mockito.when(asientoRepository.existsById(1)).thenReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> asientoService.guardarAsiento(AsientoMapper.domainToDTO(asiento)));
+    }
 
     @Test
     public void obtenerAsientosOk() {
