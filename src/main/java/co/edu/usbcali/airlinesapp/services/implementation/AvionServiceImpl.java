@@ -20,19 +20,23 @@ public class AvionServiceImpl implements AvionService {
         this.avionRepository = avionRepository;
     }
 
-    @Override
-    public AvionDTO guardarAvion(AvionDTO avionDTO) throws Exception {
-        Avion avion = AvionMapper.dtoToDomain(avionDTO);
-
-        if (avion == null) {
+    public void validarAvionDTO(AvionDTO avionDTO) throws Exception {
+        if (avionDTO == null) {
             throw new Exception("El avión no puede ser nulo");
-        } if (avion.getModelo() == null || avion.getModelo().isBlank() || avion.getModelo().trim().isEmpty()) {
+        } if (avionDTO.getModelo() == null || avionDTO.getModelo().isBlank() || avionDTO.getModelo().trim().isEmpty()) {
             throw new Exception("El modelo del avión no puede ser nulo o vacío");
-        } if (avion.getAerolinea() == null || avion.getAerolinea().isBlank() || avion.getAerolinea().trim().isEmpty()) {
+        } if (avionDTO.getAerolinea() == null || avionDTO.getAerolinea().isBlank() || avionDTO.getAerolinea().trim().isEmpty()) {
             throw new Exception("La aerolínea del avíón no puede ser nula o vacía");
-        } if (avion.getEstado() == null || avion.getEstado().isBlank() || avion.getEstado().trim().isEmpty()) {
+        } if (avionDTO.getEstado() == null || avionDTO.getEstado().isBlank() || avionDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del avión no puede ser nulo o vacío");
         }
+    }
+
+    @Override
+    public AvionDTO guardarAvion(AvionDTO avionDTO) throws Exception {
+        validarAvionDTO(avionDTO);
+
+        Avion avion = AvionMapper.dtoToDomain(avionDTO);
 
         return AvionMapper.domainToDTO(avionRepository.save(avion));
     }
@@ -53,16 +57,14 @@ public class AvionServiceImpl implements AvionService {
             throw new Exception("El avión con id " + id + " no existe");
         }
 
-        return AvionMapper.domainToDTO(avionRepository.findById(id).get());
+        return AvionMapper.domainToDTO(avionRepository.getReferenceById(id));
     }
 
     @Override
     public AvionDTO actualizarAvion(AvionDTO avionDTO) throws Exception {
-        AvionDTO avionSavedDTO = obtenerAvionPorId(avionDTO.getIdAvion());
+        validarAvionDTO(avionDTO);
 
-        if (avionSavedDTO == null) {
-            throw new Exception("El avión no existe");
-        }
+        AvionDTO avionSavedDTO = obtenerAvionPorId(avionDTO.getIdAvion());
 
         avionSavedDTO.setModelo(avionDTO.getModelo());
         avionSavedDTO.setAerolinea(avionDTO.getAerolinea());

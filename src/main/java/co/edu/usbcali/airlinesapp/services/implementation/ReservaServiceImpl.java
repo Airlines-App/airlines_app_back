@@ -32,27 +32,31 @@ public class ReservaServiceImpl implements ReservaService {
         this.usuarioService = usuarioService;
     }
 
-    @Override
-    public ReservaDTO guardarReserva(ReservaDTO reservaDTO) throws Exception {
-        Reserva reserva = ReservaMapper.dtoToDomain(reservaDTO);
-
-        if (reserva == null) {
+    public void validarReservaDTO(ReservaDTO reservaDTO) throws Exception {
+        if (reservaDTO == null) {
             throw new Exception("La reserva no puede ser nula");
-        } if (reservaDTO.getIdVuelo() == null || reservaDTO.getIdVuelo() <= 0) {
-            throw new Exception("El id del vuelo no puede ser nulo o menor o igual a cero");
-        } if (reservaDTO.getIdAsiento() == null || reservaDTO.getIdAsiento() <= 0) {
-            throw new Exception("El id del asiento no puede ser nulo o menor o igual a cero");
-        } if (reservaDTO.getIdUsuario() == null || reservaDTO.getIdUsuario() <= 0) {
-            throw new Exception("El id del usuario no puede ser nulo o menor o igual a cero");
-        } if (reserva.getPrecioTotal() < 0) {
+        } if (reservaDTO.getIdVuelo() == null) {
+            throw new Exception("El vuelo de la reserva no puede ser nulo");
+        } if (reservaDTO.getIdAsiento() == null) {
+            throw new Exception("El asiento de la reserva no puede ser nulo");
+        } if (reservaDTO.getIdUsuario() == null) {
+            throw new Exception("El usuario de la reserva no puede ser nulo");
+        } if (reservaDTO.getPrecioTotal() < 0) {
             throw new Exception("El precio total de la reserva no puede ser menor a cero");
-        } if (reserva.getEstadoPago() == null || reserva.getEstadoPago().isBlank() || reserva.getEstadoPago().trim().isEmpty()) {
+        } if (reservaDTO.getEstadoPago() == null || reservaDTO.getEstadoPago().isBlank() || reservaDTO.getEstadoPago().trim().isEmpty()) {
             throw new Exception("El estado de pago de la reserva no puede ser nulo o vacío");
-        } if (reserva.getFecha() == null) {
+        } if (reservaDTO.getFecha() == null) {
             throw new Exception("La fecha de la reserva no puede ser nula");
-        } if (reserva.getEstado() == null || reserva.getEstado().isBlank() || reserva.getEstado().trim().isEmpty()) {
+        } if (reservaDTO.getEstado() == null || reservaDTO.getEstado().isBlank() || reservaDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado de la reserva no puede ser nulo o vacío");
         }
+    }
+
+    @Override
+    public ReservaDTO guardarReserva(ReservaDTO reservaDTO) throws Exception {
+        validarReservaDTO(reservaDTO);
+
+        Reserva reserva = ReservaMapper.dtoToDomain(reservaDTO);
 
         reserva.setVuelo(VueloMapper.dtoToDomain(vueloService.obtenerVueloPorId(reservaDTO.getIdVuelo())));
         reserva.setAsiento(AsientoMapper.dtoToDomain(asientoService.obtenerAsientoPorId(reservaDTO.getIdAsiento())));
@@ -77,38 +81,28 @@ public class ReservaServiceImpl implements ReservaService {
             throw new Exception("La reserva con id " + id + " no existe");
         }
 
-        return ReservaMapper.domainToDTO(reservaRepository.findById(id).get());
+        return ReservaMapper.domainToDTO(reservaRepository.getReferenceById(id));
     }
 
     @Override
     public List<ReservaDTO> obtenerReservasPorIdVuelo(Integer idVuelo) throws Exception {
-        try {
-            vueloService.obtenerVueloPorId(idVuelo);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        vueloService.obtenerVueloPorId(idVuelo);
 
         return ReservaMapper.domainToDTOList(reservaRepository.findAllByVuelo_IdVuelo(idVuelo));
     }
 
     @Override
     public List<ReservaDTO> obtenerReservasPorCedula(String cedula) throws Exception {
-        try {
-            usuarioService.obtenerUsuarioPorCedula(cedula);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        usuarioService.obtenerUsuarioPorCedula(cedula);
 
         return ReservaMapper.domainToDTOList(reservaRepository.findAllByUsuario_Cedula(cedula));
     }
 
     @Override
     public ReservaDTO actualizarReserva(ReservaDTO reservaDTO) throws Exception {
-        ReservaDTO reservaSavedDTO = obtenerReservaPorId(reservaDTO.getIdReserva());
+        validarReservaDTO(reservaDTO);
 
-        if (reservaSavedDTO == null) {
-            throw new Exception("La reserva no existe");
-        }
+        ReservaDTO reservaSavedDTO = obtenerReservaPorId(reservaDTO.getIdReserva());
 
         reservaSavedDTO.setPrecioTotal(reservaDTO.getPrecioTotal());
         reservaSavedDTO.setEstadoPago(reservaDTO.getEstadoPago());

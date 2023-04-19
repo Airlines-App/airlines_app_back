@@ -20,17 +20,21 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
         this.rolUsuarioRepository = rolUsuarioRepository;
     }
 
-    @Override
-    public RolUsuarioDTO guardarRolUsuario(RolUsuarioDTO rolUsuarioDTO) throws Exception {
-        RolUsuario rolUsuario = RolUsuarioMapper.dtoToDomain(rolUsuarioDTO);
-
-        if (rolUsuario == null) {
+    public void validarRolUsuarioDTO(RolUsuarioDTO rolUsuarioDTO) throws Exception {
+        if (rolUsuarioDTO == null) {
             throw new Exception("El rol de usuario no puede ser nulo");
-        } if (rolUsuario.getDescripcion() == null || rolUsuario.getDescripcion().isBlank() || rolUsuario.getDescripcion().trim().isEmpty()) {
+        } if (rolUsuarioDTO.getDescripcion() == null || rolUsuarioDTO.getDescripcion().isBlank() || rolUsuarioDTO.getDescripcion().trim().isEmpty()) {
             throw new Exception("La descripción del rol de usuario no puede ser nula o vacía");
-        } if (rolUsuario.getEstado() == null || rolUsuario.getEstado().isBlank() || rolUsuario.getEstado().trim().isEmpty()) {
+        } if (rolUsuarioDTO.getEstado() == null || rolUsuarioDTO.getEstado().isBlank() || rolUsuarioDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del rol de usuario no puede ser nulo o vacío");
         }
+    }
+
+    @Override
+    public RolUsuarioDTO guardarRolUsuario(RolUsuarioDTO rolUsuarioDTO) throws Exception {
+        validarRolUsuarioDTO(rolUsuarioDTO);
+
+        RolUsuario rolUsuario = RolUsuarioMapper.dtoToDomain(rolUsuarioDTO);
 
         return RolUsuarioMapper.domainToDTO(rolUsuarioRepository.save(rolUsuario));
     }
@@ -51,16 +55,14 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
             throw new Exception("El rol de usuario con id " + id + " no existe");
         }
 
-        return RolUsuarioMapper.domainToDTO(rolUsuarioRepository.findById(id).get());
+        return RolUsuarioMapper.domainToDTO(rolUsuarioRepository.getReferenceById(id));
     }
 
     @Override
     public RolUsuarioDTO actualizarRolUsuario(RolUsuarioDTO rolUsuarioDTO) throws Exception {
-        RolUsuarioDTO rolUsuarioSavedDTO = obtenerRolUsuarioPorId(rolUsuarioDTO.getIdRolUsuario());
+        validarRolUsuarioDTO(rolUsuarioDTO);
 
-        if (rolUsuarioSavedDTO == null) {
-            throw new Exception("El rol de usuario no existe");
-        }
+        RolUsuarioDTO rolUsuarioSavedDTO = obtenerRolUsuarioPorId(rolUsuarioDTO.getIdRolUsuario());
 
         rolUsuarioSavedDTO.setDescripcion(rolUsuarioDTO.getDescripcion());
         rolUsuarioSavedDTO.setEstado(rolUsuarioDTO.getEstado());
