@@ -1,6 +1,7 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Trayecto;
+import co.edu.usbcali.airlinesapp.dtos.AeropuertoDTO;
 import co.edu.usbcali.airlinesapp.dtos.TrayectoDTO;
 import co.edu.usbcali.airlinesapp.mappers.AeropuertoMapper;
 import co.edu.usbcali.airlinesapp.mappers.AvionMapper;
@@ -12,6 +13,8 @@ import co.edu.usbcali.airlinesapp.services.interfaces.AvionService;
 import co.edu.usbcali.airlinesapp.services.interfaces.TrayectoService;
 
 import co.edu.usbcali.airlinesapp.services.interfaces.VueloService;
+import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
+import co.edu.usbcali.airlinesapp.utility.MetodosUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +44,18 @@ public class TrayectoServiceImpl implements TrayectoService {
             throw new Exception("El id del aeropuerto de origen no puede ser nulo o menor o igual a cero");
         } if (trayectoDTO.getIdAeropuertoDestino() == null || trayectoDTO.getIdAeropuertoDestino() <= 0) {
             throw new Exception("El id del aeropuerto de destino no puede ser nulo o menor o igual a cero");
+        } if (trayectoDTO.getIdAeropuertoOrigen().equals(trayectoDTO.getIdAeropuertoDestino())) {
+            throw new Exception("El id del aeropuerto de origen no puede ser igual al id del aeropuerto de destino");
         } if (trayectoDTO.getHoraSalida() == null) {
             throw new Exception("La hora de salida del trayecto no puede ser nula");
+        } if (MetodosUtility.esFechaActualOReciente(trayectoDTO.getHoraSalida())) {
+            throw new Exception("La hora de salida del trayecto no puede ser antigua a la fecha actual");
         } if (trayectoDTO.getHoraLlegada() == null) {
             throw new Exception("La hora de llegada del trayecto no puede ser nula");
+        } if (MetodosUtility.esFechaActualOReciente(trayectoDTO.getHoraLlegada())) {
+            throw new Exception("La hora de llegada del trayecto no puede ser antigua a la fecha actual");
+        } if (trayectoDTO.getHoraSalida().after(trayectoDTO.getHoraLlegada())) {
+            throw new Exception("La hora de salida del trayecto no puede ser posterior a la hora de llegada");
         } if (trayectoDTO.getIdVuelo() == null || trayectoDTO.getIdVuelo() <= 0) {
             throw new Exception("El id del vuelo no puede ser nulo o menor o igual a cero");
         } if (trayectoDTO.getEstado() == null || trayectoDTO.getEstado().isBlank() || trayectoDTO.getEstado().trim().isEmpty()) {
@@ -110,4 +121,13 @@ public class TrayectoServiceImpl implements TrayectoService {
 
         return guardarTrayecto(trayectoSavedDTO);
     }
+
+//    @Override
+//    public AeropuertoDTO obtenerAeropuertoOrigenPorIdTrayecto(Integer idTrayecto) throws Exception {
+//        if (!trayectoRepository.existsById(idTrayecto)) {
+//            throw new Exception("El trayecto con id " + idTrayecto + " no existe");
+//        }
+//
+//        return AeropuertoMapper.domainToDTO(trayectoRepository.findAeropuertoByIdTrayecto(idTrayecto));
+//    }
 }

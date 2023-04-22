@@ -6,10 +6,12 @@ import co.edu.usbcali.airlinesapp.mappers.AvionMapper;
 import co.edu.usbcali.airlinesapp.repository.AvionRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AvionService;
 
+import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -26,7 +28,9 @@ public class AvionServiceImpl implements AvionService {
         } if (avionDTO.getModelo() == null || avionDTO.getModelo().isBlank() || avionDTO.getModelo().trim().isEmpty()) {
             throw new Exception("El modelo del avión no puede ser nulo o vacío");
         } if (avionDTO.getAerolinea() == null || avionDTO.getAerolinea().isBlank() || avionDTO.getAerolinea().trim().isEmpty()) {
-            throw new Exception("La aerolínea del avíón no puede ser nula o vacía");
+            throw new Exception("La aerolínea del avión no puede ser nula o vacía");
+        } if (!Pattern.matches(ConstantesUtility.PATTERN_NAME_REGEX, avionDTO.getAerolinea())) {
+            throw new Exception("La aerolínea del avión no puede contener números ni caracteres especiales");
         } if (avionDTO.getEstado() == null || avionDTO.getEstado().isBlank() || avionDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del avión no puede ser nulo o vacío");
         }

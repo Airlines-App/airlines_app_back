@@ -4,31 +4,31 @@ import co.edu.usbcali.airlinesapp.domain.Aeropuerto;
 import co.edu.usbcali.airlinesapp.dtos.AeropuertoDTO;
 import co.edu.usbcali.airlinesapp.mappers.AeropuertoMapper;
 import co.edu.usbcali.airlinesapp.repository.AeropuertoRepository;
-import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
+import co.edu.usbcali.airlinesapp.services.implementation.AeropuertoServiceImpl;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 public class AeropuertoServiceImplTest {
-    @Autowired
-    private AeropuertoService aeropuertoService;
+    @InjectMocks
+    private AeropuertoServiceImpl aeropuertoServiceImpl;
 
-    @MockBean
+    @Mock
     private AeropuertoRepository aeropuertoRepository;
 
     @Test
     public void guardarAeropuertoOk() throws Exception {
-        Aeropuerto aeropuerto = Aeropuerto.builder()
+        AeropuertoDTO aeropuertoDTO = AeropuertoDTO.builder()
                 .idAeropuerto(1)
                 .nombre("Aeropuerto Internacional El Dorado")
                 .iata("BOG")
@@ -36,17 +36,19 @@ public class AeropuertoServiceImplTest {
                 .estado("A")
                 .build();
 
-        Mockito.when(aeropuertoRepository.existsById(1)).thenReturn(false);
-        Mockito.when(aeropuertoRepository.save(aeropuerto)).thenReturn(aeropuerto);
+        Aeropuerto aeropuerto = AeropuertoMapper.dtoToDomain(aeropuertoDTO);
 
-        AeropuertoDTO aeropuertoDTO = aeropuertoService.guardarAeropuerto(AeropuertoMapper.domainToDTO(aeropuerto));
+        given(aeropuertoRepository.existsById(aeropuertoDTO.getIdAeropuerto())).willReturn(false);
+        given(aeropuertoRepository.save(aeropuerto)).willReturn(aeropuerto);
 
-        assertEquals(1, aeropuertoDTO.getIdAeropuerto());
+        AeropuertoDTO aeropuertoSavedDTO = aeropuertoServiceImpl.guardarAeropuerto(aeropuertoDTO);
+
+        assertEquals(aeropuertoDTO.getIdAeropuerto(), aeropuertoSavedDTO.getIdAeropuerto());
     }
 
     @Test
     public void guardarAeropuertoNotOk() {
-        Aeropuerto aeropuerto = Aeropuerto.builder()
+        AeropuertoDTO aeropuertoDTO = AeropuertoDTO.builder()
                 .idAeropuerto(1)
                 .nombre("Aeropuerto Internacional El Dorado")
                 .iata("BOG")
@@ -54,9 +56,11 @@ public class AeropuertoServiceImplTest {
                 .estado("A")
                 .build();
 
-        Mockito.when(aeropuertoRepository.existsById(1)).thenReturn(true);
+        Aeropuerto aeropuerto = AeropuertoMapper.dtoToDomain(aeropuertoDTO);
 
-        assertThrows(java.lang.Exception.class, () -> aeropuertoService.guardarAeropuerto(AeropuertoMapper.domainToDTO(aeropuerto)));
+        given(aeropuertoRepository.existsById(aeropuertoDTO.getIdAeropuerto())).willReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> aeropuertoServiceImpl.guardarAeropuerto(aeropuertoDTO));
     }
 
     @Test
@@ -84,9 +88,9 @@ public class AeropuertoServiceImplTest {
                         .estado("A")
                         .build());
 
-        Mockito.when(aeropuertoRepository.findAll()).thenReturn(aeropuertos);
+        given(aeropuertoRepository.findAll()).willReturn(aeropuertos);
 
-        List<AeropuertoDTO> aeropuertosDTO = aeropuertoService.obtenerAeropuertos();
+        List<AeropuertoDTO> aeropuertosDTO = aeropuertoServiceImpl.obtenerAeropuertos();
 
         assertEquals(2, aeropuertosDTO.size());
         assertEquals("Aeropuerto Internacional El Dorado", aeropuertosDTO.get(0).getNombre());
@@ -96,9 +100,53 @@ public class AeropuertoServiceImplTest {
     public void obtenerAeropuertosNotOk() {
         List<Aeropuerto> aeropuertos = Arrays.asList();
 
-        Mockito.when(aeropuertoRepository.findAll()).thenReturn(aeropuertos);
+        given(aeropuertoRepository.findAll()).willReturn(aeropuertos);
 
-        List<AeropuertoDTO> aeropuertosDTO = aeropuertoService.obtenerAeropuertos();
+        List<AeropuertoDTO> aeropuertosDTO = aeropuertoServiceImpl.obtenerAeropuertos();
+
+        assertEquals(0, aeropuertosDTO.size());
+    }
+
+    @Test
+    public void obtenerAeropuertosActivosOk() {
+        Aeropuerto.builder()
+                .idAeropuerto(1)
+                .nombre("Aeropuerto Internacional El Dorado")
+                .iata("BOG")
+                .ubicacion("Bogotá")
+                .estado("A")
+                .build();
+
+        List<Aeropuerto> aeropuertos = Arrays.asList(Aeropuerto.builder()
+                        .idAeropuerto(1)
+                        .nombre("Aeropuerto Internacional El Dorado")
+                        .iata("BOG")
+                        .ubicacion("Bogotá")
+                        .estado("A")
+                        .build(),
+                Aeropuerto.builder()
+                        .idAeropuerto(2)
+                        .nombre("Aeropuerto Internacional Alfonso Bonilla Aragón")
+                        .iata("COL")
+                        .ubicacion("Santiago de Cali")
+                        .estado("I")
+                        .build());
+
+        given(aeropuertoRepository.findAllByEstado("A")).willReturn(aeropuertos);
+
+        List<AeropuertoDTO> aeropuertosDTO = aeropuertoServiceImpl.obtenerAeropuertosActivos();
+
+        assertEquals(2, aeropuertosDTO.size());
+        assertEquals("Aeropuerto Internacional El Dorado", aeropuertosDTO.get(0).getNombre());
+    }
+
+    @Test
+    public void obtenerAeropuertosActivosNotOk() {
+        List<Aeropuerto> aeropuertos = Arrays.asList();
+
+        given(aeropuertoRepository.findAllByEstado("A")).willReturn(aeropuertos);
+
+        List<AeropuertoDTO> aeropuertosDTO = aeropuertoServiceImpl.obtenerAeropuertosActivos();
 
         assertEquals(0, aeropuertosDTO.size());
     }
@@ -113,18 +161,20 @@ public class AeropuertoServiceImplTest {
                 .estado("A")
                 .build();
 
-        Mockito.when(aeropuertoRepository.existsById(1)).thenReturn(true);
-        Mockito.when(aeropuertoRepository.getReferenceById(1)).thenReturn(aeropuerto);
+        aeropuertoRepository.save(aeropuerto);
 
-        AeropuertoDTO aeropuertoDTO = aeropuertoService.obtenerAeropuertoPorId(1);
+        given(aeropuertoRepository.existsById(aeropuerto.getIdAeropuerto())).willReturn(true);
+        given(aeropuertoRepository.getReferenceById(aeropuerto.getIdAeropuerto())).willReturn(aeropuerto);
+
+        AeropuertoDTO aeropuertoDTO = aeropuertoServiceImpl.obtenerAeropuertoPorId(1);
 
         assertEquals(1, aeropuertoDTO.getIdAeropuerto());
     }
 
     @Test
     public void obtenerAeropuertoPorIdNotOk() {
-        Mockito.when(aeropuertoRepository.existsById(1)).thenReturn(false);
+        given(aeropuertoRepository.existsById(1)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> aeropuertoService.obtenerAeropuertoPorId(1));
+        assertThrows(java.lang.Exception.class, () -> aeropuertoServiceImpl.obtenerAeropuertoPorId(1));
     }
 }

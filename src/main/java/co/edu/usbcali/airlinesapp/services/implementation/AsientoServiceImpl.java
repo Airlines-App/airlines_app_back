@@ -10,10 +10,12 @@ import co.edu.usbcali.airlinesapp.services.interfaces.AsientoService;
 
 import co.edu.usbcali.airlinesapp.services.interfaces.AvionService;
 import co.edu.usbcali.airlinesapp.services.interfaces.TipoAsientoService;
+import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -37,6 +39,8 @@ public class AsientoServiceImpl implements AsientoService {
             throw new Exception("El id del avión no puede ser nulo o menor o igual a cero");
         } if (asientoDTO.getUbicacion() == null || asientoDTO.getUbicacion().isBlank() || asientoDTO.getUbicacion().trim().isEmpty()) {
             throw new Exception("La ubicación del asiento no puede ser nula o vacía");
+        } if (!Pattern.matches(ConstantesUtility.PATTERN_SEAT_REGEX, asientoDTO.getUbicacion())) {
+            throw new Exception("La ubicación del asiento no cumple con el patrón");
         } if (asientoDTO.getEstado() == null || asientoDTO.getEstado().isBlank() || asientoDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del asiento no puede ser nulo o vacío");
         }

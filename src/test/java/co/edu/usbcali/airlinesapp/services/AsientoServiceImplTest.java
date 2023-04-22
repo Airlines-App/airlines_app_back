@@ -6,27 +6,36 @@ import co.edu.usbcali.airlinesapp.domain.TipoAsiento;
 import co.edu.usbcali.airlinesapp.dtos.AsientoDTO;
 import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.repository.AsientoRepository;
-import co.edu.usbcali.airlinesapp.services.interfaces.AsientoService;
+import co.edu.usbcali.airlinesapp.repository.AvionRepository;
+import co.edu.usbcali.airlinesapp.repository.TipoAsientoRepository;
+import co.edu.usbcali.airlinesapp.services.implementation.AsientoServiceImpl;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 public class AsientoServiceImplTest {
-    @Autowired
-    private AsientoService asientoService;
+    @InjectMocks
+    private AsientoServiceImpl asientoServiceImpl;
 
-    @MockBean
+    @Mock
     private AsientoRepository asientoRepository;
+
+    @Mock
+    private TipoAsientoRepository tipoAsientoRepository;
+
+    @Mock
+    private AvionRepository avionRepository;
 
     @Test
     public void guardarAsientoOk() throws Exception {
@@ -43,20 +52,26 @@ public class AsientoServiceImplTest {
                 .estado("A")
                 .build();
 
-        Asiento asiento = Asiento.builder()
+        AsientoDTO asientoDTO = AsientoDTO.builder()
                 .idAsiento(1)
-                .tipoAsiento(tipoAsiento)
-                .avion(avion)
+                .idTipoAsiento(1)
+                .idAvion(1)
                 .ubicacion("A1")
                 .estado("A")
                 .build();
 
-        Mockito.when(asientoRepository.existsById(1)).thenReturn(false);
-        Mockito.when(asientoRepository.save(asiento)).thenReturn(asiento);
+        Asiento asiento = AsientoMapper.dtoToDomain(asientoDTO);
+        asiento.setTipoAsiento(tipoAsiento);
+        asiento.setAvion(avion);
 
-        AsientoDTO asientoDTO = asientoService.guardarAsiento(AsientoMapper.domainToDTO(asiento));
+        given(tipoAsientoRepository.existsById(tipoAsiento.getIdTipoAsiento())).willReturn(true);
+        given(tipoAsientoRepository.getReferenceById(tipoAsiento.getIdTipoAsiento())).willReturn(tipoAsiento);
+        given(asientoRepository.existsById(asientoDTO.getIdAsiento())).willReturn(false);
+        given(asientoRepository.save(asiento)).willReturn(asiento);
 
-        assertEquals(1, asientoDTO.getIdAsiento());
+        AsientoDTO asientoSavedDTO = asientoServiceImpl.guardarAsiento(asientoDTO);
+
+        assertEquals(asientoDTO.getIdAsiento(), asientoSavedDTO.getIdAsiento());
     }
 
     @Test
@@ -84,7 +99,7 @@ public class AsientoServiceImplTest {
 
         Mockito.when(asientoRepository.existsById(1)).thenReturn(true);
 
-        assertThrows(java.lang.Exception.class, () -> asientoService.guardarAsiento(AsientoMapper.domainToDTO(asiento)));
+        assertThrows(java.lang.Exception.class, () -> asientoServiceImpl.guardarAsiento(AsientoMapper.domainToDTO(asiento)));
     }
 
     @Test
@@ -127,7 +142,7 @@ public class AsientoServiceImplTest {
 
         Mockito.when(asientoRepository.findAll()).thenReturn(asientos);
 
-        List<AsientoDTO> asientosDTO = asientoService.obtenerAsientos();
+        List<AsientoDTO> asientosDTO = asientoServiceImpl.obtenerAsientos();
 
         assertEquals(2, asientosDTO.size());
         assertEquals("A1", asientosDTO.get(0).getUbicacion());
@@ -139,7 +154,7 @@ public class AsientoServiceImplTest {
 
         Mockito.when(asientoRepository.findAll()).thenReturn(asientos);
 
-        List<AsientoDTO> asientosDTO = asientoService.obtenerAsientos();
+        List<AsientoDTO> asientosDTO = asientoServiceImpl.obtenerAsientos();
 
         assertEquals(0, asientosDTO.size());
     }
@@ -170,7 +185,7 @@ public class AsientoServiceImplTest {
         Mockito.when(asientoRepository.existsById(1)).thenReturn(true);
         Mockito.when(asientoRepository.getReferenceById(1)).thenReturn(asiento);
 
-        AsientoDTO asientoDTO = asientoService.obtenerAsientoPorId(1);
+        AsientoDTO asientoDTO = asientoServiceImpl.obtenerAsientoPorId(1);
 
         assertEquals(1, asientoDTO.getIdAsiento());
     }
@@ -179,6 +194,6 @@ public class AsientoServiceImplTest {
     public void obtenerAsientoPorIdNotOk() {
         Mockito.when(asientoRepository.existsById(1)).thenReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> asientoService.obtenerAsientoPorId(1));
+        assertThrows(java.lang.Exception.class, () -> asientoServiceImpl.obtenerAsientoPorId(1));
     }
 }

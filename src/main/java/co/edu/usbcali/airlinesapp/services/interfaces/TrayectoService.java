@@ -1,5 +1,6 @@
 package co.edu.usbcali.airlinesapp.services.interfaces;
 
+import co.edu.usbcali.airlinesapp.dtos.AeropuertoDTO;
 import co.edu.usbcali.airlinesapp.dtos.TrayectoDTO;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface TrayectoService {
     TrayectoDTO obtenerTrayectoPorId(Integer id) throws Exception;
     TrayectoDTO actualizarTrayecto(TrayectoDTO trayectoDTO) throws Exception;
     TrayectoDTO eliminarTrayecto(Integer id) throws Exception;
+
+//    AeropuertoDTO obtenerAeropuertoOrigenPorIdTrayecto(Integer idTrayecto) throws Exception;
 }

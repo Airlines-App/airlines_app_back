@@ -8,6 +8,8 @@ import co.edu.usbcali.airlinesapp.repository.VueloRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
 import co.edu.usbcali.airlinesapp.services.interfaces.VueloService;
 
+import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
+import co.edu.usbcali.airlinesapp.utility.MetodosUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -32,18 +34,26 @@ public class VueloServiceImpl implements VueloService {
             throw new Exception("El id del aeropuerto de origen no puede ser nulo o menor o igual a cero");
         } if (vueloDTO.getIdAeropuertoDestino() == null || vueloDTO.getIdAeropuertoDestino() <= 0) {
             throw new Exception("El id del aeropuerto de destino no puede ser nulo o menor o igual a cero");
-        } if (vueloDTO.getPrecio() < 0) {
-            throw new Exception("El precio del vuelo no puede ser menor a cero");
+        } if (vueloDTO.getIdAeropuertoOrigen().equals(vueloDTO.getIdAeropuertoDestino())) {
+            throw new Exception("El id del aeropuerto de origen no puede ser igual al id del aeropuerto de destino");
+        } if (vueloDTO.getPrecio() <= 0) {
+            throw new Exception("El precio del vuelo no puede ser menor o igual a cero");
         } if (vueloDTO.getHoraSalida() == null) {
             throw new Exception("La hora de salida del vuelo no puede ser nula");
+        } if (MetodosUtility.esFechaActualOReciente(vueloDTO.getHoraSalida())) {
+            throw new Exception("La hora de salida del vuelo no puede ser antigua a la fecha actual");
         } if (vueloDTO.getHoraLlegada() == null) {
             throw new Exception("La hora de llegada del vuelo no puede ser nula");
-        } if (vueloDTO.getPrecioAsientoVip() < 0) {
-            throw new Exception("El precio del asiento vip no puede ser menor a cero");
-        } if (vueloDTO.getPrecioAsientoNormal() < 0) {
-            throw new Exception("El precio del asiento normal no puede ser menor a cero");
-        } if (vueloDTO.getPrecioAsientoBasico() < 0) {
-            throw new Exception("El precio del asiento básico no puede ser menor a cero");
+        } if (MetodosUtility.esFechaActualOReciente(vueloDTO.getHoraLlegada())) {
+            throw new Exception("La hora de llegada del vuelo no puede ser antigua a la fecha actual");
+        } if (vueloDTO.getHoraSalida().after(vueloDTO.getHoraLlegada())) {
+            throw new Exception("La hora de salida del vuelo no puede ser posterior a la hora de llegada");
+        } if (vueloDTO.getPrecioAsientoVip() <= 0) {
+            throw new Exception("El precio del asiento vip no puede ser menor o igual a cero");
+        } if (vueloDTO.getPrecioAsientoNormal() <= 0) {
+            throw new Exception("El precio del asiento normal no puede ser menor o igual a cero");
+        } if (vueloDTO.getPrecioAsientoBasico() <= 0) {
+            throw new Exception("El precio del asiento básico no puede ser menor o igual a cero");
         } if (vueloDTO.getEstado() == null || vueloDTO.getEstado().isBlank() || vueloDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del vuelo no puede ser nulo o vacío");
         }

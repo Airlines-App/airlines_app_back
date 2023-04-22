@@ -12,6 +12,8 @@ import co.edu.usbcali.airlinesapp.services.interfaces.ReservaService;
 
 import co.edu.usbcali.airlinesapp.services.interfaces.UsuarioService;
 import co.edu.usbcali.airlinesapp.services.interfaces.VueloService;
+import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
+import co.edu.usbcali.airlinesapp.utility.MetodosUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -35,18 +37,20 @@ public class ReservaServiceImpl implements ReservaService {
     public void validarReservaDTO(ReservaDTO reservaDTO) throws Exception {
         if (reservaDTO == null) {
             throw new Exception("La reserva no puede ser nula");
-        } if (reservaDTO.getIdVuelo() == null) {
-            throw new Exception("El vuelo de la reserva no puede ser nulo");
-        } if (reservaDTO.getIdAsiento() == null) {
-            throw new Exception("El asiento de la reserva no puede ser nulo");
-        } if (reservaDTO.getIdUsuario() == null) {
-            throw new Exception("El usuario de la reserva no puede ser nulo");
-        } if (reservaDTO.getPrecioTotal() < 0) {
-            throw new Exception("El precio total de la reserva no puede ser menor a cero");
+        } if (reservaDTO.getIdVuelo() == null || reservaDTO.getIdVuelo() <= 0) {
+            throw new Exception("El vuelo de la reserva no puede ser nulo o menor o igual a cero");
+        } if (reservaDTO.getIdAsiento() == null || reservaDTO.getIdAsiento() <= 0) {
+            throw new Exception("El asiento de la reserva no puede ser nulo o menor o igual a cero");
+        } if (reservaDTO.getIdUsuario() == null || reservaDTO.getIdUsuario() <= 0) {
+            throw new Exception("El usuario de la reserva no puede ser nulo o menor o igual a cero");
+        } if (reservaDTO.getPrecioTotal() <= 0) {
+            throw new Exception("El precio total de la reserva no puede ser menor o igual a cero");
         } if (reservaDTO.getEstadoPago() == null || reservaDTO.getEstadoPago().isBlank() || reservaDTO.getEstadoPago().trim().isEmpty()) {
             throw new Exception("El estado de pago de la reserva no puede ser nulo o vacío");
         } if (reservaDTO.getFecha() == null) {
             throw new Exception("La fecha de la reserva no puede ser nula");
+        } if (MetodosUtility.esFechaActualOReciente(reservaDTO.getFecha())) {
+            throw new Exception("La fecha de la reserva no puede ser antigua a la fecha actual");
         } if (reservaDTO.getEstado() == null || reservaDTO.getEstado().isBlank() || reservaDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado de la reserva no puede ser nulo o vacío");
         }

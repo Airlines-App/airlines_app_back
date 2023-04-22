@@ -8,6 +8,8 @@ import co.edu.usbcali.airlinesapp.repository.FacturaRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.FacturaService;
 import co.edu.usbcali.airlinesapp.services.interfaces.ReservaService;
 
+import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
+import co.edu.usbcali.airlinesapp.utility.MetodosUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,8 @@ public class FacturaServiceImpl implements FacturaService {
             throw new Exception("El id de la reserva no puede ser nulo o menor o igual a cero");
         } if (facturaDTO.getFecha() == null) {
             throw new Exception("La fecha de la factura no puede ser nula");
+        } if (MetodosUtility.esFechaActualOReciente(facturaDTO.getFecha())) {
+            throw new Exception("La fecha de la factura no puede ser antigua a la fecha actual");
         } if (facturaDTO.getEstado() == null || facturaDTO.getEstado().isBlank() || facturaDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado de la factura no puede ser nulo o vacío");
         }

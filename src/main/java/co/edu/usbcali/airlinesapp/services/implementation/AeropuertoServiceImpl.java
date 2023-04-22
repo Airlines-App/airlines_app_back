@@ -6,10 +6,12 @@ import co.edu.usbcali.airlinesapp.mappers.AeropuertoMapper;
 import co.edu.usbcali.airlinesapp.repository.AeropuertoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
 
+import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 @Slf4j
@@ -25,8 +27,14 @@ public class AeropuertoServiceImpl implements AeropuertoService {
             throw new Exception("El aeropuerto no puede ser nulo");
         } if (aeropuertoDTO.getNombre() == null || aeropuertoDTO.getNombre().isBlank() || aeropuertoDTO.getNombre().trim().isEmpty()) {
             throw new Exception("El nombre del aeropuerto no puede ser nulo  o vacío");
+        } if (!Pattern.matches(ConstantesUtility.PATTERN_NAME_REGEX, aeropuertoDTO.getNombre())) {
+            throw new Exception("El nombre del aeropuerto solo puede contener letras y espacios");
         } if (aeropuertoDTO.getIata() == null || aeropuertoDTO.getIata().isBlank() || aeropuertoDTO.getIata().trim().isEmpty()) {
             throw new Exception("El IATA del aeropuerto no puede ser nulo o vacío");
+        } if (!Pattern.matches(ConstantesUtility.PATTERN_IATA_REGEX, aeropuertoDTO.getIata())) {
+            throw new Exception("El IATA del aeropuerto debe tener 3 caracteres y solo letras mayúsculas");
+        } if (aeropuertoRepository.existsByIata(aeropuertoDTO.getIata())) {
+            throw new Exception("El IATA del aeropuerto ya existe");
         } if (aeropuertoDTO.getUbicacion() == null || aeropuertoDTO.getUbicacion().isBlank() || aeropuertoDTO.getUbicacion().trim().isEmpty()) {
             throw new Exception("La ubicación del aeropuerto no puede ser nula o vacía");
         } if (aeropuertoDTO.getEstado() == null || aeropuertoDTO.getEstado().isBlank() || aeropuertoDTO.getEstado().trim().isEmpty()) {
