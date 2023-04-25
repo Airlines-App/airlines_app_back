@@ -22,7 +22,13 @@ public class AeropuertoServiceImpl implements AeropuertoService {
         this.aeropuertoRepository = aeropuertoRepository;
     }
 
-    public void validarAeropuertoDTO(AeropuertoDTO aeropuertoDTO) throws Exception {
+    private AeropuertoDTO guardarOActualizarAeropuerto(AeropuertoDTO aeropuertoDTO) {
+        Aeropuerto aeropuerto = AeropuertoMapper.dtoToDomain(aeropuertoDTO);
+
+        return AeropuertoMapper.domainToDTO(aeropuertoRepository.save(aeropuerto));
+    }
+
+    private void validarAeropuertoDTO(AeropuertoDTO aeropuertoDTO, boolean esGuardar) throws Exception {
         if (aeropuertoDTO == null) {
             throw new Exception("El aeropuerto no puede ser nulo");
         } if (aeropuertoDTO.getNombre() == null || aeropuertoDTO.getNombre().isBlank() || aeropuertoDTO.getNombre().trim().isEmpty()) {
@@ -33,22 +39,32 @@ public class AeropuertoServiceImpl implements AeropuertoService {
             throw new Exception("El IATA del aeropuerto no puede ser nulo o vacío");
         } if (!Pattern.matches(ConstantesUtility.PATTERN_IATA_REGEX, aeropuertoDTO.getIata())) {
             throw new Exception("El IATA del aeropuerto debe tener 3 caracteres y solo letras mayúsculas");
-        } if (aeropuertoRepository.existsByIata(aeropuertoDTO.getIata())) {
-            throw new Exception("El IATA del aeropuerto ya existe");
         } if (aeropuertoDTO.getUbicacion() == null || aeropuertoDTO.getUbicacion().isBlank() || aeropuertoDTO.getUbicacion().trim().isEmpty()) {
             throw new Exception("La ubicación del aeropuerto no puede ser nula o vacía");
         } if (aeropuertoDTO.getEstado() == null || aeropuertoDTO.getEstado().isBlank() || aeropuertoDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del aeropuerto no puede ser nulo o vacío");
         }
+
+        if (esGuardar) {
+            if (aeropuertoRepository.existsById(aeropuertoDTO.getIdAeropuerto())) {
+                throw new Exception("El aeropuerto con id " + aeropuertoDTO.getIdAeropuerto() + " ya existe");
+            } if (aeropuertoRepository.existsByIata(aeropuertoDTO.getIata())) {
+                throw new Exception("El IATA del aeropuerto ya existe");
+            }
+        }
+
+        if (!esGuardar) {
+            if (!aeropuertoRepository.existsById(aeropuertoDTO.getIdAeropuerto())) {
+                throw new Exception("El aeropuerto con id " + aeropuertoDTO.getIdAeropuerto() + " no existe");
+            }
+        }
     }
 
     @Override
     public AeropuertoDTO guardarAeropuerto(AeropuertoDTO aeropuertoDTO) throws Exception {
-        validarAeropuertoDTO(aeropuertoDTO);
+        validarAeropuertoDTO(aeropuertoDTO, true);
 
-        Aeropuerto aeropuerto = AeropuertoMapper.dtoToDomain(aeropuertoDTO);
-
-        return AeropuertoMapper.domainToDTO(aeropuertoRepository.save(aeropuerto));
+        return guardarOActualizarAeropuerto(aeropuertoDTO);
     }
 
     @Override
@@ -72,29 +88,17 @@ public class AeropuertoServiceImpl implements AeropuertoService {
 
     @Override
     public AeropuertoDTO actualizarAeropuerto(AeropuertoDTO aeropuertoDTO) throws Exception {
-        validarAeropuertoDTO(aeropuertoDTO);
+        validarAeropuertoDTO(aeropuertoDTO, false);
 
-        AeropuertoDTO aeropuertoSavedDTO = obtenerAeropuertoPorId(aeropuertoDTO.getIdAeropuerto());
-
-        aeropuertoSavedDTO.setNombre(aeropuertoDTO.getNombre());
-        aeropuertoSavedDTO.setEstado(aeropuertoDTO.getEstado());
-        aeropuertoSavedDTO.setIata(aeropuertoDTO.getIata());
-        aeropuertoSavedDTO.setUbicacion(aeropuertoDTO.getUbicacion());
-        aeropuertoSavedDTO.setEstado(aeropuertoDTO.getEstado());
-
-        return guardarAeropuerto(aeropuertoSavedDTO);
+        return guardarOActualizarAeropuerto(aeropuertoDTO);
     }
 
     @Override
     public AeropuertoDTO eliminarAeropuerto(Integer id) throws Exception {
         AeropuertoDTO aeropuertoSavedDTO = obtenerAeropuertoPorId(id);
 
-        if (aeropuertoSavedDTO == null) {
-            throw new Exception("El aeropuerto no existe");
-        }
-
         aeropuertoSavedDTO.setEstado("I");
 
-        return guardarAeropuerto(aeropuertoSavedDTO);
+        return guardarOActualizarAeropuerto(aeropuertoSavedDTO);
     }
 }
