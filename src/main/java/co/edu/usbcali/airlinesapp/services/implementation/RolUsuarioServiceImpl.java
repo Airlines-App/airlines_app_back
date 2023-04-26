@@ -22,7 +22,13 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
         this.rolUsuarioRepository = rolUsuarioRepository;
     }
 
-    public void validarRolUsuarioDTO(RolUsuarioDTO rolUsuarioDTO) throws Exception {
+    private RolUsuarioDTO guardarOActualizarRolUsuario(RolUsuarioDTO rolUsuarioDTO) throws Exception {
+        RolUsuario rolUsuario = RolUsuarioMapper.dtoToDomain(rolUsuarioDTO);
+
+        return RolUsuarioMapper.domainToDTO(rolUsuarioRepository.save(rolUsuario));
+    }
+
+    private void validarRolUsuarioDTO(RolUsuarioDTO rolUsuarioDTO, boolean esGuardar) throws Exception {
         if (rolUsuarioDTO == null) {
             throw new Exception("El rol de usuario no puede ser nulo");
         } if (rolUsuarioDTO.getDescripcion() == null || rolUsuarioDTO.getDescripcion().isBlank() || rolUsuarioDTO.getDescripcion().trim().isEmpty()) {
@@ -32,15 +38,25 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
         } if (rolUsuarioDTO.getEstado() == null || rolUsuarioDTO.getEstado().isBlank() || rolUsuarioDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del rol de usuario no puede ser nulo o vacío");
         }
+
+        if (esGuardar) {
+            if (rolUsuarioRepository.existsById(rolUsuarioDTO.getIdRolUsuario())) {
+                throw new Exception("El rol de usuario con id " + rolUsuarioDTO.getIdRolUsuario() + " ya existe");
+            }
+        }
+
+        if (!esGuardar) {
+            if (!rolUsuarioRepository.existsById(rolUsuarioDTO.getIdRolUsuario())) {
+                throw new Exception("El rol de usuario con id " + rolUsuarioDTO.getIdRolUsuario() + " no existe");
+            }
+        }
     }
 
     @Override
     public RolUsuarioDTO guardarRolUsuario(RolUsuarioDTO rolUsuarioDTO) throws Exception {
-        validarRolUsuarioDTO(rolUsuarioDTO);
+        validarRolUsuarioDTO(rolUsuarioDTO, true);
 
-        RolUsuario rolUsuario = RolUsuarioMapper.dtoToDomain(rolUsuarioDTO);
-
-        return RolUsuarioMapper.domainToDTO(rolUsuarioRepository.save(rolUsuario));
+        return guardarOActualizarRolUsuario(rolUsuarioDTO);
     }
 
     @Override
@@ -64,23 +80,14 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
 
     @Override
     public RolUsuarioDTO actualizarRolUsuario(RolUsuarioDTO rolUsuarioDTO) throws Exception {
-        validarRolUsuarioDTO(rolUsuarioDTO);
+        validarRolUsuarioDTO(rolUsuarioDTO, false);
 
-        RolUsuarioDTO rolUsuarioSavedDTO = obtenerRolUsuarioPorId(rolUsuarioDTO.getIdRolUsuario());
-
-        rolUsuarioSavedDTO.setDescripcion(rolUsuarioDTO.getDescripcion());
-        rolUsuarioSavedDTO.setEstado(rolUsuarioDTO.getEstado());
-
-        return guardarRolUsuario(rolUsuarioSavedDTO);
+        return guardarOActualizarRolUsuario(rolUsuarioDTO);
     }
 
     @Override
     public RolUsuarioDTO eliminarRolUsuario(Integer id) throws Exception {
         RolUsuarioDTO rolUsuarioSavedDTO = obtenerRolUsuarioPorId(id);
-
-        if (rolUsuarioSavedDTO == null) {
-            throw new Exception("El rol de usuario no existe");
-        }
 
         rolUsuarioSavedDTO.setEstado("I");
 

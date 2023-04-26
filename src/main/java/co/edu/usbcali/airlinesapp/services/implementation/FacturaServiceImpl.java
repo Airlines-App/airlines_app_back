@@ -9,7 +9,7 @@ import co.edu.usbcali.airlinesapp.repository.FacturaRepository;
 import co.edu.usbcali.airlinesapp.repository.ReservaRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.FacturaService;
 
-import co.edu.usbcali.airlinesapp.utility.MetodosUtility;
+import co.edu.usbcali.airlinesapp.services.interfaces.ReservaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +20,15 @@ import java.util.List;
 public class FacturaServiceImpl implements FacturaService {
     private final FacturaRepository facturaRepository;
     private final ReservaRepository reservaRepository;
+    private final ReservaService reservaService;
 
-    public FacturaServiceImpl(FacturaRepository facturaRepository, ReservaRepository reservaRepository) {
+    public FacturaServiceImpl(FacturaRepository facturaRepository, ReservaRepository reservaRepository, ReservaService reservaService) {
         this.facturaRepository = facturaRepository;
         this.reservaRepository = reservaRepository;
+        this.reservaService = reservaService;
     }
 
-    public FacturaDTO guardarOActualizarFactura(FacturaDTO facturaDTO) throws Exception {
+    public FacturaDTO guardarOActualizarFactura(FacturaDTO facturaDTO) {
         Factura factura = FacturaMapper.dtoToDomain(facturaDTO);
 
         Reserva reserva = reservaRepository.getReferenceById(facturaDTO.getIdReserva());
@@ -45,11 +47,13 @@ public class FacturaServiceImpl implements FacturaService {
             throw new Exception("La reserva con id " + facturaDTO.getIdReserva() + " no existe");
         } if (facturaDTO.getFecha() == null) {
             throw new Exception("La fecha de la factura no puede ser nula");
-        } if (MetodosUtility.esFechaActualOReciente(facturaDTO.getFecha())) {
-            throw new Exception("La fecha de la factura no puede ser antigua a la fecha actual");
         } if (facturaDTO.getEstado() == null || facturaDTO.getEstado().isBlank() || facturaDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado de la factura no puede ser nulo o vacío");
         }
+
+//        if (!MetodosUtility.esFechaActualOReciente(facturaDTO.getFecha())) {
+//            throw new Exception("La fecha de la factura no puede ser antigua a la fecha actual");
+//        }
 
         if (esGuardar) {
             if (facturaRepository.existsById(facturaDTO.getIdFactura())) {
@@ -92,7 +96,7 @@ public class FacturaServiceImpl implements FacturaService {
 
     @Override
     public List<FacturaDTO> obtenerFacturasPorIdReserva(Integer idReserva) throws Exception {
-        reservaRepository.findById(idReserva);
+        reservaService.obtenerReservaPorId(idReserva);
 
         return FacturaMapper.domainToDTOList(facturaRepository.findAllByReserva_IdReserva(idReserva));
     }

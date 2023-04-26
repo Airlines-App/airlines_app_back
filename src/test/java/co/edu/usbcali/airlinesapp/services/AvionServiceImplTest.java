@@ -62,7 +62,28 @@ public class AvionServiceImplTest {
     }
 
     @Test
+    public void obtenerAvionesActivosOk() {
+        given(avionRepository.findAllByEstado("A")).willReturn(AvionUtilityTest.AVIONES);
+
+        List<AvionDTO> avionesSavedDTO = avionServiceImpl.obtenerAvionesActivos();
+
+        assertEquals(2, avionesSavedDTO.size());
+        assertEquals("Boeing 737", avionesSavedDTO.get(0).getModelo());
+    }
+
+    @Test
+    public void obtenerAvionesActivosNotOk() {
+        given(avionRepository.findAllByEstado("A")).willReturn(AvionUtilityTest.AVIONES_VACIO);
+
+        List<AvionDTO> avionesSavedDTO = avionServiceImpl.obtenerAvionesActivos();
+
+        assertEquals(0, avionesSavedDTO.size());
+    }
+
+    @Test
     public void obtenerAvionPorIdOk() throws Exception {
+        avionRepository.save(AvionUtilityTest.AVION_UNO);
+
         given(avionRepository.existsById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(true);
         given(avionRepository.getReferenceById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(AvionUtilityTest.AVION_UNO);
 

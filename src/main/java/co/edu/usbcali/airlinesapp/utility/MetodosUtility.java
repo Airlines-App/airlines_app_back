@@ -6,6 +6,6 @@ public class MetodosUtility {
     public static boolean esFechaActualOReciente(Date fecha) {
         Date fechaActual = new Date();
 
-        return fecha.before(fechaActual);
+        return fecha.after(fechaActual);
     }
 }

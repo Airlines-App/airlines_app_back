@@ -38,10 +38,10 @@ public class AsientoServiceImplTest {
     public void guardarAsientoOk() throws Exception {
         given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento())).willReturn(true);
         given(tipoAsientoRepository.getReferenceById(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento())).willReturn(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
-        given(avionRepository.existsById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(true);
-        given(avionRepository.getReferenceById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(AvionUtilityTest.AVION_UNO);
         given(asientoRepository.existsById(AsientoUtilityTest.ASIENTO_UNO.getIdAsiento())).willReturn(false);
         given(asientoRepository.save(AsientoUtilityTest.ASIENTO_UNO)).willReturn(AsientoUtilityTest.ASIENTO_UNO);
+        given(avionRepository.existsById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(true);
+        given(avionRepository.getReferenceById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(AvionUtilityTest.AVION_UNO);
 
         AsientoDTO asientoSavedDTO = asientoServiceImpl.guardarAsiento(AsientoUtilityTest.ASIENTODTO);
 
@@ -75,7 +75,30 @@ public class AsientoServiceImplTest {
     }
 
     @Test
+    public void obtenerAsientosActivosOk() {
+        given(asientoRepository.findAllByEstado("A")).willReturn(AsientoUtilityTest.ASIENTOS);
+
+        List<AsientoDTO> asientosSavedDTO = asientoServiceImpl.obtenerAsientosActivos();
+
+        assertEquals(2, asientosSavedDTO.size());
+        assertEquals("A1", asientosSavedDTO.get(0).getUbicacion());
+    }
+
+    @Test
+    public void obtenerAsientosActivosNotOk() {
+        given(asientoRepository.findAllByEstado("A")).willReturn(AsientoUtilityTest.ASIENTOS_VACIO);
+
+        List<AsientoDTO> asientosSavedDTO = asientoServiceImpl.obtenerAsientosActivos();
+
+        assertEquals(0, asientosSavedDTO.size());
+    }
+
+    @Test
     public void obtenerAsientoPorIdOk() throws Exception {
+        tipoAsientoRepository.save(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
+        asientoRepository.save(AsientoUtilityTest.ASIENTO_UNO);
+        avionRepository.save(AvionUtilityTest.AVION_UNO);
+
         given(asientoRepository.existsById(AsientoUtilityTest.ASIENTO_UNO.getIdAsiento())).willReturn(true);
         given(asientoRepository.getReferenceById(AsientoUtilityTest.ASIENTO_UNO.getIdAsiento())).willReturn(AsientoUtilityTest.ASIENTO_UNO);
 
