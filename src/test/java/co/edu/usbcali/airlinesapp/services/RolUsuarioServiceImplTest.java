@@ -26,17 +26,17 @@ public class RolUsuarioServiceImplTest {
 
     @Test
     public void guardarRolUsuarioOk() throws Exception {
-        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(false);
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(false);
         given(rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
 
         RolUsuarioDTO rolUsuarioSavedDTO = rolUsuarioServiceImpl.guardarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO);
 
-        assertEquals(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario(), rolUsuarioSavedDTO.getIdRolUsuario());
+        assertEquals(RolUsuarioUtilityTest.ID_UNO, rolUsuarioSavedDTO.getIdRolUsuario());
     }
 
     @Test
     public void guardarRolUsuarioNotOk() {
-        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(true);
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
 
         assertThrows(java.lang.Exception.class, () -> rolUsuarioServiceImpl.guardarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO));
     }
@@ -47,8 +47,8 @@ public class RolUsuarioServiceImplTest {
 
         List<RolUsuarioDTO> rolUsuariosSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuarios();
 
-        assertEquals(2, rolUsuariosSavedDTO.size());
-        assertEquals("Cliente", rolUsuariosSavedDTO.get(0).getDescripcion());
+        assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_SIZE, rolUsuariosSavedDTO.size());
+        assertEquals(RolUsuarioUtilityTest.DESCRIPCION_UNO, rolUsuariosSavedDTO.get(0).getDescripcion());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class RolUsuarioServiceImplTest {
 
         List<RolUsuarioDTO> rolUsuariosSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuarios();
 
-        assertEquals(0, rolUsuariosSavedDTO.size());
+        assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_VACIO_SIZE, rolUsuariosSavedDTO.size());
     }
 
     @Test
@@ -66,8 +66,8 @@ public class RolUsuarioServiceImplTest {
 
         List<RolUsuarioDTO> rolUsuariosSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuariosActivos();
 
-        assertEquals(2, rolUsuariosSavedDTO.size());
-        assertEquals("Cliente", rolUsuariosSavedDTO.get(0).getDescripcion());
+        assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_SIZE, rolUsuariosSavedDTO.size());
+        assertEquals(RolUsuarioUtilityTest.DESCRIPCION_UNO, rolUsuariosSavedDTO.get(0).getDescripcion());
     }
 
     @Test
@@ -76,41 +76,41 @@ public class RolUsuarioServiceImplTest {
 
         List<RolUsuarioDTO> rolUsuariosSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuariosActivos();
 
-        assertEquals(0, rolUsuariosSavedDTO.size());
+        assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_VACIO_SIZE, rolUsuariosSavedDTO.size());
     }
 
     @Test
     public void obtenerRolUsuarioPorIdOk() throws Exception {
         rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
 
-        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(true);
-        given(rolUsuarioRepository.getReferenceById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(rolUsuarioRepository.getReferenceById(RolUsuarioUtilityTest.ID_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
 
-        RolUsuarioDTO rolUsuarioSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuarioPorId(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario());
+        RolUsuarioDTO rolUsuarioSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuarioPorId(RolUsuarioUtilityTest.ID_UNO);
 
-        assertEquals(1, rolUsuarioSavedDTO.getIdRolUsuario());
+        assertEquals(RolUsuarioUtilityTest.ID_UNO, rolUsuarioSavedDTO.getIdRolUsuario());
     }
 
     @Test
     public void obtenerRolUsuarioPorIdNotOk() {
-        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(false);
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> rolUsuarioServiceImpl.obtenerRolUsuarioPorId(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario()));
+        assertThrows(java.lang.Exception.class, () -> rolUsuarioServiceImpl.obtenerRolUsuarioPorId(RolUsuarioUtilityTest.ID_UNO));
     }
 
     @Test
     public void actualizarRolUsuarioOk() throws Exception {
-        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(true);
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
         given(rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
 
         RolUsuarioDTO rolUsuarioSavedDTO = rolUsuarioServiceImpl.actualizarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO);
 
-        assertEquals(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario(), rolUsuarioSavedDTO.getIdRolUsuario());
+        assertEquals(RolUsuarioUtilityTest.ID_UNO, rolUsuarioSavedDTO.getIdRolUsuario());
     }
 
     @Test
     public void actualizarRolUsuarioNotOk() {
-        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(false);
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> rolUsuarioServiceImpl.actualizarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO));
     }

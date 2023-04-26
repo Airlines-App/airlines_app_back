@@ -7,6 +7,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class UsuarioUtilityTest {
+    public static Integer ID_UNO = 1;
+    public static String CEDULA_UNO = "123456789";
+    public static String NOMBRE_UNO = "Santiago";
+    public static String APELLIDO_UNO = "García";
+    public static String CORREO_UNO = "santiagogarcia@gmail.com";
+    public static String ESTADO_UNO = "A";
+    public static Integer USUARIOS_SIZE = 2;
+    public static Integer USUARIOS_VACIO_SIZE = 0;
+
     public static Usuario USUARIO_UNO = Usuario.builder()
             .idUsuario(1)
             .rolUsuario(RolUsuarioUtilityTest.ROLUSUARIO_UNO)

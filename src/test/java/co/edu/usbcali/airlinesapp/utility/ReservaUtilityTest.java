@@ -8,6 +8,15 @@ import java.util.Date;
 import java.util.List;
 
 public class ReservaUtilityTest {
+    public static Integer ID_UNO = 1;
+    public static long PRECIO_TOTAL_UNO = 100000;
+    public static String ESTADO_PAGO_UNO = "A";
+    public static Date FECHA_UNO = new Date();
+    public static String ESTADO_UNO = "A";
+    public static Integer RESERVAS_SIZE = 2;
+    public static Integer RESERVAS_VACIO_SIZE = 0;
+
+
     public static Reserva RESERVA_UNO = Reserva.builder()
             .idReserva(1)
             .vuelo(VueloUtilityTest.VUELO_UNO)

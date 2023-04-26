@@ -32,19 +32,19 @@ public class UsuarioServiceImplTest {
 
     @Test
     public void guardarUsuarioOk() throws Exception {
-        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(true);
-        given(rolUsuarioRepository.getReferenceById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
-        given(usuarioRepository.existsById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(false);
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(rolUsuarioRepository.getReferenceById(RolUsuarioUtilityTest.ID_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(false);
         given(usuarioRepository.save(UsuarioUtilityTest.USUARIO_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
 
         UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.guardarUsuario(UsuarioUtilityTest.USUARIODTO);
 
-        assertEquals(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario(), usuarioSavedDTO.getIdUsuario());
+        assertEquals(UsuarioUtilityTest.ID_UNO, usuarioSavedDTO.getIdUsuario());
     }
 
     @Test
     public void guardarUsuarioNotOk() {
-        given(usuarioRepository.existsById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(true);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
 
         assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.guardarUsuario(UsuarioUtilityTest.USUARIODTO));
     }
@@ -55,8 +55,8 @@ public class UsuarioServiceImplTest {
 
         List<UsuarioDTO> usuariosSavedDTO = usuarioServiceImpl.obtenerUsuarios();
 
-        assertEquals(2, usuariosSavedDTO.size());
-        assertEquals("123456789", usuariosSavedDTO.get(0).getCedula());
+        assertEquals(UsuarioUtilityTest.USUARIOS_SIZE, usuariosSavedDTO.size());
+        assertEquals(UsuarioUtilityTest.CEDULA_UNO, usuariosSavedDTO.get(0).getCedula());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class UsuarioServiceImplTest {
 
         List<UsuarioDTO> usuariosSavedDTO = usuarioServiceImpl.obtenerUsuarios();
 
-        assertEquals(0, usuariosSavedDTO.size());
+        assertEquals(UsuarioUtilityTest.USUARIOS_VACIO_SIZE, usuariosSavedDTO.size());
     }
 
     @Test
@@ -74,8 +74,8 @@ public class UsuarioServiceImplTest {
 
         List<UsuarioDTO> usuariosSavedDTO = usuarioServiceImpl.obtenerUsuariosActivos();
 
-        assertEquals(2, usuariosSavedDTO.size());
-        assertEquals("123456789", usuariosSavedDTO.get(0).getCedula());
+        assertEquals(UsuarioUtilityTest.USUARIOS_SIZE, usuariosSavedDTO.size());
+        assertEquals(UsuarioUtilityTest.CEDULA_UNO, usuariosSavedDTO.get(0).getCedula());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class UsuarioServiceImplTest {
 
         List<UsuarioDTO> usuariosSavedDTO = usuarioServiceImpl.obtenerUsuariosActivos();
 
-        assertEquals(0, usuariosSavedDTO.size());
+        assertEquals(UsuarioUtilityTest.USUARIOS_VACIO_SIZE, usuariosSavedDTO.size());
     }
 
     @Test
@@ -92,19 +92,19 @@ public class UsuarioServiceImplTest {
         rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
         usuarioRepository.save(UsuarioUtilityTest.USUARIO_UNO);
 
-        given(usuarioRepository.existsById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(true);
-        given(usuarioRepository.getReferenceById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(UsuarioUtilityTest.USUARIO_UNO);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(usuarioRepository.getReferenceById(UsuarioUtilityTest.ID_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
 
-        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.obtenerUsuarioPorId(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario());
+        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.obtenerUsuarioPorId(UsuarioUtilityTest.ID_UNO);
 
-        assertEquals(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario(), usuarioSavedDTO.getIdUsuario());
+        assertEquals(UsuarioUtilityTest.ID_UNO, usuarioSavedDTO.getIdUsuario());
     }
 
     @Test
     public void obtenerUsuarioPorIdNotOk() {
-        given(usuarioRepository.existsById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(false);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.obtenerUsuarioPorId(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario()));
+        assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.obtenerUsuarioPorId(UsuarioUtilityTest.ID_UNO));
     }
 
     @Test
@@ -112,36 +112,36 @@ public class UsuarioServiceImplTest {
         rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
         usuarioRepository.save(UsuarioUtilityTest.USUARIO_UNO);
 
-        given(usuarioRepository.existsByCedula(UsuarioUtilityTest.USUARIO_UNO.getCedula())).willReturn(true);
-        given(usuarioRepository.getReferenceByCedula(UsuarioUtilityTest.USUARIO_UNO.getCedula())).willReturn(UsuarioUtilityTest.USUARIO_UNO);
+        given(usuarioRepository.existsByCedula(UsuarioUtilityTest.CEDULA_UNO)).willReturn(true);
+        given(usuarioRepository.getReferenceByCedula(UsuarioUtilityTest.CEDULA_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
 
-        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.obtenerUsuarioPorCedula(UsuarioUtilityTest.USUARIO_UNO.getCedula());
+        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.obtenerUsuarioPorCedula(UsuarioUtilityTest.CEDULA_UNO);
 
-        assertEquals(UsuarioUtilityTest.USUARIO_UNO.getCedula(), usuarioSavedDTO.getCedula());
+        assertEquals(UsuarioUtilityTest.CEDULA_UNO, usuarioSavedDTO.getCedula());
     }
 
     @Test
     public void obtenerUsuarioPorCedulaNotOk() throws Exception {
-        given(usuarioRepository.existsByCedula(UsuarioUtilityTest.USUARIO_UNO.getCedula())).willReturn(false);
+        given(usuarioRepository.existsByCedula(UsuarioUtilityTest.CEDULA_UNO)).willReturn(false);
 
-        assertNull(usuarioServiceImpl.obtenerUsuarioPorCedula(UsuarioUtilityTest.USUARIO_UNO.getCedula()));
+        assertNull(usuarioServiceImpl.obtenerUsuarioPorCedula(UsuarioUtilityTest.CEDULA_UNO));
     }
 
     @Test
     public void actualizarUsuarioOk() throws Exception {
-        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(true);
-        given(rolUsuarioRepository.getReferenceById(RolUsuarioUtilityTest.ROLUSUARIO_UNO.getIdRolUsuario())).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
-        given(usuarioRepository.existsById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(true);
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(rolUsuarioRepository.getReferenceById(RolUsuarioUtilityTest.ID_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
         given(usuarioRepository.save(UsuarioUtilityTest.USUARIO_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
 
         UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.actualizarUsuario(UsuarioUtilityTest.USUARIODTO);
 
-        assertEquals(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario(), usuarioSavedDTO.getIdUsuario());
+        assertEquals(UsuarioUtilityTest.ID_UNO, usuarioSavedDTO.getIdUsuario());
     }
 
     @Test
     public void actualizarUsuarioNotOk() {
-        given(usuarioRepository.existsById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(false);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.actualizarUsuario(UsuarioUtilityTest.USUARIODTO));
     }

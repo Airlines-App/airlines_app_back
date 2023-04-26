@@ -38,23 +38,23 @@ public class ReservaServiceImplTest {
 
     @Test
     public void guardarReservaOk() throws Exception {
-        given(vueloRepository.existsById(VueloUtilityTest.VUELO_UNO.getIdVuelo())).willReturn(true);
-        given(vueloRepository.getReferenceById(VueloUtilityTest.VUELO_UNO.getIdVuelo())).willReturn(VueloUtilityTest.VUELO_UNO);
-        given(asientoRepository.existsById(AsientoUtilityTest.ASIENTO_UNO.getIdAsiento())).willReturn(true);
-        given(asientoRepository.getReferenceById(AsientoUtilityTest.ASIENTO_UNO.getIdAsiento())).willReturn(AsientoUtilityTest.ASIENTO_UNO);
-        given(usuarioRepository.existsById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(true);
-        given(usuarioRepository.getReferenceById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(UsuarioUtilityTest.USUARIO_UNO);
-        given(reservaRepository.existsById(ReservaUtilityTest.RESERVA_UNO.getIdReserva())).willReturn(false);
+        given(vueloRepository.existsById(VueloUtilityTest.ID_UNO)).willReturn(true);
+        given(vueloRepository.getReferenceById(VueloUtilityTest.ID_UNO)).willReturn(VueloUtilityTest.VUELO_UNO);
+        given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(true);
+        given(asientoRepository.getReferenceById(AsientoUtilityTest.ID_UNO)).willReturn(AsientoUtilityTest.ASIENTO_UNO);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(usuarioRepository.getReferenceById(UsuarioUtilityTest.ID_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(false);
         given(reservaRepository.save(ReservaUtilityTest.RESERVA_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
 
         ReservaDTO reservaSavedDTO = reservaServiceImpl.guardarReserva(ReservaUtilityTest.RESERVADTO);
 
-        assertEquals(ReservaUtilityTest.RESERVA_UNO.getIdReserva(), reservaSavedDTO.getIdReserva());
+        assertEquals(ReservaUtilityTest.ID_UNO, reservaSavedDTO.getIdReserva());
     }
 
     @Test
     public void guardarReservaNotOk() {
-        given(reservaRepository.existsById(ReservaUtilityTest.RESERVA_UNO.getIdReserva())).willReturn(true);
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
 
         assertThrows(java.lang.Exception.class, () -> reservaServiceImpl.guardarReserva(ReservaUtilityTest.RESERVADTO));
     }
@@ -65,8 +65,8 @@ public class ReservaServiceImplTest {
 
         List<ReservaDTO> reservasSavedDTO = reservaServiceImpl.obtenerReservas();
 
-        assertEquals(2, reservasSavedDTO.size());
-        assertEquals(100000, reservasSavedDTO.get(0).getPrecioTotal());
+        assertEquals(ReservaUtilityTest.RESERVAS_SIZE, reservasSavedDTO.size());
+        assertEquals(ReservaUtilityTest.PRECIO_TOTAL_UNO, reservasSavedDTO.get(0).getPrecioTotal());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class ReservaServiceImplTest {
 
         List<ReservaDTO> reservasSavedDTO = reservaServiceImpl.obtenerReservas();
 
-        assertEquals(0, reservasSavedDTO.size());
+        assertEquals(ReservaUtilityTest.RESERVAS_VACIO_SIZE, reservasSavedDTO.size());
     }
 
     @Test
@@ -84,8 +84,8 @@ public class ReservaServiceImplTest {
 
         List<ReservaDTO> reservasSavedDTO = reservaServiceImpl.obtenerReservasActivas();
 
-        assertEquals(2, reservasSavedDTO.size());
-        assertEquals(100000, reservasSavedDTO.get(0).getPrecioTotal());
+        assertEquals(ReservaUtilityTest.RESERVAS_SIZE, reservasSavedDTO.size());
+        assertEquals(ReservaUtilityTest.PRECIO_TOTAL_UNO, reservasSavedDTO.get(0).getPrecioTotal());
     }
 
     @Test
@@ -94,7 +94,7 @@ public class ReservaServiceImplTest {
 
         List<ReservaDTO> reservasSavedDTO = reservaServiceImpl.obtenerReservasActivas();
 
-        assertEquals(0, reservasSavedDTO.size());
+        assertEquals(ReservaUtilityTest.RESERVAS_VACIO_SIZE, reservasSavedDTO.size());
     }
 
     @Test
@@ -104,40 +104,40 @@ public class ReservaServiceImplTest {
         usuarioRepository.save(UsuarioUtilityTest.USUARIO_UNO);
         reservaRepository.save(ReservaUtilityTest.RESERVA_UNO);
 
-        given(reservaRepository.existsById(ReservaUtilityTest.RESERVA_UNO.getIdReserva())).willReturn(true);
-        given(reservaRepository.getReferenceById(ReservaUtilityTest.RESERVA_UNO.getIdReserva())).willReturn(ReservaUtilityTest.RESERVA_UNO);
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
+        given(reservaRepository.getReferenceById(ReservaUtilityTest.ID_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
 
-        ReservaDTO reservaSavedDTO = reservaServiceImpl.obtenerReservaPorId(ReservaUtilityTest.RESERVA_UNO.getIdReserva());
+        ReservaDTO reservaSavedDTO = reservaServiceImpl.obtenerReservaPorId(ReservaUtilityTest.ID_UNO);
 
-        assertEquals(ReservaUtilityTest.RESERVA_UNO.getIdReserva(), reservaSavedDTO.getIdUsuario());
+        assertEquals(ReservaUtilityTest.ID_UNO, reservaSavedDTO.getIdUsuario());
     }
 
     @Test
     public void obtenerReservaPorIdNotOk() {
-        given(reservaRepository.existsById(ReservaUtilityTest.RESERVA_UNO.getIdReserva())).willReturn(false);
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> reservaServiceImpl.obtenerReservaPorId(ReservaUtilityTest.RESERVA_UNO.getIdReserva()));
+        assertThrows(java.lang.Exception.class, () -> reservaServiceImpl.obtenerReservaPorId(ReservaUtilityTest.ID_UNO));
     }
 
     @Test
     public void actualizarReservaOk() throws Exception {
-        given(vueloRepository.existsById(VueloUtilityTest.VUELO_UNO.getIdVuelo())).willReturn(true);
-        given(vueloRepository.getReferenceById(VueloUtilityTest.VUELO_UNO.getIdVuelo())).willReturn(VueloUtilityTest.VUELO_UNO);
-        given(asientoRepository.existsById(AsientoUtilityTest.ASIENTO_UNO.getIdAsiento())).willReturn(true);
-        given(asientoRepository.getReferenceById(AsientoUtilityTest.ASIENTO_UNO.getIdAsiento())).willReturn(AsientoUtilityTest.ASIENTO_UNO);
-        given(usuarioRepository.existsById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(true);
-        given(usuarioRepository.getReferenceById(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())).willReturn(UsuarioUtilityTest.USUARIO_UNO);
-        given(reservaRepository.existsById(ReservaUtilityTest.RESERVA_UNO.getIdReserva())).willReturn(true);
+        given(vueloRepository.existsById(VueloUtilityTest.ID_UNO)).willReturn(true);
+        given(vueloRepository.getReferenceById(VueloUtilityTest.ID_UNO)).willReturn(VueloUtilityTest.VUELO_UNO);
+        given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(true);
+        given(asientoRepository.getReferenceById(AsientoUtilityTest.ID_UNO)).willReturn(AsientoUtilityTest.ASIENTO_UNO);
+        given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(usuarioRepository.getReferenceById(UsuarioUtilityTest.ID_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
         given(reservaRepository.save(ReservaUtilityTest.RESERVA_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
 
         ReservaDTO reservaSavedDTO = reservaServiceImpl.actualizarReserva(ReservaUtilityTest.RESERVADTO);
 
-        assertEquals(ReservaUtilityTest.RESERVA_UNO.getIdReserva(), reservaSavedDTO.getIdReserva());
+        assertEquals(ReservaUtilityTest.ID_UNO, reservaSavedDTO.getIdReserva());
     }
 
     @Test
     public void actualizarReservaNotOk() {
-        given(reservaRepository.existsById(ReservaUtilityTest.RESERVA_UNO.getIdReserva())).willReturn(false);
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> reservaServiceImpl.actualizarReserva(ReservaUtilityTest.RESERVADTO));
     }

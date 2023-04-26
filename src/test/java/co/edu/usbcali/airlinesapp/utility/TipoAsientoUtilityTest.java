@@ -7,6 +7,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TipoAsientoUtilityTest {
+    public static Integer ID_UNO = 1;
+    public static String DESCRIPCION_UNO = "Ejecutivo";
+    public static String ESTADO_UNO = "A";
+    public static Integer TIPOASIENTOS_SIZE = 2;
+    public static Integer TIPOASIENTOS_VACIO_SIZE = 0;
+
     public static TipoAsiento TIPOASIENTO_UNO = TipoAsiento.builder()
             .idTipoAsiento(1)
             .descripcion("Ejecutivo")

@@ -8,6 +8,13 @@ import java.util.Date;
 import java.util.List;
 
 public class TrayectoUtilityTest {
+    public static Integer ID_UNO = 1;
+    public static Date HORA_SALIDA_UNO = new Date();
+    public static Date HORA_LLEGADA_UNO = new Date();
+    public static String ESTADO_UNO = "A";
+    public static Integer TRAYECTOS_SIZE = 2;
+    public static Integer TRAYECTOS_VACIO_SIZE = 0;
+
     public static Trayecto TRAYECTO_UNO = Trayecto.builder()
             .idTrayecto(1)
             .avion(AvionUtilityTest.AVION_UNO)

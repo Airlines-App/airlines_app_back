@@ -26,17 +26,17 @@ public class TipoAsientoServiceImplTest {
 
     @Test
     public void guardarTipoAsientoOk() throws Exception {
-        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento())).willReturn(false);
+        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.ID_UNO)).willReturn(false);
         given(tipoAsientoRepository.save(TipoAsientoUtilityTest.TIPOASIENTO_UNO)).willReturn(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
 
         TipoAsientoDTO tipoAsientoSavedDTO = tipoAsientoServiceImpl.guardarTipoAsiento(TipoAsientoUtilityTest.TIPOASIENTODTO);
 
-        assertEquals(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento(), tipoAsientoSavedDTO.getIdTipoAsiento());
+        assertEquals(TipoAsientoUtilityTest.ID_UNO, tipoAsientoSavedDTO.getIdTipoAsiento());
     }
 
     @Test
     public void guardarTipoAsientoNotOk() {
-        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento())).willReturn(true);
+        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.ID_UNO)).willReturn(true);
 
         assertThrows(java.lang.Exception.class, () -> tipoAsientoServiceImpl.guardarTipoAsiento(TipoAsientoUtilityTest.TIPOASIENTODTO));
     }
@@ -47,8 +47,8 @@ public class TipoAsientoServiceImplTest {
 
         List<TipoAsientoDTO> tipoAsientosSavedDTO = tipoAsientoServiceImpl.obtenerTipoAsientos();
 
-        assertEquals(2, tipoAsientosSavedDTO.size());
-        assertEquals("Ejecutivo", tipoAsientosSavedDTO.get(0).getDescripcion());
+        assertEquals(TipoAsientoUtilityTest.TIPOASIENTOS_SIZE, tipoAsientosSavedDTO.size());
+        assertEquals(TipoAsientoUtilityTest.DESCRIPCION_UNO, tipoAsientosSavedDTO.get(0).getDescripcion());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class TipoAsientoServiceImplTest {
 
         List<TipoAsientoDTO> tipoAsientosSavedDTO = tipoAsientoServiceImpl.obtenerTipoAsientos();
 
-        assertEquals(0, tipoAsientosSavedDTO.size());
+        assertEquals(TipoAsientoUtilityTest.TIPOASIENTOS_VACIO_SIZE, tipoAsientosSavedDTO.size());
     }
 
     @Test
@@ -66,8 +66,8 @@ public class TipoAsientoServiceImplTest {
 
         List<TipoAsientoDTO> tipoAsientosSavedDTO = tipoAsientoServiceImpl.obtenerTipoAsientosActivos();
 
-        assertEquals(2, tipoAsientosSavedDTO.size());
-        assertEquals("Ejecutivo", tipoAsientosSavedDTO.get(0).getDescripcion());
+        assertEquals(TipoAsientoUtilityTest.TIPOASIENTOS_SIZE, tipoAsientosSavedDTO.size());
+        assertEquals(TipoAsientoUtilityTest.DESCRIPCION_UNO, tipoAsientosSavedDTO.get(0).getDescripcion());
     }
 
     @Test
@@ -76,41 +76,41 @@ public class TipoAsientoServiceImplTest {
 
         List<TipoAsientoDTO> tipoAsientosSavedDTO = tipoAsientoServiceImpl.obtenerTipoAsientosActivos();
 
-        assertEquals(0, tipoAsientosSavedDTO.size());
+        assertEquals(TipoAsientoUtilityTest.TIPOASIENTOS_VACIO_SIZE, tipoAsientosSavedDTO.size());
     }
 
     @Test
     public void obtenerTipoAsientoPorIdOk() throws Exception {
         tipoAsientoRepository.save(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
 
-        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento())).willReturn(true);
-        given(tipoAsientoRepository.getReferenceById(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento())).willReturn(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
+        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.ID_UNO)).willReturn(true);
+        given(tipoAsientoRepository.getReferenceById(TipoAsientoUtilityTest.ID_UNO)).willReturn(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
 
-        TipoAsientoDTO tipoAsientoSavedDTO = tipoAsientoServiceImpl.obtenerTipoAsientoPorId(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento());
+        TipoAsientoDTO tipoAsientoSavedDTO = tipoAsientoServiceImpl.obtenerTipoAsientoPorId(TipoAsientoUtilityTest.ID_UNO);
 
-        assertEquals("Ejecutivo", tipoAsientoSavedDTO.getDescripcion());
+        assertEquals(TipoAsientoUtilityTest.DESCRIPCION_UNO, tipoAsientoSavedDTO.getDescripcion());
     }
 
     @Test
     public void obtenerTipoAsientoPorIdNotOk() {
-        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento())).willReturn(false);
+        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(Exception.class, () -> tipoAsientoServiceImpl.obtenerTipoAsientoPorId(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento()));
+        assertThrows(Exception.class, () -> tipoAsientoServiceImpl.obtenerTipoAsientoPorId(TipoAsientoUtilityTest.ID_UNO));
     }
 
     @Test
     public void actualizarTipoAsientoOk() throws Exception {
-        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento())).willReturn(true);
+        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.ID_UNO)).willReturn(true);
         given(tipoAsientoRepository.save(TipoAsientoUtilityTest.TIPOASIENTO_UNO)).willReturn(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
 
         TipoAsientoDTO tipoAsientoSavedDTO = tipoAsientoServiceImpl.actualizarTipoAsiento(TipoAsientoUtilityTest.TIPOASIENTODTO);
 
-        assertEquals(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento(), tipoAsientoSavedDTO.getIdTipoAsiento());
+        assertEquals(TipoAsientoUtilityTest.ID_UNO, tipoAsientoSavedDTO.getIdTipoAsiento());
     }
 
     @Test
     public void actualizarTipoAsientoNotOk() {
-        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.TIPOASIENTO_UNO.getIdTipoAsiento())).willReturn(false);
+        given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> tipoAsientoServiceImpl.actualizarTipoAsiento(TipoAsientoUtilityTest.TIPOASIENTODTO));
     }

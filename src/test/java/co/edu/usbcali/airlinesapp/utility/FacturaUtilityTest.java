@@ -8,6 +8,12 @@ import java.util.Date;
 import java.util.List;
 
 public class FacturaUtilityTest {
+    public static Integer ID_UNO = 1;
+    public static Date FECHA_UNO = new Date();
+    public static String ESTADO_UNO = "A";
+    public static Integer FACTURAS_SIZE = 2;
+    public static Integer FACTURAS_VACIO_SIZE = 0;
+
     public static Factura FACTURA_UNO = Factura.builder()
             .idFactura(1)
             .reserva(ReservaUtilityTest.RESERVA_UNO)

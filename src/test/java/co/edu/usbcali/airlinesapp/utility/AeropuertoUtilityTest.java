@@ -7,6 +7,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AeropuertoUtilityTest {
+    public static Integer ID_UNO = 1;
+    public static String NOMBRE_UNO = "Aeropuerto Internacional El Dorado";
+    public static String IATA_UNO = "BOG";
+    public static String UBICACION_UNO = "Bogotá";
+    public static String ESTADO_UNO = "A";
+    public static Integer ID_DOS = 2;
+    public static String NOMBRE_DOS = "Aeropuerto Internacional Alfonso Bonilla Aragón";
+    public static String IATA_DOS = "COL";
+    public static String UBICACION_DOS = "Santiago de Cali";
+    public static String ESTADO_DOS = "A";
+    public static Integer AEROPUERTOS_SIZE = 2;
+    public static Integer AEROPUERTOS_VACIO_SIZE = 0;
+
     public static Aeropuerto AEROPUERTO_UNO = Aeropuerto.builder()
             .idAeropuerto(1)
             .nombre("Aeropuerto Internacional El Dorado")

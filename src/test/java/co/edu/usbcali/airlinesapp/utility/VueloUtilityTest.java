@@ -8,6 +8,17 @@ import java.util.Date;
 import java.util.List;
 
 public class VueloUtilityTest {
+    public static Integer ID_UNO = 1;
+    public static long PRECIO_UNO = 100000;
+    public static Date HORA_SALIDA_UNO = new Date();
+    public static Date HORA_LLEGADA_UNO = new Date();
+    public static long PRECIO_ASIENTO_VIP_UNO = 50000;
+    public static long PRECIO_ASIENTO_NORMAL_UNO = 30000;
+    public static long PRECIO_ASIENTO_BASICO_UNO = 10000;
+    public static String ESTADO_UNO = "A";
+    public static Integer VUELOS_SIZE = 2;
+    public static Integer VUELOS_VACIO_SIZE = 0;
+
     public static Vuelo VUELO_UNO = Vuelo.builder()
             .idVuelo(1)
             .aeropuertoOrigen(AeropuertoUtilityTest.AEROPUERTO_UNO)

@@ -4,7 +4,6 @@ import co.edu.usbcali.airlinesapp.dtos.AvionDTO;
 import co.edu.usbcali.airlinesapp.repository.AvionRepository;
 import co.edu.usbcali.airlinesapp.services.implementation.AvionServiceImpl;
 
-import co.edu.usbcali.airlinesapp.utility.AeropuertoUtilityTest;
 import co.edu.usbcali.airlinesapp.utility.AvionUtilityTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -27,17 +26,17 @@ public class AvionServiceImplTest {
 
     @Test
     public void guardarAvionOk() throws Exception {
-        given(avionRepository.existsById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(false);
+        given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(false);
         given(avionRepository.save(AvionUtilityTest.AVION_UNO)).willReturn(AvionUtilityTest.AVION_UNO);
 
         AvionDTO avionSavedDTO = avionServiceImpl.guardarAvion(AvionUtilityTest.AVIONDTO);
 
-        assertEquals(AvionUtilityTest.AVION_UNO.getIdAvion(), avionSavedDTO.getIdAvion());
+        assertEquals(AvionUtilityTest.ID_UNO, avionSavedDTO.getIdAvion());
     }
 
     @Test
     public void guardarAvionNotOk() {
-        given(avionRepository.existsById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(true);
+        given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(true);
 
         assertThrows(java.lang.Exception.class, () -> avionServiceImpl.guardarAvion(AvionUtilityTest.AVIONDTO));
     }
@@ -48,8 +47,8 @@ public class AvionServiceImplTest {
 
         List<AvionDTO> avionesSavedDTO = avionServiceImpl.obtenerAviones();
 
-        assertEquals(2, avionesSavedDTO.size());
-        assertEquals("Boeing 737", avionesSavedDTO.get(0).getModelo());
+        assertEquals(AvionUtilityTest.AVIONES_SIZE, avionesSavedDTO.size());
+        assertEquals(AvionUtilityTest.MODELO_UNO, avionesSavedDTO.get(0).getModelo());
     }
 
     @Test
@@ -58,7 +57,7 @@ public class AvionServiceImplTest {
 
         List<AvionDTO> avionesDTO = avionServiceImpl.obtenerAviones();
 
-        assertEquals(0, avionesDTO.size());
+        assertEquals(AvionUtilityTest.AVIONES_VACIO_SIZE, avionesDTO.size());
     }
 
     @Test
@@ -67,8 +66,8 @@ public class AvionServiceImplTest {
 
         List<AvionDTO> avionesSavedDTO = avionServiceImpl.obtenerAvionesActivos();
 
-        assertEquals(2, avionesSavedDTO.size());
-        assertEquals("Boeing 737", avionesSavedDTO.get(0).getModelo());
+        assertEquals(AvionUtilityTest.AVIONES_SIZE, avionesSavedDTO.size());
+        assertEquals(AvionUtilityTest.MODELO_UNO, avionesSavedDTO.get(0).getModelo());
     }
 
     @Test
@@ -77,41 +76,41 @@ public class AvionServiceImplTest {
 
         List<AvionDTO> avionesSavedDTO = avionServiceImpl.obtenerAvionesActivos();
 
-        assertEquals(0, avionesSavedDTO.size());
+        assertEquals(AvionUtilityTest.AVIONES_VACIO_SIZE, avionesSavedDTO.size());
     }
 
     @Test
     public void obtenerAvionPorIdOk() throws Exception {
         avionRepository.save(AvionUtilityTest.AVION_UNO);
 
-        given(avionRepository.existsById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(true);
-        given(avionRepository.getReferenceById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(AvionUtilityTest.AVION_UNO);
+        given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(true);
+        given(avionRepository.getReferenceById(AvionUtilityTest.ID_UNO)).willReturn(AvionUtilityTest.AVION_UNO);
 
-        AvionDTO avionDTO = avionServiceImpl.obtenerAvionPorId(AvionUtilityTest.AVION_UNO.getIdAvion());
+        AvionDTO avionDTO = avionServiceImpl.obtenerAvionPorId(AvionUtilityTest.ID_UNO);
 
-        assertEquals(AvionUtilityTest.AVION_UNO.getIdAvion(), avionDTO.getIdAvion());
+        assertEquals(AvionUtilityTest.ID_UNO, avionDTO.getIdAvion());
     }
 
     @Test
     public void obtenerAvionPorIdNotOk() {
-        given(avionRepository.existsById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(false);
+        given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> avionServiceImpl.obtenerAvionPorId(AvionUtilityTest.AVION_UNO.getIdAvion()));
+        assertThrows(java.lang.Exception.class, () -> avionServiceImpl.obtenerAvionPorId(AvionUtilityTest.ID_UNO));
     }
 
     @Test
     public void actualizarAvionOk() throws Exception {
-        given(avionRepository.existsById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(true);
+        given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(true);
         given(avionRepository.save(AvionUtilityTest.AVION_UNO)).willReturn(AvionUtilityTest.AVION_UNO);
 
         AvionDTO avionSavedDTO = avionServiceImpl.actualizarAvion(AvionUtilityTest.AVIONDTO);
 
-        assertEquals(AeropuertoUtilityTest.AEROPUERTODTO.getIdAeropuerto(), avionSavedDTO.getIdAvion());
+        assertEquals(AvionUtilityTest.ID_UNO, avionSavedDTO.getIdAvion());
     }
 
     @Test
     public void actualizarAvionNotOk() {
-        given(avionRepository.existsById(AvionUtilityTest.AVION_UNO.getIdAvion())).willReturn(false);
+        given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(false);
 
         assertThrows(java.lang.Exception.class, () -> avionServiceImpl.actualizarAvion(AvionUtilityTest.AVIONDTO));
     }
