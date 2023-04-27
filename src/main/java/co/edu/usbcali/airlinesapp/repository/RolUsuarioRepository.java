@@ -4,4 +4,8 @@ import co.edu.usbcali.airlinesapp.domain.RolUsuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RolUsuarioRepository extends JpaRepository<RolUsuario, Integer> { }
+import java.util.List;
+
+public interface RolUsuarioRepository extends JpaRepository<RolUsuario, Integer> {
+    List<RolUsuario> findAllByEstado(String estado);
+}

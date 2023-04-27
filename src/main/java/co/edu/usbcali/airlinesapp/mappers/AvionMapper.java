@@ -17,7 +17,7 @@ public class AvionMapper {
     }
 
     public static List<AvionDTO> domainToDTOList(List<Avion> aviones) {
-        return aviones.stream().map(avion -> domainToDTO(avion)).collect(Collectors.toList());
+        return aviones.stream().map(AvionMapper::domainToDTO).collect(Collectors.toList());
     }
 
     public static Avion dtoToDomain(AvionDTO avionDTO) {
@@ -30,6 +30,6 @@ public class AvionMapper {
     }
 
     public static List<Avion> dtoToDomainList(List<AvionDTO> avionesDTO) {
-        return avionesDTO.stream().map(avionDTO -> dtoToDomain(avionDTO)).collect(Collectors.toList());
+        return avionesDTO.stream().map(AvionMapper::dtoToDomain).collect(Collectors.toList());
     }
 }

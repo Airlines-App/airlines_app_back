@@ -39,6 +39,11 @@ public class AeropuertoController {
         return new ResponseEntity(aeropuertoService.obtenerAeropuertos(), HttpStatus.OK);
     }
 
+    @GetMapping("/obtener-aeropuertosActivos")
+    public ResponseEntity<List<AeropuertoDTO>> obtenerAeropuertosActivos() {
+        return new ResponseEntity(aeropuertoService.obtenerAeropuertosActivos(), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/obtener-aeropuerto/{idAeropuerto}")
     public ResponseEntity<AeropuertoDTO> obtenerAeropuerto(@PathVariable("idAeropuerto") Integer idAeropuerto) {
         try {

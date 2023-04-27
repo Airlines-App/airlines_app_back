@@ -23,13 +23,29 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    @PostMapping(path = "/guardar-usuario",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity guardarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+        try {
+            return new ResponseEntity(usuarioService.guardarUsuario(usuarioDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping("/obtener-usuarios")
     public ResponseEntity<List<UsuarioDTO>> obtenerUsuarios() {
         return new ResponseEntity(usuarioService.obtenerUsuarios(), HttpStatus.OK);
     }
 
-    @GetMapping("/obtener-usuario/{idUsuario}")
-    public ResponseEntity<UsuarioDTO> obtenerUsuario(@PathVariable("idUsuario") Integer idUsuario) {
+    @GetMapping("/obtener-usuariosActivos")
+    public ResponseEntity<List<UsuarioDTO>> obtenerUsuariosActivos() {
+        return new ResponseEntity(usuarioService.obtenerUsuariosActivos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/obtener-usuarioId/{idUsuario}")
+    public ResponseEntity<UsuarioDTO> obtenerUsuarioPorId(@PathVariable("idUsuario") Integer idUsuario) {
         try {
             return new ResponseEntity(usuarioService.obtenerUsuarioPorId(idUsuario), HttpStatus.OK);
         } catch (Exception e) {
@@ -37,12 +53,10 @@ public class UsuarioController {
         }
     }
 
-    @PostMapping(path = "/guardar-usuario",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity guardarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    @GetMapping("/obtener-usuarioCedula/{cedula}")
+    public ResponseEntity<UsuarioDTO> obtenerUsuarioPorCedula(@PathVariable("cedula") String cedula) {
         try {
-            return new ResponseEntity(usuarioService.guardarUsuario(usuarioDTO), HttpStatus.OK);
+            return new ResponseEntity(usuarioService.obtenerUsuarioPorCedula(cedula), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

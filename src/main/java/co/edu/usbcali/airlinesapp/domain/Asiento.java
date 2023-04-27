@@ -31,9 +31,6 @@ public class Asiento {
     @Column(name = "ubicacion", nullable = false, length = 12)
     private String ubicacion;
 
-    @Column(name = "precio", nullable = false)
-    private long precio;
-
     @Column(name = "estado", nullable = false, length = 1)
     private String estado;
 }

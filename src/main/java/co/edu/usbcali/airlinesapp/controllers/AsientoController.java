@@ -23,26 +23,31 @@ public class AsientoController {
         this.asientoService = asientoService;
     }
 
-    @GetMapping("/obtener-asientos")
-    public ResponseEntity<List<AsientoDTO>> obtenerAsientos() {
-        return new ResponseEntity(asientoService.obtenerAsientos(), HttpStatus.OK);
-    }
-
-    @GetMapping("/obtener-asiento/{idAsiento}")
-    public ResponseEntity<AsientoDTO> obtenerAsiento(@PathVariable("idAsiento") Integer idAsiento) {
-        try {
-            return new ResponseEntity(asientoService.obtenerAsientoPorId(idAsiento), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @PostMapping(path = "/guardar-asiento",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity guardarAsiento(@RequestBody AsientoDTO asientoDTO) {
         try {
             return new ResponseEntity(asientoService.guardarAsiento(asientoDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/obtener-asientos")
+    public ResponseEntity<List<AsientoDTO>> obtenerAsientos() {
+        return new ResponseEntity(asientoService.obtenerAsientos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/obtener-asientosActivos")
+    public ResponseEntity<List<AsientoDTO>> obtenerAsientosActivos() {
+        return new ResponseEntity(asientoService.obtenerAsientosActivos(), HttpStatus.OK);
+    }
+
+    @GetMapping("/obtener-asiento/{idAsiento}")
+    public ResponseEntity<AsientoDTO> obtenerAsiento(@PathVariable("idAsiento") Integer idAsiento) {
+        try {
+            return new ResponseEntity(asientoService.obtenerAsientoPorId(idAsiento), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }

@@ -4,4 +4,8 @@ import co.edu.usbcali.airlinesapp.domain.Vuelo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface VueloRepository extends JpaRepository<Vuelo, Integer> { }
+import java.util.List;
+
+public interface VueloRepository extends JpaRepository<Vuelo, Integer> {
+    List<Vuelo> findAllByEstado(String estado);
+}

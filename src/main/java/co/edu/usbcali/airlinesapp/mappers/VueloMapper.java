@@ -23,7 +23,7 @@ public class VueloMapper {
     }
 
     public static List<VueloDTO> domainToDTOList(List<Vuelo> vuelos) {
-        return vuelos.stream().map(vuelo -> domainToDTO(vuelo)).collect(Collectors.toList());
+        return vuelos.stream().map(VueloMapper::domainToDTO).collect(Collectors.toList());
     }
 
     public static Vuelo dtoToDomain(VueloDTO vueloDTO) {
@@ -40,6 +40,6 @@ public class VueloMapper {
     }
 
     public static List<Vuelo> dtoToDomainList(List<VueloDTO> vuelosDTO) {
-        return vuelosDTO.stream().map(vueloDTO -> dtoToDomain(vueloDTO)).collect(Collectors.toList());
+        return vuelosDTO.stream().map(VueloMapper::dtoToDomain).collect(Collectors.toList());
     }
 }
