@@ -1,4 +1,4 @@
-package co.edu.usbcali.airlinesapp.services.interfaces.implementation;
+package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Factura;
 import co.edu.usbcali.airlinesapp.dtos.FacturaDTO;
