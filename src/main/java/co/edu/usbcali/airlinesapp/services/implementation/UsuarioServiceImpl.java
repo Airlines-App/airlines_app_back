@@ -1,4 +1,4 @@
-package co.edu.usbcali.airlinesapp.services.implementation;
+package co.edu.usbcali.airlinesapp.services.interfaces.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Usuario;
 import co.edu.usbcali.airlinesapp.dtos.UsuarioDTO;

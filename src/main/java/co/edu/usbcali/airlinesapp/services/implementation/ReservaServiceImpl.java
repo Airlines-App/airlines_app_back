@@ -1,4 +1,4 @@
-package co.edu.usbcali.airlinesapp.services.implementation;
+package co.edu.usbcali.airlinesapp.services.interfaces.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Reserva;
 import co.edu.usbcali.airlinesapp.dtos.ReservaDTO;
