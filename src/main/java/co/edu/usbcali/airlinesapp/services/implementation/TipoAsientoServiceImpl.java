@@ -40,8 +40,8 @@ public class TipoAsientoServiceImpl implements TipoAsientoService {
         }
 
         if (esGuardar) {
-            if (tipoAsientoRepository.existsById(tipoAsientoDTO.getIdTipoAsiento())) {
-                throw new Exception("El tipo de asiento con id " + tipoAsientoDTO.getIdTipoAsiento() + " ya existe");
+            if (tipoAsientoDTO.getIdTipoAsiento() != null) {
+                throw new Exception("El id del tipo de asiento no debe existir");
             }
         }
 

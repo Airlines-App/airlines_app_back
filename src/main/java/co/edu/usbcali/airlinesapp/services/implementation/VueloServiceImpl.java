@@ -74,8 +74,8 @@ public class VueloServiceImpl implements VueloService {
 //        }
 
         if (esGuardar) {
-            if (vueloRepository.existsById(vueloDTO.getIdVuelo())) {
-                throw new Exception("El vuelo con id " + vueloDTO.getIdVuelo() + " ya existe");
+            if (vueloDTO.getIdVuelo() != null) {
+                throw new Exception("El id del vuelo no debe existir");
             }
         }
 

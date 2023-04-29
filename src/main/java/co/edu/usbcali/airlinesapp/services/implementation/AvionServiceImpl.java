@@ -42,8 +42,8 @@ public class AvionServiceImpl implements AvionService {
         }
 
         if (esGuardar) {
-            if (avionRepository.existsById(avionDTO.getIdAvion())) {
-                throw new Exception("El avión con id " + avionDTO.getIdAvion() + " ya existe");
+            if (avionDTO.getIdAvion() != null) {
+                throw new Exception("El id del avión no puede existir");
             }
         }
 

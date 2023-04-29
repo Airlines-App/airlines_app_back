@@ -62,8 +62,8 @@ public class AsientoServiceImpl implements AsientoService {
         }
 
         if (esGuardar) {
-            if (asientoRepository.existsById(asientoDTO.getIdAsiento())) {
-                throw new Exception("El asiento con id " + asientoDTO.getIdAsiento() + " ya existe");
+            if (asientoDTO.getIdAsiento() != null) {
+                throw new Exception("El id del asiento no debe existir");
             }
         }
 

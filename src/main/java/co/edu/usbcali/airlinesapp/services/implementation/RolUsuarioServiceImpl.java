@@ -40,8 +40,8 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
         }
 
         if (esGuardar) {
-            if (rolUsuarioRepository.existsById(rolUsuarioDTO.getIdRolUsuario())) {
-                throw new Exception("El rol de usuario con id " + rolUsuarioDTO.getIdRolUsuario() + " ya existe");
+            if (rolUsuarioDTO.getIdRolUsuario() != null) {
+                throw new Exception("El id del rol de usuario no debe existir");
             }
         }
 

@@ -46,10 +46,10 @@ public class AeropuertoServiceImpl implements AeropuertoService {
         }
 
         if (esGuardar) {
-            if (aeropuertoRepository.existsById(aeropuertoDTO.getIdAeropuerto())) {
-                throw new Exception("El aeropuerto con id " + aeropuertoDTO.getIdAeropuerto() + " ya existe");
+            if (aeropuertoDTO.getIdAeropuerto() != null) {
+                throw new Exception("El id del aeropuerto no debe existir");
             } if (aeropuertoRepository.existsByIata(aeropuertoDTO.getIata())) {
-                throw new Exception("El IATA del aeropuerto ya existe");
+                throw new Exception("El aeropuerto con IATA " + aeropuertoDTO.getIata() + " ya existe");
             }
         }
 
