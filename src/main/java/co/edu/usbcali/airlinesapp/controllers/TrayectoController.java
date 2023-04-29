@@ -72,4 +72,13 @@ public class TrayectoController {
             return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
         }
     }
+
+//    @GetMapping("/obtener-aeropuertoOrigen/{idTrayecto}")
+//    public ResponseEntity obtenerAeropuertoOrigen(@PathVariable("idTrayecto") Integer idTrayecto) {
+//        try {
+//            return new ResponseEntity(trayectoService.obtenerAeropuertoOrigenPorIdTrayecto(idTrayecto), HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity(MensajeDTO.builder().mensaje(e.getMessage()).build(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
 }

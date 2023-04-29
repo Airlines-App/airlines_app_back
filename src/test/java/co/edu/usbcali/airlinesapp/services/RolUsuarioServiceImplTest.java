@@ -1,88 +1,117 @@
 package co.edu.usbcali.airlinesapp.services;
 
-import co.edu.usbcali.airlinesapp.domain.RolUsuario;
 import co.edu.usbcali.airlinesapp.dtos.RolUsuarioDTO;
 import co.edu.usbcali.airlinesapp.repository.RolUsuarioRepository;
-import co.edu.usbcali.airlinesapp.services.interfaces.RolUsuarioService;
+import co.edu.usbcali.airlinesapp.services.implementation.RolUsuarioServiceImpl;
 
+import co.edu.usbcali.airlinesapp.utility.RolUsuarioUtilityTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 public class RolUsuarioServiceImplTest {
-    @Autowired
-    private RolUsuarioService rolUsuarioService;
+    @InjectMocks
+    private RolUsuarioServiceImpl rolUsuarioServiceImpl;
 
-    @MockBean
+    @Mock
     private RolUsuarioRepository rolUsuarioRepository;
 
     @Test
+    public void guardarRolUsuarioOk() throws Exception {
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(false);
+        given(rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
+
+        RolUsuarioDTO rolUsuarioSavedDTO = rolUsuarioServiceImpl.guardarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO);
+
+        assertEquals(RolUsuarioUtilityTest.ID_UNO, rolUsuarioSavedDTO.getIdRolUsuario());
+    }
+
+    @Test
+    public void guardarRolUsuarioNotOk() {
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> rolUsuarioServiceImpl.guardarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO));
+    }
+
+    @Test
     public void obtenerRolUsuariosOk() {
-        RolUsuario.builder()
-                .idRolUsuario(1)
-                .descripcion("Cliente")
-                .estado("A")
-                .build();
+        given(rolUsuarioRepository.findAll()).willReturn(RolUsuarioUtilityTest.ROLUSUARIOS);
 
-        List<RolUsuario> rolUsuarios = Arrays.asList(RolUsuario.builder()
-                        .idRolUsuario(1)
-                        .descripcion("Cliente")
-                        .estado("A")
-                        .build(),
-                RolUsuario.builder()
-                        .idRolUsuario(2)
-                        .descripcion("Administrador")
-                        .estado("A")
-                        .build());
+        List<RolUsuarioDTO> rolUsuariosSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuarios();
 
-        Mockito.when(rolUsuarioRepository.findAll()).thenReturn(rolUsuarios);
-
-        List<RolUsuarioDTO> rolUsuariosDTO = rolUsuarioService.obtenerRolUsuarios();
-
-        assertEquals(2, rolUsuariosDTO.size());
-        assertEquals("Cliente", rolUsuariosDTO.get(0).getDescripcion());
+        assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_SIZE, rolUsuariosSavedDTO.size());
+        assertEquals(RolUsuarioUtilityTest.DESCRIPCION_UNO, rolUsuariosSavedDTO.get(0).getDescripcion());
     }
 
     @Test
     public void obtenerRolUsuariosNotOk() {
-        List<RolUsuario> rolUsuarios = Arrays.asList();
+        given(rolUsuarioRepository.findAll()).willReturn(RolUsuarioUtilityTest.ROLUSUARIOS_VACIO);
 
-        Mockito.when(rolUsuarioRepository.findAll()).thenReturn(rolUsuarios);
+        List<RolUsuarioDTO> rolUsuariosSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuarios();
 
-        List<RolUsuarioDTO> rolUsuariosDTO = rolUsuarioService.obtenerRolUsuarios();
+        assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_VACIO_SIZE, rolUsuariosSavedDTO.size());
+    }
 
-        assertEquals(0, rolUsuariosDTO.size());
+    @Test
+    public void obtenerRolUsuariosActivosOk() {
+        given(rolUsuarioRepository.findAllByEstado("A")).willReturn(RolUsuarioUtilityTest.ROLUSUARIOS);
+
+        List<RolUsuarioDTO> rolUsuariosSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuariosActivos();
+
+        assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_SIZE, rolUsuariosSavedDTO.size());
+        assertEquals(RolUsuarioUtilityTest.DESCRIPCION_UNO, rolUsuariosSavedDTO.get(0).getDescripcion());
+    }
+
+    @Test
+    public void obtenerRolUsuariosActivosNotOk() {
+        given(rolUsuarioRepository.findAllByEstado("A")).willReturn(RolUsuarioUtilityTest.ROLUSUARIOS_VACIO);
+
+        List<RolUsuarioDTO> rolUsuariosSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuariosActivos();
+
+        assertEquals(RolUsuarioUtilityTest.ROLUSUARIOS_VACIO_SIZE, rolUsuariosSavedDTO.size());
     }
 
     @Test
     public void obtenerRolUsuarioPorIdOk() throws Exception {
-        RolUsuario rolUsuario = RolUsuario.builder()
-                .idRolUsuario(1)
-                .descripcion("Cliente")
-                .estado("A")
-                .build();
+        rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
 
-        Mockito.when(rolUsuarioRepository.existsById(1)).thenReturn(true);
-        Mockito.when(rolUsuarioRepository.getReferenceById(1)).thenReturn(rolUsuario);
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(rolUsuarioRepository.getReferenceById(RolUsuarioUtilityTest.ID_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
 
-        RolUsuarioDTO rolUsuarioDTO = rolUsuarioService.obtenerRolUsuarioPorId(1);
+        RolUsuarioDTO rolUsuarioSavedDTO = rolUsuarioServiceImpl.obtenerRolUsuarioPorId(RolUsuarioUtilityTest.ID_UNO);
 
-        assertEquals(1, rolUsuarioDTO.getIdRolUsuario());
+        assertEquals(RolUsuarioUtilityTest.ID_UNO, rolUsuarioSavedDTO.getIdRolUsuario());
     }
 
     @Test
     public void obtenerRolUsuarioPorIdNotOk() {
-        Mockito.when(rolUsuarioRepository.existsById(1)).thenReturn(false);
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> rolUsuarioService.obtenerRolUsuarioPorId(1));
+        assertThrows(java.lang.Exception.class, () -> rolUsuarioServiceImpl.obtenerRolUsuarioPorId(RolUsuarioUtilityTest.ID_UNO));
+    }
+
+    @Test
+    public void actualizarRolUsuarioOk() throws Exception {
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(true);
+        given(rolUsuarioRepository.save(RolUsuarioUtilityTest.ROLUSUARIO_UNO)).willReturn(RolUsuarioUtilityTest.ROLUSUARIO_UNO);
+
+        RolUsuarioDTO rolUsuarioSavedDTO = rolUsuarioServiceImpl.actualizarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO);
+
+        assertEquals(RolUsuarioUtilityTest.ID_UNO, rolUsuarioSavedDTO.getIdRolUsuario());
+    }
+
+    @Test
+    public void actualizarRolUsuarioNotOk() {
+        given(rolUsuarioRepository.existsById(RolUsuarioUtilityTest.ID_UNO)).willReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> rolUsuarioServiceImpl.actualizarRolUsuario(RolUsuarioUtilityTest.ROLUSUARIODTO));
     }
 }

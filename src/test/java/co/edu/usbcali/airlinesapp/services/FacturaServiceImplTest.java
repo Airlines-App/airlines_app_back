@@ -1,231 +1,127 @@
 package co.edu.usbcali.airlinesapp.services;
 
-import co.edu.usbcali.airlinesapp.domain.*;
 import co.edu.usbcali.airlinesapp.dtos.FacturaDTO;
 import co.edu.usbcali.airlinesapp.repository.FacturaRepository;
-import co.edu.usbcali.airlinesapp.services.interfaces.FacturaService;
+import co.edu.usbcali.airlinesapp.repository.ReservaRepository;
+import co.edu.usbcali.airlinesapp.services.implementation.FacturaServiceImpl;
 
+import co.edu.usbcali.airlinesapp.utility.FacturaUtilityTest;
+import co.edu.usbcali.airlinesapp.utility.ReservaUtilityTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 public class FacturaServiceImplTest {
-    @Autowired
-    private FacturaService facturaService;
+    @InjectMocks
+    private FacturaServiceImpl facturaServiceImpl;
 
-    @MockBean
+    @Mock
     private FacturaRepository facturaRepository;
+
+    @Mock
+    private ReservaRepository reservaRepository;
+
+    @Test
+    public void guardarFacturaOk() throws Exception {
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
+        given(reservaRepository.getReferenceById(ReservaUtilityTest.ID_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(false);
+        given(facturaRepository.save(FacturaUtilityTest.FACTURA_UNO)).willReturn(FacturaUtilityTest.FACTURA_UNO);
+
+        FacturaDTO facturaSavedDTO = facturaServiceImpl.guardarFactura(FacturaUtilityTest.FACTURADTO);
+
+        assertEquals(FacturaUtilityTest.ID_UNO, facturaSavedDTO.getIdFactura());
+    }
+
+    @Test
+    public void guardarFacturaNotOk() {
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(true);
+
+        assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.guardarFactura(FacturaUtilityTest.FACTURADTO));
+    }
 
     @Test
     public void obtenerFacturasOk() {
-        Aeropuerto aeropuerto = Aeropuerto.builder()
-                .idAeropuerto(1)
-                .nombre("Aeropuerto Internacional El Dorado")
-                .iata("BOG")
-                .ubicacion("Bogotá")
-                .estado("A")
-                .build();
+        given(facturaRepository.findAll()).willReturn(FacturaUtilityTest.FACTURAS);
 
-        Vuelo vuelo = Vuelo.builder()
-                .idVuelo(1)
-                .aeropuertoOrigen(aeropuerto)
-                .aeropuertoDestino(aeropuerto)
-                .precio(100000)
-                .horaSalida(new Date())
-                .horaLlegada(new Date())
-                .precioAsientoVip(50000)
-                .precioAsientoNormal(30000)
-                .precioAsientoBasico(10000)
-                .estado("A")
-                .build();
+        List<FacturaDTO> facturasSavedDTO = facturaServiceImpl.obtenerFacturas();
 
-        TipoAsiento tipoAsiento = TipoAsiento.builder()
-                .idTipoAsiento(1)
-                .descripcion("Ejecutivo")
-                .estado("A")
-                .build();
-
-        Avion avion = Avion.builder()
-                .idAvion(1)
-                .modelo("Boeing 737")
-                .aerolinea("Avianca")
-                .estado("A")
-                .build();
-
-        Asiento asiento = Asiento.builder()
-                .idAsiento(1)
-                .tipoAsiento(tipoAsiento)
-                .avion(avion)
-                .ubicacion("A1")
-                .estado("A")
-                .build();
-
-        RolUsuario rolUsuario = RolUsuario.builder()
-                .idRolUsuario(1)
-                .descripcion("Cliente")
-                .estado("A")
-                .build();
-
-        Usuario usuario = Usuario.builder()
-                .idUsuario(1)
-                .rolUsuario(rolUsuario)
-                .cedula("123456789")
-                .nombre("Santiago")
-                .apellido("García")
-                .correo("santiagogarcia@gmail.com")
-                .estado("A")
-                .build();
-
-        Reserva reserva = Reserva.builder()
-                .idReserva(1)
-                .vuelo(vuelo)
-                .asiento(asiento)
-                .usuario(usuario)
-                .precioTotal(100000)
-                .estadoPago("A")
-                .fecha(new Date())
-                .estado("A")
-                .build();
-
-        Factura.builder()
-                .idFactura(1)
-                .reserva(reserva)
-                .fecha(new Date())
-                .estado("A")
-                .build();
-
-        List<Factura> facturas = Arrays.asList(Factura.builder()
-                        .idFactura(1)
-                        .reserva(reserva)
-                        .fecha(new Date())
-                        .estado("A")
-                        .build(),
-                Factura.builder()
-                        .idFactura(2)
-                        .reserva(reserva)
-                        .fecha(new Date())
-                        .estado("A")
-                        .build());
-
-        Mockito.when(facturaRepository.findAll()).thenReturn(facturas);
-
-        List<FacturaDTO> facturasDTO = facturaService.obtenerFacturas();
-
-        assertEquals(2, facturasDTO.size());
-        assertEquals(1, facturasDTO.get(0).getIdFactura());
+        assertEquals(FacturaUtilityTest.FACTURAS_SIZE, facturasSavedDTO.size());
+        assertEquals(FacturaUtilityTest.ID_UNO, facturasSavedDTO.get(0).getIdFactura());
     }
 
     @Test
     public void obtenerFacturasNotOk() {
-        List<Factura> facturas = Arrays.asList();
+        given(facturaRepository.findAll()).willReturn(FacturaUtilityTest.FACTURAS_VACIO);
 
-        Mockito.when(facturaRepository.findAll()).thenReturn(facturas);
+        List<FacturaDTO> facturasSavedDTO = facturaServiceImpl.obtenerFacturas();
 
-        List<FacturaDTO> facturasDTO = facturaService.obtenerFacturas();
+        assertEquals(FacturaUtilityTest.FACTURAS_VACIO_SIZE, facturasSavedDTO.size());
+    }
 
-        assertEquals(0, facturasDTO.size());
+    @Test
+    public void obtenerFacturasActivasOk() {
+        given(facturaRepository.findAllByEstado("A")).willReturn(FacturaUtilityTest.FACTURAS);
+
+        List<FacturaDTO> facturasSavedTO = facturaServiceImpl.obtenerFacturasActivas();
+
+        assertEquals(FacturaUtilityTest.FACTURAS_SIZE, facturasSavedTO.size());
+        assertEquals(FacturaUtilityTest.ID_UNO, facturasSavedTO.get(0).getIdFactura());
+    }
+
+    @Test
+    public void obtenerFacturasActivasNotOk() {
+        given(facturaRepository.findAllByEstado("A")).willReturn(FacturaUtilityTest.FACTURAS_VACIO);
+
+        List<FacturaDTO> facturasSavedTO = facturaServiceImpl.obtenerFacturasActivas();
+
+        assertEquals(FacturaUtilityTest.FACTURAS_VACIO_SIZE, facturasSavedTO.size());
     }
 
     @Test
     public void obtenerFacturaPorIdOk() throws Exception {
-        Aeropuerto aeropuerto = Aeropuerto.builder()
-                .idAeropuerto(1)
-                .nombre("Aeropuerto Internacional El Dorado")
-                .iata("BOG")
-                .ubicacion("Bogotá")
-                .estado("A")
-                .build();
+        reservaRepository.save(ReservaUtilityTest.RESERVA_UNO);
+        facturaRepository.save(FacturaUtilityTest.FACTURA_UNO);
 
-        Vuelo vuelo = Vuelo.builder()
-                .idVuelo(1)
-                .aeropuertoOrigen(aeropuerto)
-                .aeropuertoDestino(aeropuerto)
-                .precio(100000)
-                .horaSalida(new Date())
-                .horaLlegada(new Date())
-                .precioAsientoVip(50000)
-                .precioAsientoNormal(30000)
-                .precioAsientoBasico(10000)
-                .estado("A")
-                .build();
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(true);
+        given(facturaRepository.getReferenceById(FacturaUtilityTest.ID_UNO)).willReturn(FacturaUtilityTest.FACTURA_UNO);
 
-        TipoAsiento tipoAsiento = TipoAsiento.builder()
-                .idTipoAsiento(1)
-                .descripcion("Ejecutivo")
-                .estado("A")
-                .build();
+        FacturaDTO facturaSavedDTO = facturaServiceImpl.obtenerFacturaPorId(FacturaUtilityTest.ID_UNO);
 
-        Avion avion = Avion.builder()
-                .idAvion(1)
-                .modelo("Boeing 737")
-                .aerolinea("Avianca")
-                .estado("A")
-                .build();
-
-        Asiento asiento = Asiento.builder()
-                .idAsiento(1)
-                .tipoAsiento(tipoAsiento)
-                .avion(avion)
-                .ubicacion("A1")
-                .estado("A")
-                .build();
-
-        RolUsuario rolUsuario = RolUsuario.builder()
-                .idRolUsuario(1)
-                .descripcion("Cliente")
-                .estado("A")
-                .build();
-
-        Usuario usuario = Usuario.builder()
-                .idUsuario(1)
-                .rolUsuario(rolUsuario)
-                .cedula("123456789")
-                .nombre("Santiago")
-                .apellido("García")
-                .correo("santiagogarcia@gmail.com")
-                .estado("A")
-                .build();
-
-        Reserva reserva = Reserva.builder()
-                .idReserva(1)
-                .vuelo(vuelo)
-                .asiento(asiento)
-                .usuario(usuario)
-                .precioTotal(100000)
-                .estadoPago("A")
-                .fecha(new Date())
-                .estado("A")
-                .build();
-
-        Factura factura = Factura.builder()
-                .idFactura(1)
-                .reserva(reserva)
-                .fecha(new Date())
-                .estado("A")
-                .build();
-
-        Mockito.when(facturaRepository.existsById(1)).thenReturn(true);
-        Mockito.when(facturaRepository.getReferenceById(1)).thenReturn(factura);
-
-        FacturaDTO facturaDTO = facturaService.obtenerFacturaPorId(1);
-
-        assertEquals(1, facturaDTO.getIdFactura());
+        assertEquals(FacturaUtilityTest.ID_UNO, facturaSavedDTO.getIdFactura());
     }
 
     @Test
     public void obtenerFacturaPorIdNotOk() {
-        Mockito.when(facturaRepository.existsById(1)).thenReturn(false);
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> facturaService.obtenerFacturaPorId(1));
+        assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.obtenerFacturaPorId(FacturaUtilityTest.ID_UNO));
+    }
+
+    @Test
+    public void actualizarFacturaOk() throws Exception {
+        given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
+        given(reservaRepository.getReferenceById(ReservaUtilityTest.ID_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(true);
+        given(facturaRepository.save(FacturaUtilityTest.FACTURA_UNO)).willReturn(FacturaUtilityTest.FACTURA_UNO);
+
+        FacturaDTO facturaSavedDTO = facturaServiceImpl.actualizarFactura(FacturaUtilityTest.FACTURADTO);
+
+        assertEquals(FacturaUtilityTest.ID_UNO, facturaSavedDTO.getIdFactura());
+    }
+
+    @Test
+    public void actualizarFacturaNotOk() {
+        given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(false);
+
+        assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.actualizarFactura(FacturaUtilityTest.FACTURADTO));
     }
 }
