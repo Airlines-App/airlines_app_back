@@ -1,12 +1,10 @@
 package co.edu.usbcali.airlinesapp.services.implementation;
 
 import co.edu.usbcali.airlinesapp.domain.Asiento;
-import co.edu.usbcali.airlinesapp.domain.Avion;
 import co.edu.usbcali.airlinesapp.domain.TipoAsiento;
 import co.edu.usbcali.airlinesapp.dtos.AsientoDTO;
 import co.edu.usbcali.airlinesapp.mappers.AsientoMapper;
 import co.edu.usbcali.airlinesapp.repository.AsientoRepository;
-import co.edu.usbcali.airlinesapp.repository.AvionRepository;
 import co.edu.usbcali.airlinesapp.repository.TipoAsientoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AsientoService;
 
@@ -22,23 +20,17 @@ import java.util.regex.Pattern;
 public class AsientoServiceImpl implements AsientoService {
     private final AsientoRepository asientoRepository;
     private final TipoAsientoRepository tipoAsientoRepository;
-    private final AvionRepository avionRepository;
 
-    public AsientoServiceImpl(AsientoRepository asientoRepository, TipoAsientoRepository tipoAsientoRepository, AvionRepository avionRepository) {
+    public AsientoServiceImpl(AsientoRepository asientoRepository, TipoAsientoRepository tipoAsientoRepository ) {
         this.asientoRepository = asientoRepository;
         this.tipoAsientoRepository = tipoAsientoRepository;
-        this.avionRepository = avionRepository;
     }
 
     private AsientoDTO guardarOAcutalizarAsiento(AsientoDTO asientoDTO) {
         Asiento asiento = AsientoMapper.dtoToDomain(asientoDTO);
 
         TipoAsiento tipoAsiento = tipoAsientoRepository.getReferenceById(asientoDTO.getIdTipoAsiento());
-        Avion avion = avionRepository.getReferenceById(asientoDTO.getIdAvion());
-
         asiento.setTipoAsiento(tipoAsiento);
-        asiento.setAvion(avion);
-
         return AsientoMapper.domainToDTO(asientoRepository.save(asiento));
     }
 
@@ -49,14 +41,8 @@ public class AsientoServiceImpl implements AsientoService {
             throw new Exception("El id del tipo de asiento no puede ser nulo o menor o igual a cero");
         } if (!tipoAsientoRepository.existsById(asientoDTO.getIdTipoAsiento())) {
             throw new Exception("El tipo de asiento con id " + asientoDTO.getIdTipoAsiento() + " no existe");
-        } if (asientoDTO.getIdAvion() == null || asientoDTO.getIdAvion() <= 0) {
-            throw new Exception("El id del avión no puede ser nulo o menor o igual a cero");
-        } if (!avionRepository.existsById(asientoDTO.getIdAvion())) {
-            throw new Exception("El avión con id " + asientoDTO.getIdAvion() + " no existe");
         } if (asientoDTO.getUbicacion() == null || asientoDTO.getUbicacion().isBlank() || asientoDTO.getUbicacion().trim().isEmpty()) {
             throw new Exception("La ubicación del asiento no puede ser nula o vacía");
-        } if (!Pattern.matches(ConstantesUtility.PATTERN_SEAT_REGEX, asientoDTO.getUbicacion())) {
-            throw new Exception("La ubicación del asiento no cumple con el patrón");
         } if (asientoDTO.getEstado() == null || asientoDTO.getEstado().isBlank() || asientoDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del asiento no puede ser nulo o vacío");
         }
