@@ -2,12 +2,10 @@ package co.edu.usbcali.airlinesapp.services;
 
 import co.edu.usbcali.airlinesapp.dtos.AsientoDTO;
 import co.edu.usbcali.airlinesapp.repository.AsientoRepository;
-import co.edu.usbcali.airlinesapp.repository.AvionRepository;
 import co.edu.usbcali.airlinesapp.repository.TipoAsientoRepository;
 import co.edu.usbcali.airlinesapp.services.implementation.AsientoServiceImpl;
 
 import co.edu.usbcali.airlinesapp.utility.AsientoUtilityTest;
-import co.edu.usbcali.airlinesapp.utility.AvionUtilityTest;
 import co.edu.usbcali.airlinesapp.utility.TipoAsientoUtilityTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -31,15 +29,11 @@ public class AsientoServiceImplTest {
     @Mock
     private TipoAsientoRepository tipoAsientoRepository;
 
-    @Mock
-    private AvionRepository avionRepository;
 
     @Test
     public void guardarAsientoOk() throws Exception {
         given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.ID_UNO)).willReturn(true);
         given(tipoAsientoRepository.getReferenceById(TipoAsientoUtilityTest.ID_UNO)).willReturn(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
-        given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(true);
-        given(avionRepository.getReferenceById(AvionUtilityTest.ID_UNO)).willReturn(AvionUtilityTest.AVION_UNO);
         given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(false);
         given(asientoRepository.save(AsientoUtilityTest.ASIENTO_UNO)).willReturn(AsientoUtilityTest.ASIENTO_UNO);
 
@@ -97,7 +91,6 @@ public class AsientoServiceImplTest {
     public void obtenerAsientoPorIdOk() throws Exception {
         tipoAsientoRepository.save(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
         asientoRepository.save(AsientoUtilityTest.ASIENTO_UNO);
-        avionRepository.save(AvionUtilityTest.AVION_UNO);
 
         given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(true);
         given(asientoRepository.getReferenceById(AsientoUtilityTest.ID_UNO)).willReturn(AsientoUtilityTest.ASIENTO_UNO);
@@ -118,8 +111,6 @@ public class AsientoServiceImplTest {
     public void actualizarAsientoOk() throws Exception {
         given(tipoAsientoRepository.existsById(TipoAsientoUtilityTest.ID_UNO)).willReturn(true);
         given(tipoAsientoRepository.getReferenceById(TipoAsientoUtilityTest.ID_UNO)).willReturn(TipoAsientoUtilityTest.TIPOASIENTO_UNO);
-        given(avionRepository.existsById(AvionUtilityTest.ID_UNO)).willReturn(true);
-        given(avionRepository.getReferenceById(AvionUtilityTest.ID_UNO)).willReturn(AvionUtilityTest.AVION_UNO);
         given(asientoRepository.existsById(AsientoUtilityTest.ID_UNO)).willReturn(true);
         given(asientoRepository.save(AsientoUtilityTest.ASIENTO_UNO)).willReturn(AsientoUtilityTest.ASIENTO_UNO);
 

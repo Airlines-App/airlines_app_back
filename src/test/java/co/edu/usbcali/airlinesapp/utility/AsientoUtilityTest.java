@@ -16,7 +16,6 @@ public class AsientoUtilityTest {
     public static Asiento ASIENTO_UNO = Asiento.builder()
             .idAsiento(1)
             .tipoAsiento(TipoAsientoUtilityTest.TIPOASIENTO_UNO)
-            .avion(AvionUtilityTest.AVION_UNO)
             .ubicacion("A1")
             .estado("A")
             .build();
@@ -24,7 +23,6 @@ public class AsientoUtilityTest {
     public static Asiento ASIENTO_DOS = Asiento.builder()
             .idAsiento(2)
             .tipoAsiento(TipoAsientoUtilityTest.TIPOASIENTO_UNO)
-            .avion(AvionUtilityTest.AVION_UNO)
             .ubicacion("A2")
             .estado("A")
             .build();
@@ -32,7 +30,6 @@ public class AsientoUtilityTest {
     public static AsientoDTO ASIENTODTO = AsientoDTO.builder()
             .idAsiento(1)
             .idTipoAsiento(ASIENTO_UNO.getTipoAsiento().getIdTipoAsiento())
-            .idAvion(ASIENTO_DOS.getAvion().getIdAvion())
             .ubicacion("A1")
             .estado("A")
             .build();
