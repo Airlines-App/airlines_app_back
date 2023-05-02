@@ -6,7 +6,7 @@ import co.edu.usbcali.airlinesapp.mappers.RolUsuarioMapper;
 import co.edu.usbcali.airlinesapp.repository.RolUsuarioRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.RolUsuarioService;
 
-import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
+import co.edu.usbcali.airlinesapp.utility.ValidationsUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +33,7 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
             throw new Exception("El rol de usuario no puede ser nulo");
         } if (rolUsuarioDTO.getDescripcion() == null || rolUsuarioDTO.getDescripcion().isBlank() || rolUsuarioDTO.getDescripcion().trim().isEmpty()) {
             throw new Exception("La descripción del rol de usuario no puede ser nula o vacía");
-        } if (!Pattern.matches(ConstantesUtility.PATTERN_NAME_REGEX, rolUsuarioDTO.getDescripcion())) {
+        } if (!Pattern.matches(ValidationsUtility.PATTERN_NAME_REGEX, rolUsuarioDTO.getDescripcion())) {
             throw new Exception("La descripción del rol de usuario no puede contener números o caracteres especiales");
         } if (rolUsuarioDTO.getEstado() == null || rolUsuarioDTO.getEstado().isBlank() || rolUsuarioDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del rol de usuario no puede ser nulo o vacío");
