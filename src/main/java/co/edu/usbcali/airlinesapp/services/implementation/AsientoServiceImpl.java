@@ -10,7 +10,7 @@ import co.edu.usbcali.airlinesapp.repository.AvionRepository;
 import co.edu.usbcali.airlinesapp.repository.TipoAsientoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AsientoService;
 
-import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
+import co.edu.usbcali.airlinesapp.utility.ValidationsUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +55,7 @@ public class AsientoServiceImpl implements AsientoService {
             throw new Exception("El avión con id " + asientoDTO.getIdAvion() + " no existe");
         } if (asientoDTO.getUbicacion() == null || asientoDTO.getUbicacion().isBlank() || asientoDTO.getUbicacion().trim().isEmpty()) {
             throw new Exception("La ubicación del asiento no puede ser nula o vacía");
-        } if (!Pattern.matches(ConstantesUtility.PATTERN_SEAT_REGEX, asientoDTO.getUbicacion())) {
+        } if (!Pattern.matches(ValidationsUtility.PATTERN_SEAT_REGEX, asientoDTO.getUbicacion())) {
             throw new Exception("La ubicación del asiento no cumple con el patrón");
         } if (asientoDTO.getEstado() == null || asientoDTO.getEstado().isBlank() || asientoDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del asiento no puede ser nulo o vacío");

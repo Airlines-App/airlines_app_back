@@ -41,11 +41,11 @@ public class VueloServiceImpl implements VueloService {
             throw new Exception("El vuelo no puede ser nulo");
         } if (vueloDTO.getIdAeropuertoOrigen() == null || vueloDTO.getIdAeropuertoOrigen() <= 0) {
             throw new Exception("El id del aeropuerto de origen no puede ser nulo o menor o igual a cero");
-        } if (!vueloRepository.existsById(vueloDTO.getIdAeropuertoOrigen())) {
+        } if (!aeropuertoRepository.existsById(vueloDTO.getIdAeropuertoOrigen())) {
             throw new Exception("El id del aeropuerto de origen no existe");
         } if (vueloDTO.getIdAeropuertoDestino() == null || vueloDTO.getIdAeropuertoDestino() <= 0) {
             throw new Exception("El id del aeropuerto de destino no puede ser nulo o menor o igual a cero");
-        } if (!vueloRepository.existsById(vueloDTO.getIdAeropuertoDestino())) {
+        } if (!aeropuertoRepository.existsById(vueloDTO.getIdAeropuertoDestino())) {
             throw new Exception("El id del aeropuerto de destino no existe");
         } if (vueloDTO.getIdAeropuertoOrigen().equals(vueloDTO.getIdAeropuertoDestino())) {
             throw new Exception("El id del aeropuerto de origen no puede ser igual al id del aeropuerto de destino");
