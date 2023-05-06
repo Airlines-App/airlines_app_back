@@ -87,8 +87,8 @@ public class TrayectoServiceImpl implements TrayectoService {
 //        }
 
         if (esGuardar) {
-            if (trayectoRepository.existsById(trayectoDTO.getIdTrayecto())) {
-                throw new Exception("El trayecto con id " + trayectoDTO.getIdTrayecto() + " ya existe");
+            if (trayectoDTO.getIdTrayecto() != null) {
+                throw new Exception("El id del trayecto no debe existir");
             }
         }
 

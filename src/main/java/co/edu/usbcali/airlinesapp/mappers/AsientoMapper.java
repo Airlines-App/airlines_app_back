@@ -11,7 +11,6 @@ public class AsientoMapper {
         return AsientoDTO.builder()
                 .idAsiento(asiento.getIdAsiento())
                 .idTipoAsiento(asiento.getTipoAsiento() != null ? asiento.getTipoAsiento().getIdTipoAsiento() : null)
-                .idAvion(asiento.getAvion() != null ? asiento.getAvion().getIdAvion() : null)
                 .ubicacion(asiento.getUbicacion())
                 .estado(asiento.getEstado())
                 .build();

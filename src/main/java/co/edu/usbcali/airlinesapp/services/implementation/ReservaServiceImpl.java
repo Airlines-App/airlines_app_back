@@ -82,8 +82,8 @@ public class ReservaServiceImpl implements ReservaService {
 //        }
 
         if (esGuardar) {
-            if (reservaRepository.existsById(reservaDTO.getIdReserva())) {
-                throw new Exception("La reserva con id " + reservaDTO.getIdReserva() + " ya existe");
+            if (reservaDTO.getIdReserva() != null) {
+                throw new Exception("El id de la reserva no debe existir");
             }
         }
 

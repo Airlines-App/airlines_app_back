@@ -8,7 +8,7 @@ import co.edu.usbcali.airlinesapp.repository.RolUsuarioRepository;
 import co.edu.usbcali.airlinesapp.repository.UsuarioRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.UsuarioService;
 
-import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
+import co.edu.usbcali.airlinesapp.utility.ValidationsUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -43,27 +43,27 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new Exception("El id del rol del usuario no puede ser nulo o menor o igual a cero");
         } if (usuarioDTO.getCedula() == null || usuarioDTO.getCedula().isBlank() || usuarioDTO.getNombre().trim().isEmpty()) {
             throw new Exception("La cédula del usuario no puede ser nula o vacía");
-        } if (!Pattern.matches(ConstantesUtility.PATTERN_CURRENCY_REGEX, usuarioDTO.getCedula())) {
+        } if (!Pattern.matches(ValidationsUtility.PATTERN_CURRENCY_REGEX, usuarioDTO.getCedula())) {
             throw new Exception("La cédula del usuario no puede contener números entre 0 y 9 y un tamaño máximo de 10 caracteres");
         } if (usuarioDTO.getNombre().isBlank() || usuarioDTO.getNombre().trim().isEmpty()) {
             throw new Exception("El nombre del usuario no puede ser nulo o vacío");
-        } if (!Pattern.matches(ConstantesUtility.PATTERN_NAME_REGEX, usuarioDTO.getNombre())) {
+        } if (!Pattern.matches(ValidationsUtility.PATTERN_NAME_REGEX, usuarioDTO.getNombre())) {
             throw new Exception("El nombre del usuario no puede contener números o caracteres especiales");
         } if (usuarioDTO.getApellido() == null || usuarioDTO.getApellido().isBlank() || usuarioDTO.getApellido().trim().isEmpty()) {
             throw new Exception("El apellido del usuario no puede ser nulo o vacío");
-        } if (!Pattern.matches(ConstantesUtility.PATTERN_NAME_REGEX, usuarioDTO.getApellido())) {
+        } if (!Pattern.matches(ValidationsUtility.PATTERN_NAME_REGEX, usuarioDTO.getApellido())) {
             throw new Exception("El apellido del usuario no puede contener números o caracteres especiales");
         } if (usuarioDTO.getCorreo() == null || usuarioDTO.getCorreo().isBlank() || usuarioDTO.getCorreo().trim().isEmpty()) {
             throw new Exception("El correo del usuario no puede ser nulo o vacío");
-        } if (!Pattern.matches(ConstantesUtility.PATTERN_MAIL_REGEX, usuarioDTO.getCorreo())) {
+        } if (!Pattern.matches(ValidationsUtility.PATTERN_MAIL_REGEX, usuarioDTO.getCorreo())) {
             throw new Exception("El correo del usuario no tiene un formato válido");
         } if (usuarioDTO.getEstado() == null || usuarioDTO.getEstado().isBlank() || usuarioDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del usuario no puede ser nulo o vacío");
         }
 
         if (esGuardar) {
-            if (usuarioRepository.existsById(usuarioDTO.getIdUsuario())) {
-                throw new Exception("El usuario con id " + usuarioDTO.getIdUsuario() + " ya existe");
+            if (usuarioDTO.getIdUsuario() != null) {
+                throw new Exception("El id del usuario no debe existir");
             } if (usuarioRepository.existsByCedula(usuarioDTO.getCedula())) {
                 throw new Exception("El usuario con cédula " + usuarioDTO.getCedula() + " ya existe");
             } if (usuarioRepository.existsByCorreo(usuarioDTO.getCorreo())) {

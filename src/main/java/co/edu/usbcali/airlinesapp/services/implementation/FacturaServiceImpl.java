@@ -56,8 +56,8 @@ public class FacturaServiceImpl implements FacturaService {
 //        }
 
         if (esGuardar) {
-            if (facturaRepository.existsById(facturaDTO.getIdFactura())) {
-                throw new Exception("La factura con id " + facturaDTO.getIdFactura() + " ya existe");
+            if (facturaDTO.getIdFactura() != null) {
+                throw new Exception("El id de la factura no debe existir");
             }
         }
 

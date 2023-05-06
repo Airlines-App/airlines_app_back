@@ -6,7 +6,7 @@ import co.edu.usbcali.airlinesapp.mappers.AeropuertoMapper;
 import co.edu.usbcali.airlinesapp.repository.AeropuertoRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.AeropuertoService;
 
-import co.edu.usbcali.airlinesapp.utility.ConstantesUtility;
+import co.edu.usbcali.airlinesapp.utility.ValidationsUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -33,11 +33,11 @@ public class AeropuertoServiceImpl implements AeropuertoService {
             throw new Exception("El aeropuerto no puede ser nulo");
         } if (aeropuertoDTO.getNombre() == null || aeropuertoDTO.getNombre().isBlank() || aeropuertoDTO.getNombre().trim().isEmpty()) {
             throw new Exception("El nombre del aeropuerto no puede ser nulo  o vacío");
-        } if (!Pattern.matches(ConstantesUtility.PATTERN_NAME_REGEX, aeropuertoDTO.getNombre())) {
+        } if (!Pattern.matches(ValidationsUtility.PATTERN_NAME_REGEX, aeropuertoDTO.getNombre())) {
             throw new Exception("El nombre del aeropuerto solo puede contener letras y espacios");
         } if (aeropuertoDTO.getIata() == null || aeropuertoDTO.getIata().isBlank() || aeropuertoDTO.getIata().trim().isEmpty()) {
             throw new Exception("El IATA del aeropuerto no puede ser nulo o vacío");
-        } if (!Pattern.matches(ConstantesUtility.PATTERN_IATA_REGEX, aeropuertoDTO.getIata())) {
+        } if (!Pattern.matches(ValidationsUtility.PATTERN_IATA_REGEX, aeropuertoDTO.getIata())) {
             throw new Exception("El IATA del aeropuerto debe tener 3 caracteres y solo letras mayúsculas");
         } if (aeropuertoDTO.getUbicacion() == null || aeropuertoDTO.getUbicacion().isBlank() || aeropuertoDTO.getUbicacion().trim().isEmpty()) {
             throw new Exception("La ubicación del aeropuerto no puede ser nula o vacía");
@@ -46,10 +46,10 @@ public class AeropuertoServiceImpl implements AeropuertoService {
         }
 
         if (esGuardar) {
-            if (aeropuertoRepository.existsById(aeropuertoDTO.getIdAeropuerto())) {
-                throw new Exception("El aeropuerto con id " + aeropuertoDTO.getIdAeropuerto() + " ya existe");
+            if (aeropuertoDTO.getIdAeropuerto() != null) {
+                throw new Exception("El id del aeropuerto no debe existir");
             } if (aeropuertoRepository.existsByIata(aeropuertoDTO.getIata())) {
-                throw new Exception("El IATA del aeropuerto ya existe");
+                throw new Exception("El aeropuerto con IATA " + aeropuertoDTO.getIata() + " ya existe");
             }
         }
 
