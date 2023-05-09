@@ -41,12 +41,6 @@ public class AvionServiceImpl implements AvionService {
             throw new Exception("El estado del avión no puede ser nulo o vacío");
         }
 
-        if (esGuardar) {
-            if (avionDTO.getIdAvion() != null) {
-                throw new Exception("El id del avión no puede existir");
-            }
-        }
-
         if (!esGuardar) {
             if (!avionRepository.existsById(avionDTO.getIdAvion())) {
                 throw new Exception("El avión con id " + avionDTO.getIdAvion() + " no existe");

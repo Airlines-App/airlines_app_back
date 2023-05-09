@@ -39,12 +39,6 @@ public class TipoAsientoServiceImpl implements TipoAsientoService {
             throw new Exception("El estado del tipo de asiento no puede ser nulo o vacío");
         }
 
-        if (esGuardar) {
-            if (tipoAsientoDTO.getIdTipoAsiento() != null) {
-                throw new Exception("El id del tipo de asiento no debe existir");
-            }
-        }
-
         if (!esGuardar) {
             if (!tipoAsientoRepository.existsById(tipoAsientoDTO.getIdTipoAsiento())) {
                 throw new Exception("El tipo de asiento con id " + tipoAsientoDTO.getIdTipoAsiento() + " no existe");

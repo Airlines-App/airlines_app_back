@@ -14,6 +14,7 @@ import co.edu.usbcali.airlinesapp.services.interfaces.ReservaService;
 
 import co.edu.usbcali.airlinesapp.services.interfaces.UsuarioService;
 import co.edu.usbcali.airlinesapp.services.interfaces.VueloService;
+import co.edu.usbcali.airlinesapp.utility.MetodosUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -73,18 +74,10 @@ public class ReservaServiceImpl implements ReservaService {
             throw new Exception("El estado de pago de la reserva no puede ser nulo o vacío");
         } if (reservaDTO.getFecha() == null) {
             throw new Exception("La fecha de la reserva no puede ser nula");
+        } if (!MetodosUtility.esFechaActualOReciente(reservaDTO.getFecha())) {
+            throw new Exception("La fecha de la reserva no puede ser antigua a la fecha actual");
         } if (reservaDTO.getEstado() == null || reservaDTO.getEstado().isBlank() || reservaDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado de la reserva no puede ser nulo o vacío");
-        }
-
-//        if (MetodosUtility.esFechaActualOReciente(reservaDTO.getFecha())) {
-//            throw new Exception("La fecha de la reserva no puede ser antigua a la fecha actual");
-//        }
-
-        if (esGuardar) {
-            if (reservaDTO.getIdReserva() != null) {
-                throw new Exception("El id de la reserva no debe existir");
-            }
         }
 
         if (!esGuardar) {

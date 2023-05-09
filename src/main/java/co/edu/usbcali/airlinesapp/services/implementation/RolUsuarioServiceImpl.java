@@ -39,12 +39,6 @@ public class RolUsuarioServiceImpl implements RolUsuarioService {
             throw new Exception("El estado del rol de usuario no puede ser nulo o vacío");
         }
 
-        if (esGuardar) {
-            if (rolUsuarioDTO.getIdRolUsuario() != null) {
-                throw new Exception("El id del rol de usuario no debe existir");
-            }
-        }
-
         if (!esGuardar) {
             if (!rolUsuarioRepository.existsById(rolUsuarioDTO.getIdRolUsuario())) {
                 throw new Exception("El rol de usuario con id " + rolUsuarioDTO.getIdRolUsuario() + " no existe");

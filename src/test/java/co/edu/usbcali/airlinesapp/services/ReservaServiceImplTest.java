@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -45,7 +46,7 @@ public class ReservaServiceImplTest {
         given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
         given(usuarioRepository.getReferenceById(UsuarioUtilityTest.ID_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
         given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(false);
-        given(reservaRepository.save(ReservaUtilityTest.RESERVA_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
+        given(reservaRepository.save(any())).willReturn(ReservaUtilityTest.RESERVA_UNO);
 
         ReservaDTO reservaSavedDTO = reservaServiceImpl.guardarReserva(ReservaUtilityTest.RESERVADTO);
 
@@ -128,7 +129,7 @@ public class ReservaServiceImplTest {
         given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
         given(usuarioRepository.getReferenceById(UsuarioUtilityTest.ID_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
         given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
-        given(reservaRepository.save(ReservaUtilityTest.RESERVA_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
+        given(reservaRepository.save(any())).willReturn(ReservaUtilityTest.RESERVA_UNO);
 
         ReservaDTO reservaSavedDTO = reservaServiceImpl.actualizarReserva(ReservaUtilityTest.RESERVADTO);
 

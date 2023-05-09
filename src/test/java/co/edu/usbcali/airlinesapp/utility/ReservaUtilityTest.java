@@ -3,6 +3,8 @@ package co.edu.usbcali.airlinesapp.utility;
 import co.edu.usbcali.airlinesapp.domain.Reserva;
 import co.edu.usbcali.airlinesapp.dtos.ReservaDTO;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +17,17 @@ public class ReservaUtilityTest {
     public static String ESTADO_UNO = "A";
     public static Integer RESERVAS_SIZE = 2;
     public static Integer RESERVAS_VACIO_SIZE = 0;
+    public static String FECHA_FUTURO = "2023-11-27 08:00";
+    public static String PATTERN_FECHA = "yyyy-MM-dd HH:mm";
+    public static Date FECHA_FUTURO_DATE;
+
+    static {
+        try {
+            FECHA_FUTURO_DATE = new SimpleDateFormat(PATTERN_FECHA).parse(FECHA_FUTURO);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
     public static Reserva RESERVA_UNO = Reserva.builder()
@@ -24,7 +37,7 @@ public class ReservaUtilityTest {
             .usuario(UsuarioUtilityTest.USUARIO_UNO)
             .precioTotal(100000)
             .estadoPago("A")
-            .fecha(new Date())
+            .fecha(FECHA_FUTURO_DATE)
             .estado("A")
             .build();
 
@@ -35,7 +48,7 @@ public class ReservaUtilityTest {
             .usuario(UsuarioUtilityTest.USUARIO_UNO)
             .precioTotal(150000)
             .estadoPago("A")
-            .fecha(new Date())
+            .fecha(FECHA_FUTURO_DATE)
             .estado("A")
             .build();
 
@@ -46,7 +59,7 @@ public class ReservaUtilityTest {
             .idUsuario(UsuarioUtilityTest.USUARIO_UNO.getIdUsuario())
             .precioTotal(100000)
             .estadoPago("A")
-            .fecha(new Date())
+            .fecha(FECHA_FUTURO_DATE)
             .estado("A")
             .build();
 

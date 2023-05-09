@@ -49,12 +49,6 @@ public class AsientoServiceImpl implements AsientoService {
             throw new Exception("El estado del asiento no puede ser nulo o vacío");
         }
 
-        if (esGuardar) {
-            if (asientoDTO.getIdAsiento() != null) {
-                throw new Exception("El id del asiento no debe existir");
-            }
-        }
-
         if (!esGuardar) {
             if (!asientoRepository.existsById(asientoDTO.getIdAsiento())) {
                 throw new Exception("El asiento con id " + asientoDTO.getIdAsiento() + " no existe");
