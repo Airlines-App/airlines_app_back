@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -36,7 +37,7 @@ public class VueloServiceImplTest {
         given(aeropuertoRepository.existsById(AeropuertoUtilityTest.ID_DOS)).willReturn(true);
         given(aeropuertoRepository.getReferenceById(AeropuertoUtilityTest.ID_DOS)).willReturn(AeropuertoUtilityTest.AEROPUERTO_DOS);
         given(vueloRepository.existsById(VueloUtilityTest.ID_UNO)).willReturn(false);
-        given(vueloRepository.save(VueloUtilityTest.VUELO_UNO)).willReturn(VueloUtilityTest.VUELO_UNO);
+        given(vueloRepository.save(any())).willReturn(VueloUtilityTest.VUELO_UNO);
 
         VueloDTO vueloSavedDTO = vueloServiceImpl.guardarVuelo(VueloUtilityTest.VUELODTO);
 
@@ -116,7 +117,7 @@ public class VueloServiceImplTest {
         given(aeropuertoRepository.existsById(AeropuertoUtilityTest.ID_DOS)).willReturn(true);
         given(aeropuertoRepository.getReferenceById(AeropuertoUtilityTest.ID_DOS)).willReturn(AeropuertoUtilityTest.AEROPUERTO_DOS);
         given(vueloRepository.existsById(VueloUtilityTest.ID_UNO)).willReturn(true);
-        given(vueloRepository.save(VueloUtilityTest.VUELO_UNO)).willReturn(VueloUtilityTest.VUELO_UNO);
+        given(vueloRepository.save(any())).willReturn(VueloUtilityTest.VUELO_UNO);
 
         VueloDTO vueloSavedDTO = vueloServiceImpl.actualizarVuelo(VueloUtilityTest.VUELODTO);
 

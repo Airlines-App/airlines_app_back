@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -47,7 +48,7 @@ public class TrayectoServiceImplTest {
         given(vueloRepository.existsById(VueloUtilityTest.ID_UNO)).willReturn(true);
         given(vueloRepository.getReferenceById(VueloUtilityTest.ID_UNO)).willReturn(VueloUtilityTest.VUELO_UNO);
         given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(false);
-        given(trayectoRepository.save(TrayectoUtilityTest.TRAYECTO_UNO)).willReturn(TrayectoUtilityTest.TRAYECTO_UNO);
+        given(trayectoRepository.save(any())).willReturn(TrayectoUtilityTest.TRAYECTO_UNO);
 
         TrayectoDTO trayectoSavedDTO = trayectoServiceImpl.guardarTrayecto(TrayectoUtilityTest.TRAYECTODTO);
 
@@ -133,7 +134,7 @@ public class TrayectoServiceImplTest {
         given(vueloRepository.existsById(VueloUtilityTest.ID_UNO)).willReturn(true);
         given(vueloRepository.getReferenceById(VueloUtilityTest.ID_UNO)).willReturn(VueloUtilityTest.VUELO_UNO);
         given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(true);
-        given(trayectoRepository.save(TrayectoUtilityTest.TRAYECTO_UNO)).willReturn(TrayectoUtilityTest.TRAYECTO_UNO);
+        given(trayectoRepository.save(any())).willReturn(TrayectoUtilityTest.TRAYECTO_UNO);
 
         TrayectoDTO trayectoSavedDTO = trayectoServiceImpl.actualizarTrayecto(TrayectoUtilityTest.TRAYECTODTO);
 

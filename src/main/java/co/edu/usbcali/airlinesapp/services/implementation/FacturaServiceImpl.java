@@ -10,6 +10,7 @@ import co.edu.usbcali.airlinesapp.repository.ReservaRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.FacturaService;
 
 import co.edu.usbcali.airlinesapp.services.interfaces.ReservaService;
+import co.edu.usbcali.airlinesapp.utility.MetodosUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ public class FacturaServiceImpl implements FacturaService {
         this.reservaService = reservaService;
     }
 
-    public FacturaDTO guardarOActualizarFactura(FacturaDTO facturaDTO) {
+    private FacturaDTO guardarOActualizarFactura(FacturaDTO facturaDTO) {
         Factura factura = FacturaMapper.dtoToDomain(facturaDTO);
 
         Reserva reserva = reservaRepository.getReferenceById(facturaDTO.getIdReserva());
@@ -38,7 +39,7 @@ public class FacturaServiceImpl implements FacturaService {
         return FacturaMapper.domainToDTO(facturaRepository.save(factura));
     }
 
-    public void validarFacturaDTO(FacturaDTO facturaDTO, boolean esGuardar) throws Exception {
+    private void validarFacturaDTO(FacturaDTO facturaDTO, boolean esGuardar) throws Exception {
         if (facturaDTO == null) {
             throw new Exception("La factura no puede ser nula");
         } if (facturaDTO.getIdReserva() == null || facturaDTO.getIdReserva() <= 0) {
@@ -47,18 +48,10 @@ public class FacturaServiceImpl implements FacturaService {
             throw new Exception("La reserva con id " + facturaDTO.getIdReserva() + " no existe");
         } if (facturaDTO.getFecha() == null) {
             throw new Exception("La fecha de la factura no puede ser nula");
+        } if (!MetodosUtility.esFechaActualOReciente(facturaDTO.getFecha())) {
+            throw new Exception("La fecha de la factura no puede ser antigua a la fecha actual");
         } if (facturaDTO.getEstado() == null || facturaDTO.getEstado().isBlank() || facturaDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado de la factura no puede ser nulo o vacío");
-        }
-
-//        if (!MetodosUtility.esFechaActualOReciente(facturaDTO.getFecha())) {
-//            throw new Exception("La fecha de la factura no puede ser antigua a la fecha actual");
-//        }
-
-        if (esGuardar) {
-            if (facturaDTO.getIdFactura() != null) {
-                throw new Exception("El id de la factura no debe existir");
-            }
         }
 
         if (!esGuardar) {

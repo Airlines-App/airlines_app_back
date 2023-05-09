@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
@@ -34,7 +35,7 @@ public class FacturaServiceImplTest {
         given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
         given(reservaRepository.getReferenceById(ReservaUtilityTest.ID_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
         given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(false);
-        given(facturaRepository.save(FacturaUtilityTest.FACTURA_UNO)).willReturn(FacturaUtilityTest.FACTURA_UNO);
+        given(facturaRepository.save(any())).willReturn(FacturaUtilityTest.FACTURA_UNO);
 
         FacturaDTO facturaSavedDTO = facturaServiceImpl.guardarFactura(FacturaUtilityTest.FACTURADTO);
 
@@ -111,7 +112,7 @@ public class FacturaServiceImplTest {
         given(reservaRepository.existsById(ReservaUtilityTest.ID_UNO)).willReturn(true);
         given(reservaRepository.getReferenceById(ReservaUtilityTest.ID_UNO)).willReturn(ReservaUtilityTest.RESERVA_UNO);
         given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(true);
-        given(facturaRepository.save(FacturaUtilityTest.FACTURA_UNO)).willReturn(FacturaUtilityTest.FACTURA_UNO);
+        given(facturaRepository.save(any())).willReturn(FacturaUtilityTest.FACTURA_UNO);
 
         FacturaDTO facturaSavedDTO = facturaServiceImpl.actualizarFactura(FacturaUtilityTest.FACTURADTO);
 

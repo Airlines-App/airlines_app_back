@@ -62,9 +62,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         if (esGuardar) {
-            if (usuarioDTO.getIdUsuario() != null) {
-                throw new Exception("El id del usuario no debe existir");
-            } if (usuarioRepository.existsByCedula(usuarioDTO.getCedula())) {
+            if (usuarioRepository.existsByCedula(usuarioDTO.getCedula())) {
                 throw new Exception("El usuario con cédula " + usuarioDTO.getCedula() + " ya existe");
             } if (usuarioRepository.existsByCorreo(usuarioDTO.getCorreo())) {
                 throw new Exception("El usuario con correo " + usuarioDTO.getCorreo() + " ya existe");

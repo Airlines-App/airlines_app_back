@@ -13,6 +13,7 @@ import co.edu.usbcali.airlinesapp.repository.TrayectoRepository;
 import co.edu.usbcali.airlinesapp.repository.VueloRepository;
 import co.edu.usbcali.airlinesapp.services.interfaces.TrayectoService;
 
+import co.edu.usbcali.airlinesapp.utility.MetodosUtility;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -68,8 +69,12 @@ public class TrayectoServiceImpl implements TrayectoService {
             throw new Exception("El id del aeropuerto de origen no puede ser igual al id del aeropuerto de destino");
         } if (trayectoDTO.getHoraSalida() == null) {
             throw new Exception("La hora de salida del trayecto no puede ser nula");
+        } if (!MetodosUtility.esFechaActualOReciente(trayectoDTO.getHoraSalida())) {
+            throw new Exception("La hora de salida del trayecto no puede ser antigua a la fecha actual");
         } if (trayectoDTO.getHoraLlegada() == null) {
             throw new Exception("La hora de llegada del trayecto no puede ser nula");
+        } if (!MetodosUtility.esFechaActualOReciente(trayectoDTO.getHoraLlegada())) {
+            throw new Exception("La hora de llegada del trayecto no puede ser antigua a la fecha actual");
         } if (trayectoDTO.getHoraSalida().after(trayectoDTO.getHoraLlegada())) {
             throw new Exception("La hora de salida del trayecto no puede ser posterior a la hora de llegada");
         } if (trayectoDTO.getIdVuelo() == null || trayectoDTO.getIdVuelo() <= 0) {
@@ -78,18 +83,6 @@ public class TrayectoServiceImpl implements TrayectoService {
             throw new Exception("El vuelo con id " + trayectoDTO.getIdVuelo() + " no existe");
         } if (trayectoDTO.getEstado() == null || trayectoDTO.getEstado().isBlank() || trayectoDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado del trayecto no puede ser nulo o vacío");
-        }
-
-//        if (MetodosUtility.esFechaActualOReciente(trayectoDTO.getHoraSalida())) {
-//            throw new Exception("La hora de salida del trayecto no puede ser antigua a la fecha actual");
-//        } if (MetodosUtility.esFechaActualOReciente(trayectoDTO.getHoraLlegada())) {
-//            throw new Exception("La hora de llegada del trayecto no puede ser antigua a la fecha actual");
-//        }
-
-        if (esGuardar) {
-            if (trayectoDTO.getIdTrayecto() != null) {
-                throw new Exception("El id del trayecto no debe existir");
-            }
         }
 
         if (!esGuardar) {
