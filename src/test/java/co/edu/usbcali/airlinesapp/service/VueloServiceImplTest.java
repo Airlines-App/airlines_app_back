@@ -39,7 +39,7 @@ public class VueloServiceImplTest {
         given(vueloRepository.existsById(VueloUtilityTest.ID_UNO)).willReturn(false);
         given(vueloRepository.save(any())).willReturn(VueloUtilityTest.VUELO_UNO);
 
-        VueloDTO vueloSavedDTO = vueloServiceImpl.guardarVuelo(VueloUtilityTest.VUELODTO);
+        VueloDTO vueloSavedDTO = vueloServiceImpl.guardarVuelo(VueloUtilityTest.VUELODTO_UNO);
 
         assertEquals(VueloUtilityTest.ID_UNO, vueloSavedDTO.getIdVuelo());
     }
@@ -48,7 +48,7 @@ public class VueloServiceImplTest {
     public void guardarVueloNotOk() {
         given(vueloRepository.existsById(VueloUtilityTest.ID_UNO)).willReturn(true);
 
-        assertThrows(java.lang.Exception.class, () -> vueloServiceImpl.guardarVuelo(VueloUtilityTest.VUELODTO));
+        assertThrows(java.lang.Exception.class, () -> vueloServiceImpl.guardarVuelo(VueloUtilityTest.VUELODTO_UNO));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class VueloServiceImplTest {
         given(vueloRepository.existsById(VueloUtilityTest.ID_UNO)).willReturn(true);
         given(vueloRepository.save(any())).willReturn(VueloUtilityTest.VUELO_UNO);
 
-        VueloDTO vueloSavedDTO = vueloServiceImpl.actualizarVuelo(VueloUtilityTest.VUELODTO);
+        VueloDTO vueloSavedDTO = vueloServiceImpl.actualizarVuelo(VueloUtilityTest.VUELODTO_UNO);
 
         assertEquals(VueloUtilityTest.ID_UNO, vueloSavedDTO.getIdVuelo());
     }
@@ -128,6 +128,6 @@ public class VueloServiceImplTest {
     public void actualizarVueloNotOk() {
         given(vueloRepository.existsById(VueloUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> vueloServiceImpl.actualizarVuelo(VueloUtilityTest.VUELODTO));
+        assertThrows(java.lang.Exception.class, () -> vueloServiceImpl.actualizarVuelo(VueloUtilityTest.VUELODTO_UNO));
     }
 }

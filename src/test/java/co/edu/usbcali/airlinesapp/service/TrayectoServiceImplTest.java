@@ -53,7 +53,7 @@ public class TrayectoServiceImplTest {
         given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(false);
         given(trayectoRepository.save(any())).willReturn(TrayectoUtilityTest.TRAYECTO_UNO);
 
-        TrayectoDTO trayectoSavedDTO = trayectoServiceImpl.guardarTrayecto(TrayectoUtilityTest.TRAYECTODTO);
+        TrayectoDTO trayectoSavedDTO = trayectoServiceImpl.guardarTrayecto(TrayectoUtilityTest.TRAYECTODTO_UNO);
 
         assertEquals(TrayectoUtilityTest.ID_UNO, trayectoSavedDTO.getIdTrayecto());
     }
@@ -62,7 +62,7 @@ public class TrayectoServiceImplTest {
     public void guardarTrayectoNotOk() {
         given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(true);
 
-        assertThrows(java.lang.Exception.class, () -> trayectoServiceImpl.guardarTrayecto(TrayectoUtilityTest.TRAYECTODTO));
+        assertThrows(java.lang.Exception.class, () -> trayectoServiceImpl.guardarTrayecto(TrayectoUtilityTest.TRAYECTODTO_UNO));
     }
 
     @Test
@@ -139,7 +139,7 @@ public class TrayectoServiceImplTest {
         given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(true);
         given(trayectoRepository.save(any())).willReturn(TrayectoUtilityTest.TRAYECTO_UNO);
 
-        TrayectoDTO trayectoSavedDTO = trayectoServiceImpl.actualizarTrayecto(TrayectoUtilityTest.TRAYECTODTO);
+        TrayectoDTO trayectoSavedDTO = trayectoServiceImpl.actualizarTrayecto(TrayectoUtilityTest.TRAYECTODTO_UNO);
 
         assertEquals(TrayectoUtilityTest.ID_UNO, trayectoSavedDTO.getIdTrayecto());
     }
@@ -148,6 +148,6 @@ public class TrayectoServiceImplTest {
     public void actualizarTrayectoNotOk() {
         given(trayectoRepository.existsById(TrayectoUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> trayectoServiceImpl.actualizarTrayecto(TrayectoUtilityTest.TRAYECTODTO));
+        assertThrows(java.lang.Exception.class, () -> trayectoServiceImpl.actualizarTrayecto(TrayectoUtilityTest.TRAYECTODTO_UNO));
     }
 }

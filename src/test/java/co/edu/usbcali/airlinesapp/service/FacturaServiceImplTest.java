@@ -37,7 +37,7 @@ public class FacturaServiceImplTest {
         given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(false);
         given(facturaRepository.save(any())).willReturn(FacturaUtilityTest.FACTURA_UNO);
 
-        FacturaDTO facturaSavedDTO = facturaServiceImpl.guardarFactura(FacturaUtilityTest.FACTURADTO);
+        FacturaDTO facturaSavedDTO = facturaServiceImpl.guardarFactura(FacturaUtilityTest.FACTURADTO_UNO);
 
         assertEquals(FacturaUtilityTest.ID_UNO, facturaSavedDTO.getIdFactura());
     }
@@ -46,7 +46,7 @@ public class FacturaServiceImplTest {
     public void guardarFacturaNotOk() {
         given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(true);
 
-        assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.guardarFactura(FacturaUtilityTest.FACTURADTO));
+        assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.guardarFactura(FacturaUtilityTest.FACTURADTO_UNO));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class FacturaServiceImplTest {
         given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(true);
         given(facturaRepository.save(any())).willReturn(FacturaUtilityTest.FACTURA_UNO);
 
-        FacturaDTO facturaSavedDTO = facturaServiceImpl.actualizarFactura(FacturaUtilityTest.FACTURADTO);
+        FacturaDTO facturaSavedDTO = facturaServiceImpl.actualizarFactura(FacturaUtilityTest.FACTURADTO_UNO);
 
         assertEquals(FacturaUtilityTest.ID_UNO, facturaSavedDTO.getIdFactura());
     }
@@ -123,6 +123,6 @@ public class FacturaServiceImplTest {
     public void actualizarFacturaNotOk() {
         given(facturaRepository.existsById(FacturaUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.actualizarFactura(FacturaUtilityTest.FACTURADTO));
+        assertThrows(java.lang.Exception.class, () -> facturaServiceImpl.actualizarFactura(FacturaUtilityTest.FACTURADTO_UNO));
     }
 }
