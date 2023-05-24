@@ -11,8 +11,11 @@ public class AvionUtilityTest {
     public static String MODELO_UNO = "Boeing 737";
     public static String AEROLINEA_UNO = "Avianca";
     public static String ESTADO_UNO = "A";
+    public static Integer ID_DOS = 2;
     public static Integer AVIONES_SIZE = 2;
     public static Integer AVIONES_VACIO_SIZE = 0;
+    public static String MODELO_REQUIRED_MESSAGE = "El modelo del avión no puede ser nulo o vacío";
+    public static String ID_NOT_FOUND_MESSAGE = "El avión con id %s no existe";
 
     public static Avion AVION_UNO = Avion.builder()
             .idAvion(1)
@@ -28,14 +31,32 @@ public class AvionUtilityTest {
             .estado("A")
             .build();
 
-    public static AvionDTO AVIONDTO = AvionDTO.builder()
+    public static AvionDTO AVIONDTO_UNO = AvionDTO.builder()
             .idAvion(1)
             .modelo("Boeing 737")
             .aerolinea("Avianca")
             .estado("A")
             .build();
 
+    public static AvionDTO AVIONDTO_DOS = AvionDTO.builder()
+            .idAvion(2)
+            .modelo("Boeing 747")
+            .aerolinea("Wingo")
+            .estado("A")
+            .build();
+
+    public static AvionDTO AVIONDTO_MODELO_NULL = AvionDTO.builder()
+            .idAvion(1)
+            .modelo(null)
+            .aerolinea("Avianca")
+            .estado("A")
+            .build();
+
     public static List<Avion> AVIONES = Arrays.asList(AVION_UNO, AVION_DOS);
 
+    public static List<AvionDTO> AVIONESDTO = Arrays.asList(AVIONDTO_UNO, AVIONDTO_DOS);
+
     public static List<Avion> AVIONES_VACIO = Arrays.asList();
+
+    public static List<AvionDTO> AVIONESDTO_VACIO = Arrays.asList();
 }

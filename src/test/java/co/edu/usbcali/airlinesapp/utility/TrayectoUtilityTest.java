@@ -14,13 +14,16 @@ public class TrayectoUtilityTest {
     public static Date HORA_SALIDA_UNO = new Date();
     public static Date HORA_LLEGADA_UNO = new Date();
     public static String ESTADO_UNO = "A";
-    public static Integer TRAYECTOS_SIZE = 2;
-    public static Integer TRAYECTOS_VACIO_SIZE = 0;
+    public static Integer ID_DOS = 2;
     public static String FECHA_FUTURO = "2023-11-27 08:00";
     public static String FECHA_FUTURO_DOS = "2023-12-27 10:00";
     public static String PATTERN_FECHA = "yyyy-MM-dd HH:mm";
     public static Date FECHA_FUTURO_DATE;
     public static Date FECHA_FUTURO_DATE_DOS;
+    public static Integer TRAYECTOS_SIZE = 2;
+    public static Integer TRAYECTOS_VACIO_SIZE = 0;
+    public static String HORASALIDA_REQUIRED_MESSAGE = "La hora de salida no puede ser nula";
+    public static String ID_NOT_FOUND_MESSAGE = "El trayecto con id %s no existe";
 
     static {
         try {
@@ -59,7 +62,7 @@ public class TrayectoUtilityTest {
             .estado("A")
             .build();
 
-    public static TrayectoDTO TRAYECTODTO = TrayectoDTO.builder()
+    public static TrayectoDTO TRAYECTODTO_UNO = TrayectoDTO.builder()
             .idTrayecto(1)
             .idAvion(AvionUtilityTest.AVION_UNO.getIdAvion())
             .idAeropuertoOrigen(AeropuertoUtilityTest.AEROPUERTO_UNO.getIdAeropuerto())
@@ -70,7 +73,33 @@ public class TrayectoUtilityTest {
             .estado("A")
             .build();
 
+    public static TrayectoDTO TRAYECTODTO_DOS = TrayectoDTO.builder()
+            .idTrayecto(2)
+            .idAvion(AvionUtilityTest.AVION_UNO.getIdAvion())
+            .idAeropuertoOrigen(AeropuertoUtilityTest.AEROPUERTO_UNO.getIdAeropuerto())
+            .idAeropuertoDestino(AeropuertoUtilityTest.AEROPUERTO_DOS.getIdAeropuerto())
+            .horaSalida(FECHA_FUTURO_DATE)
+            .horaLlegada(FECHA_FUTURO_DATE_DOS)
+            .idVuelo(VueloUtilityTest.VUELO_UNO.getIdVuelo())
+            .estado("A")
+            .build();
+
+    public static TrayectoDTO TRAYECTODTO_HORASALIDA_NULL = TrayectoDTO.builder()
+            .idTrayecto(1)
+            .idAvion(AvionUtilityTest.AVION_UNO.getIdAvion())
+            .idAeropuertoOrigen(AeropuertoUtilityTest.AEROPUERTO_UNO.getIdAeropuerto())
+            .idAeropuertoDestino(AeropuertoUtilityTest.AEROPUERTO_DOS.getIdAeropuerto())
+            .horaSalida(null)
+            .horaLlegada(FECHA_FUTURO_DATE_DOS)
+            .idVuelo(VueloUtilityTest.VUELO_UNO.getIdVuelo())
+            .estado("A")
+            .build();
+
     public static List<Trayecto> TRAYECTOS = Arrays.asList(TRAYECTO_UNO, TRAYECTO_DOS);
 
+    public static List<TrayectoDTO> TRAYECTOSDTO = Arrays.asList(TRAYECTODTO_UNO, TRAYECTODTO_DOS);
+
     public static List<Trayecto> TRAYECTOS_VACIO = Arrays.asList();
+
+    public static List<TrayectoDTO> TRAYECTOSDTO_VACIO = Arrays.asList();
 }

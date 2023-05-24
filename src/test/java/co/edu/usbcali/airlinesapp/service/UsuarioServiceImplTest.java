@@ -37,7 +37,7 @@ public class UsuarioServiceImplTest {
         given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(false);
         given(usuarioRepository.save(UsuarioUtilityTest.USUARIO_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
 
-        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.guardarUsuario(UsuarioUtilityTest.USUARIODTO);
+        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.guardarUsuario(UsuarioUtilityTest.USUARIODTO_UNO);
 
         assertEquals(UsuarioUtilityTest.ID_UNO, usuarioSavedDTO.getIdUsuario());
     }
@@ -46,7 +46,7 @@ public class UsuarioServiceImplTest {
     public void guardarUsuarioNotOk() {
         given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
 
-        assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.guardarUsuario(UsuarioUtilityTest.USUARIODTO));
+        assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.guardarUsuario(UsuarioUtilityTest.USUARIODTO_UNO));
     }
 
     @Test
@@ -134,7 +134,7 @@ public class UsuarioServiceImplTest {
         given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(true);
         given(usuarioRepository.save(UsuarioUtilityTest.USUARIO_UNO)).willReturn(UsuarioUtilityTest.USUARIO_UNO);
 
-        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.actualizarUsuario(UsuarioUtilityTest.USUARIODTO);
+        UsuarioDTO usuarioSavedDTO = usuarioServiceImpl.actualizarUsuario(UsuarioUtilityTest.USUARIODTO_UNO);
 
         assertEquals(UsuarioUtilityTest.ID_UNO, usuarioSavedDTO.getIdUsuario());
     }
@@ -143,6 +143,6 @@ public class UsuarioServiceImplTest {
     public void actualizarUsuarioNotOk() {
         given(usuarioRepository.existsById(UsuarioUtilityTest.ID_UNO)).willReturn(false);
 
-        assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.actualizarUsuario(UsuarioUtilityTest.USUARIODTO));
+        assertThrows(java.lang.Exception.class, () -> usuarioServiceImpl.actualizarUsuario(UsuarioUtilityTest.USUARIODTO_UNO));
     }
 }
