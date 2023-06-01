@@ -74,9 +74,8 @@ public class ReservaServiceImpl implements ReservaService {
             throw new Exception("El estado de pago de la reserva no puede ser nulo o vacío");
         } if (reservaDTO.getFecha() == null) {
             throw new Exception("La fecha de la reserva no puede ser nula");
-        } if (!MetodosUtility.esFechaActualOReciente(reservaDTO.getFecha())) {
-            throw new Exception("La fecha de la reserva no puede ser antigua a la fecha actual");
-        } if (reservaDTO.getEstado() == null || reservaDTO.getEstado().isBlank() || reservaDTO.getEstado().trim().isEmpty()) {
+        }
+        if (reservaDTO.getEstado() == null || reservaDTO.getEstado().isBlank() || reservaDTO.getEstado().trim().isEmpty()) {
             throw new Exception("El estado de la reserva no puede ser nulo o vacío");
         }
 
