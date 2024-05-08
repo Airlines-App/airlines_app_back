@@ -19,8 +19,8 @@ public class VueloUtilityTest {
     public static long PRECIO_ASIENTO_BASICO_UNO = 10000;
     public static String ESTADO_UNO = "A";
     public static Integer ID_DOS = 2;
-    public static String FECHA_FUTURO = "2023-11-27 08:00";
-    public static String FECHA_FUTURO_DOS = "2023-12-27 10:00";
+    public static String FECHA_FUTURO = "2024-11-27 08:00";
+    public static String FECHA_FUTURO_DOS = "2024-12-27 10:00";
     public static String PATTERN_FECHA = "yyyy-MM-dd HH:mm";
     public static Date FECHA_FUTURO_DATE;
     public static Date FECHA_FUTURO_DATE_DOS;
