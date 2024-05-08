@@ -16,7 +16,7 @@ public class ReservaUtilityTest {
     public static Date FECHA_UNO = new Date();
     public static String ESTADO_UNO = "A";
     public static Integer ID_DOS = 2;
-    public static String FECHA_FUTURO = "2023-11-27 08:00";
+    public static String FECHA_FUTURO = "2024-11-27 08:00";
     public static String PATTERN_FECHA = "yyyy-MM-dd HH:mm";
     public static Date FECHA_FUTURO_DATE;
     public static Integer RESERVAS_SIZE = 2;
